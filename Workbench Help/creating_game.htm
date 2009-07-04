@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>Workbench for Macintosh - Creating a Game</title>
+</head>
+<body bgcolor="#ffffff" leftmargin=0 topmargin=0>
+<table width="100%" border=0 cellpadding=0 cellspacing=0>
+<tr height=64 bgcolor="#336699"><td align=left><img src="title.png" alt="Workbench Help" align="bottom"></td></tr>
+<tr><td>
+<table border=0 cellspacing=0 cellpadding=4><tr><td valign="top" width="20%>
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Topics</b></font>
+<p><a href="index.htm">What is Workbench?</a>
+<p><a href="release_notes.htm">Release Notes</a>
+<p><a href="creating_game.htm">Creating a Game</a>
+<p><a href="project_settings.htm">The Project Settings Window</a>
+<p><a href="t3_doc/tads3.htm">TADS 3 Documentation</a>
+<p><a href="t3_doc/articles.htm">TADS 3 Articles</a>
+<p><a href="modifying_workbench.htm">Modifying Workbench</a>
+</font>
+</td>
+<td valign="top">
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Creating a Game</b></font>
+<p>Creating a new game in Workbench is fairly easy. Simply launch Workbench
+(e.g. by double-clicking its item in the Finder). You should immediately get
+a new, untitled project window. If you don't get one, simply choose
+<i>New Project</i> from the <i>File</i> menu and you should get one.
+<p>Project files are divided into four groups:
+<ul>
+<li><i>Source Files</i> holds all your source code for the game, i.e. the
+program you write. These files' names usually have the suffix &quot;.t&quot;.
+Below that is the list of <i>Include Folders</i>, which means the folders
+where the TADS compiler will look for additional source files that you
+#include from your code.
+<li>Then come the <i>Libraries</i>, which should include &quot;system.tl&quot;
+and &quot;adv3/adv3.tl&quot;. Libraries are pre-fabricated collections of code
+that provide functionality without you having to write them. E.g. adv3 provides
+all the adventure-specific stuff, like rooms, actors etc.
+</ul>
+<p>If you haven't done so already, save the project file (I'll use the name
+&quot;sample.t3m&quot;). You'll want to put it into a folder of its own, so
+you can later put all the source files for the game next to it. Then, let's
+create a new source file: Choose <i>New Source File</i> from the <i>File</i>
+menu. Save the file with the name you want your game to have (I'll use
+&quot;sample.t&quot; for now).
+<p>Now you have to add your file to the current project: Choose
+<i>Add Current File</i> from the <i>Project</i> menu. The file will be added to
+the <i>Source Files</i> group in your project. You can also use the <i>Add
+Source File...</i> menu item instead and select an existing file if you don't
+have one open.
+<p>Return to the text file and enter some TADS source code. I'll use:
+<pre>
+#include &quot;adv3.h&quot;
+#include &quot;tok.h&quot;
+#include &quot;en_us.h&quot;
+
+me: Person
+    location = livingRoom
+;
+
+
+livingRoom: Room
+    name = 'Living Room'
+    destName = 'the living room'
+    desc = &quot;It's a nice, big room.  A potted plant is the only attempt
+            at decoration.  Passages lead north, east, and west.
+            To the south, the front door of the house
+            leads outside. &quot;
+;
+
+main(args)
+{
+    gPlayerChar = me;
+    statusLine.showStatusLine();
+
+    &quot;<title>Sample Game</title>&quot;;
+    &quot;Welcome to the Game!\b&quot;;
+
+    runGame(true);
+}
+
+
+mainRestore(args, restoreFile)
+{
+    local succ;
+
+    &quot;<title>Sample Game</title>&quot;;
+    &quot;Restoring saved game...\n&quot;;
+
+    succ = RestoreAction.startupRestore(restoreFile);
+    &quot;\b&quot;;
+
+    if (succ)
+        runGame(nil);
+}
+</pre>
+
+<p>Now, choose <i>Build</i> from the <i>Project</i> menu. After a little while,
+the compiler will be finished and you will have a new game (in my case,
+sample.t3). To run it, simply choose <i>Build and Run</i> instead of
+<i>Build</i>.
+
+</font>
+</td></tr></table>
+</td></tr>
+</table>
+</body>
+</html>

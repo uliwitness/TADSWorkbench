@@ -1,0 +1,69 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                addIncludeFolder = id; 
+                addLibrary = id; 
+                addPreprocessorConstant = id; 
+                addSourceFile = id; 
+                buildAndDebugGame = id; 
+                buildAndRunGame = id; 
+                buildGame = id; 
+                cleanGame = id; 
+                debugGame = id; 
+                doubleClickErrorList = id; 
+                doubleClickOutlineView = id; 
+                extractGameText = id; 
+                projectChanged = id; 
+                runGame = id; 
+                showErrorWindow = id; 
+                showSettings = id; 
+                tadsPrepareParsing = id; 
+            }; 
+            CLASS = ProjectDocument; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                debugSymbols = NSButton; 
+                errCountField = NSTextField; 
+                errorList = NSTableView; 
+                errorWindow = NSWindow; 
+                listView = NSOutlineView; 
+                noDefaultFiles = NSButton; 
+                otherConfig = NSTextView; 
+                otherOptions = NSTextView; 
+                outputFile = NSTextField; 
+                preInit = NSMatrix; 
+                progressBar = NSProgressIndicator; 
+                projectName = NSTextField; 
+                projectWindow = NSWindow; 
+                quietMode = NSButton; 
+                rebuildUnchanged = NSButton; 
+                relinkUnchanged = NSButton; 
+                settingsPanel = NSWindow; 
+                sourcesComment = NSTextView; 
+                statusText = NSTextField; 
+                topComment = NSTextView; 
+                verboseErrors = NSButton; 
+                warnCountField = NSTextField; 
+                warningsMode = NSMatrix; 
+            }; 
+            SUPERCLASS = NSDocument; 
+        }, 
+        {
+            ACTIONS = {doubleClickErrorList = id; showErrorWindow = id; }; 
+            CLASS = UKErrorsWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                errCountField = NSTextField; 
+                errorList = NSTableView; 
+                errorWindow = NSWindow; 
+                noteCountField = NSTextField; 
+                warnCountField = NSTextField; 
+            }; 
+            SUPERCLASS = UKNibOwner; 
+        }, 
+        {CLASS = UKNibOwner; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

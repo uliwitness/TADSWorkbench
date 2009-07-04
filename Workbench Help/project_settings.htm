@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>Workbench for Macintosh Help</title>
+</head>
+<body bgcolor="#ffffff" leftmargin=0 topmargin=0>
+<table width="100%" border=0 cellpadding=0 cellspacing=0>
+<tr height=64 bgcolor="#336699"><td align=left><img src="title.png" alt="Workbench Help" align="bottom"></td></tr>
+<tr><td>
+<table border=0 cellspacing=0 cellpadding=4><tr><td valign="top" width="20%>
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Topics</b></font>
+<p><a href="index.htm">What is Workbench?</a>
+<p><a href="release_notes.htm">Release Notes</a>
+<p><a href="creating_game.htm">Creating a Game</a>
+<p><a href="project_settings.htm">The Project Settings Window</a>
+<p><a href="t3_doc/tads3.htm">TADS 3 Documentation</a>
+<p><a href="t3_doc/articles.htm">TADS 3 Articles</a>
+<p><a href="modifying_workbench.htm">Modifying Workbench</a>
+</font>
+</td>
+<td valign="top">
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>The Project Settings Window</b></font>
+<p>The Project Settings window lets you specify various options that control
+how your game is generated, as well as some miscellanea that let you customize
+what command-line users see when opening your project file. To bring it up,
+choose <i>Project Settings</i> from the <i>Project</i> menu.
+<p>Most people will hardly need to access anything beyond the first page of
+the Project Settings window, which contains the compiler options. Here's a
+rundown of the options available.
+<ul>
+<li><b>Add Debugging Symbols</b> Check this option if you want to use the
+debugger on your game and you're <i>not</i> using the <i>Build and Debug</i>
+menu item to do that.
+<li><b>Pre-Init options</b> Pre-initialization is a way to speed up startup
+of a game by running some functions after building the game, and saving the
+result to the game file. By default, pre-initialization is not done for games
+being built for debugging to make it possible to debug pre-initialization
+functions.
+<li><b>Unchanged Files options</b> Under very rare circumstances, you may
+find that the TADS compiler fails to notice changes in certain files. If
+that happens, you can either occasionally clean the project, thus forcing
+a rebuild and re-link of the game, or you can check these options, which
+will always force a rebuild. However, notice that this will considerably
+slow down building. Only activate these if you've checked that there's no
+better way.
+<li><b>Output file name</b> If you want the final game file to have a
+different name than the one given to it by default, type it in here.
+</ul>
+
+<p>The <i>Comments</i> page of the settings window contains commentary text
+that people opening your makefile with a text editor will see (This is how
+TADS project files are edited on other platforms where no version of
+Workbench exists). Note that at this time, Workbench does not prevent you
+from entering nonsense here, thus possibly rendering your project file
+unusable. Make sure you only enter lines here that start with a hash sign
+(#) or are entirely empty.
+<p>Also, make sure the <i>Sources Comment</i> always starts with
+"##sources", and that such a comment does not show up in the <i>Top Comment</i>.
+
+<p>The <i>Advanced Options</i> page contains additional compiler options
+that you want to have passed to the compiler, and configuration information
+that Workbench for Macintosh doesn't use (Those are usually specific to
+Windows Workbench). Do not change any of these if you are not 100% sure you
+know what you're doing.
+</font>
+</td></tr></table>
+</td></tr>
+</table>
+</body>
+</html>

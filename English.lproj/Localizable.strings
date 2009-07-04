@@ -1,0 +1,23 @@
+"Sources" = "Source Files";
+"Includes" = "Include Folders";
+"Libs" = "Libraries";
+"Consts" = "Constants";
+"LANGUAGE=en_us" = "LANGUAGE=en_us";
+"MESSAGESTYLE=neu" = "MESSAGESTYLE=neu";
+"No Errors or Warnings." = "No Errors or Warnings.";
+"Ready." = "Ready.";
+"No such file." = "No such file.";
+"The file '%@' does not exist." = "The file '%@' does not exist.";
+"OK"="OK";
+"Can't build game." = "Can't build game.";
+"The project file needs to be saved to disk once before the game can be built." = "The project file needs to be saved to disk once before the game can be built.";
+
+/* E-Mail Address where feedback messages will be sent: */
+"FEEDBACK_EMAIL" = "tadsworkbench@zathras.de";
+
+/* Prefix for e-mail's subject: */
+"FEEDBACK_SUBJECT_PREFIX" = "[Feedback about TADS Workbench] ";
+
+/* URL where the user can provide feedback. */
+"FEEDBACK_URL" = "mailto:tadsworkbench@zathras.de?subject=Feedback%20about%20TADS%20Workbench";
+

@@ -1,0 +1,53 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                addIncludeFolder = id; 
+                addLibrary = id; 
+                addPreprocessorConstant = id; 
+                addSourceFile = id; 
+                buildAndDebugGame = id; 
+                buildAndRunGame = id; 
+                buildGame = id; 
+                cleanGame = id; 
+                debugGame = id; 
+                doubleClickOutlineView = id; 
+                extractGameText = id; 
+                projectChanged = id; 
+                runGame = id; 
+                showErrorWindow = id; 
+                showSettings = id; 
+                tadsPrepareParsing = id; 
+            }; 
+            CLASS = ProjectDocument; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                constantListView = NSTableView; 
+                debugSymbols = NSButton; 
+                includesListView = NSTableView; 
+                listView = NSOutlineView; 
+                noDefaultFiles = NSButton; 
+                otherConfig = NSTextView; 
+                otherOptions = NSTextView; 
+                outputFile = NSTextField; 
+                preInit = NSMatrix; 
+                progressBar = NSProgressIndicator; 
+                projectName = NSTextField; 
+                projectWindow = NSWindow; 
+                quietMode = NSButton; 
+                rebuildUnchanged = NSButton; 
+                relinkUnchanged = NSButton; 
+                settingsPanel = NSWindow; 
+                settingsTabView = NSTabView; 
+                sourcesComment = NSTextView; 
+                statusText = NSTextField; 
+                topComment = NSTextView; 
+                verboseErrors = NSButton; 
+                warningsMode = NSMatrix; 
+            }; 
+            SUPERCLASS = NSDocument; 
+        }
+    ); 
+    IBVersion = 1; 
+}

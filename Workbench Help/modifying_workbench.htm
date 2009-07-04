@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>Workbench for Macintosh - Modifying</title>
+</head>
+<body bgcolor="#ffffff" leftmargin=0 topmargin=0>
+<table width="100%" border=0 cellpadding=0 cellspacing=0>
+<tr height=64 bgcolor="#336699"><td align=left><img src="title.png" alt="Workbench Help" align="bottom"></td></tr>
+<tr><td>
+<table border=0 cellspacing=0 cellpadding=4><tr><td valign="top" width="20%>
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Topics</b></font>
+<p><a href="index.htm">What is Workbench?</a>
+<p><a href="release_notes.htm">Release Notes</a>
+<p><a href="creating_game.htm">Creating a Game</a>
+<p><a href="project_settings.htm">The Project Settings Window</a>
+<p><a href="t3_doc/tads3.htm">TADS 3 Documentation</a>
+<p><a href="t3_doc/articles.htm">TADS 3 Articles</a>
+<p><a href="modifying_workbench.htm">Modifying Workbench</a>
+</font>
+</td>
+<td valign="top">
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Modifying Workbench</b></font>
+<p>Workbench has been written in a way that should make it easy for power users to modify various details. Apart from support for unrecognized options in project files (project files have the suffix &quot;.t3m&quot;), which can be modified in the <i>Project Settings</i> window, you can also modify the application itself.
+<p>To do this, the first step is always to Click on Workbench's icon in the Finder with the control key pressed (or with the right mouse button, if your Mac has one) to bring up the context menu. There, select <i>Show Package Contents</i>. In the window that appears, open the <i>Resources</i> folder in the <i>Contents</i> folder.
+<p>Feel free to look at the various text files in there. Many of them are very self-explanatory. Below is a list of the different files and some quick notes on modifying them.
+<p align="center">
+<table border=0 width="90%">
+<tr><td width="20%" valign="top">DebugTadsScript.txt</td><td valign="top">This is the text for an AppleScript script that launches the TADS debugger (when you choose <i>Build and Debug</i>). The file name of the debugger will be inserted at the location of the first "%@", the one of the file to run at the second. Also note that the file name has already been escaped for the command line *and* AppleScript. If you have a GUI debugger, you'll very likely want to use the <i>open</i> command in Terminal to open it from this script.</td></tr>
+<tr><td width="20%" valign="top">SyntaxDefinition.plist</td><td valign="top">This file contains a list of all identifiers to colorize in source files, as well as of preprocessor directives etc. You need Apple's &quot;Property List Editor&quot; (part of the Developer Tools) to edit it.</td></tr>
+<tr><td width="20%" valign="top">OtherConfig.txt</td><td valign="top">This file is used to retrieve default values for the <i>Other Configuration</i> section in newly created projects' settings.</td></tr>
+<tr><td width="20%" valign="top">OtherOptions.txt</td><td valign="top">This file is used to retrieve default values for the <i>Other Options</i> section in newly created projects' settings.</td></tr>
+<tr><td width="20%" valign="top">Preferences.plist</td><td valign="top">This is a file containing the default settings for various preferences. See below for a listing of all preferences supported by Workbench.</td></tr>
+<tr><td width="20%" valign="top">RunTadsScript.txt</td><td valign="top">This is the text for an AppleScript script that launches the TADS interpreter (when you choose <i>Build and Run</i>). The file name of the interpreter will be inserted at the location of the first "%@", the one of the file to run at the second. Also note that the file name has already been escaped for the command line *and* AppleScript. If you have a GUI debugger, you'll very likely want to use the <i>open</i> command in Terminal to open it from this script.</td></tr>
+<tr><td width="20%" valign="top">t3include</td><td valign="top">This folder contains the TADS 3 headers. This is straight from the official TADS distribution.</td></tr>
+<tr><td width="20%" valign="top">t3library</td><td valign="top">This folder contains the TADS 3 adv3 library that implements Actors, Things, Fixtures, the parser, etc. This is straight from the official TADS distribution.</td></tr>
+<tr><td width="20%" valign="top">t3make</td><td valign="top">This is the actual TADS 3 compiler used when compiling applications. It is simply the t3make command line tool, straight from the TADS Unix distribution.</td></tr>
+<tr><td width="20%" valign="top">t3resource</td><td valign="top">This folder contains character mappings to make sure text is output the right way. This is straight from the official TADS distribution.</td></tr>
+</table>
+</p>
+
+<p><b>Preferences</b>
+<p>Workbench stores preferences in the standard User Defaults format. This
+means you can edit and create Preferences files using Apple's Property List
+Editor or using the <i>defaults</i> command.
+
+<p align="center">
+<table border=0 width="90%">
+<tr><td width="20%" valign="top">SyntaxColoring:Comments</td><td valign="top">This is the color to use for comments when doing syntax coloring on text files. They are simply stored as an array of three numbers for Red, Green and Blue, where 1.0 means full color, and 0.0 means none of that color.</td></tr>
+<tr><td width="20%" valign="top">SyntaxColoring:Identifiers</td><td valign="top">This is the color to use for identifiers when doing syntax coloring on text files.</td></tr>
+<tr><td width="20%" valign="top">SyntaxColoring:Preprocessor</td><td valign="top">This is the color to use for preprocessor directives (#include etc.) when doing syntax coloring on text files.</td></tr>
+<tr><td width="20%" valign="top">SyntaxColoring:Strings</td><td valign="top">This is the color to use for strings when doing syntax coloring on text files.</td></tr>
+<tr><td width="20%" valign="top">Tads:Interpreter</td><td valign="top">This is the search path to the TADS interpreter to use for running games. By default, this is the copy of t3run embedded in Workbench.</td></tr>
+<tr><td width="20%" valign="top">Tads:Debugger</td><td valign="top">This is the search path to the TADS debugger to use for debugging games. By default, this is simply &quot;t3dbg&quot;, which means you have to install the command-line debugger to use it.</td></tr>
+</table>
+</p>
+
+</font>
+</td></tr></table>
+</td></tr>
+</table>
+</body>
+</html>

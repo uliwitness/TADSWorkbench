@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Workbench for Macintosh Help</title>
+</head>
+<body bgcolor="#ffffff" leftmargin=0 topmargin=0>
+<table width="100%" border=0 cellpadding=0 cellspacing=0>
+<tr height=64 bgcolor="#336699"><td align=left><img src="title.png" alt="Workbench Help" align="bottom"></td></tr>
+<tr><td>
+<table border=0 cellspacing=0 cellpadding=4><tr><td valign="top" width="20%>
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Topics</b></font>
+<p><a href="index.htm">What is Workbench?</a>
+<p><a href="release_notes.htm">Release Notes</a>
+<p><a href="creating_game.htm">Creating a Game</a>
+<p><a href="project_settings.htm">The Project Settings Window</a>
+<p><a href="t3_doc/tads3.htm">TADS 3 Documentation</a>
+<p><a href="t3_doc/articles.htm">TADS 3 Articles</a>
+<p><a href="modifying_workbench.htm">Modifying Workbench</a>
+</font>
+</td>
+<td valign="top">
+<font face="Lucida Grande,Geneva,Helvetica">
+<p><font color="#336699"><b>Release Notes</b></font>
+<ul>
+<li>Launching the debugger currently doesn't work. This is simply because there is no TADS 3 debugger yet. Should Mike release one and you want to integrate it with Workbench, see
+<a href="modifying_workbench.htm">Modifying Workbench</a> for instructions.<br>&nbsp;
+<li>Currently, Workbench's text editor assumes that text files contain text in the
+MacRoman encoding. One of these days I'll have to ask Mike what encoding the compiler
+actually uses. Hopefully it's UTF-8 or something similarly new and easy to generate
+on a Mac.
+<li>When testing a game using the "Debug and Run" menu item, be careful to quit t3run by typing "quit" (or "q") at the prompt, then confirming, and <b>then hitting return</b> to get your prompt back. <b>Otherwise, t3run will still be running</b> when you close the window, waiting for that last return.<br>
+If you repeatedly fail to properly close t3run in this fashion, you will slowly accumulate a large number of copies of t3run, which will slow down your computer.
+</ul>
+</font>
+</td></tr></table>
+</td></tr>
+</table>
+</body>
+</html>

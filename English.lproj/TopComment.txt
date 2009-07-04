@@ -1,0 +1,19 @@
+# TADS 3 Makefile
+#
+# Warning: This file was mechanically generated.  You may edit it manually, but
+# be aware that your additions may be modified if you load this file into
+# Workbench.
+# Most TADS tools try to retain the comment at the start of the file and the
+# comment marked '##sources' below, but other comments might be stripped,
+# formatting may change and some option settings might end up modified. Don't
+# come whining we didn't warn you.
+#
+# To compile this game using the command-line compiler, call it like this:
+#
+#     ./t3make -f filename.t3m
+#
+# You can also use this makefile with Workbench. Just Choose 'Open...' from the
+# 'File' menu and then select this file. You should also be able to just
+# double-click this makefile in Finder/Explorer to open it in Workbench.
+#
+

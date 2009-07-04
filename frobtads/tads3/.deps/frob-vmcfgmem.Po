@@ -1,0 +1,14 @@
+tads3/frob-vmcfgmem.o tads3/frob-vmcfgmem.o: tads3/vmcfgmem.cpp \
+  tads3/vminit.h tads3/vmglob.h \
+  /usr/lib/gcc/i686-apple-darwin8/4.0.1/include/stddef.h tads3/vmpoolsl.h \
+  tads3/vmglobv.h
+
+tads3/vminit.h:
+
+tads3/vmglob.h:
+
+/usr/lib/gcc/i686-apple-darwin8/4.0.1/include/stddef.h:
+
+tads3/vmpoolsl.h:
+
+tads3/vmglobv.h:

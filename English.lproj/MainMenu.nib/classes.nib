@@ -1,0 +1,123 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {newTextFile = id; }; 
+            CLASS = CocoaTadsAppDelegate; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {splashWindow = NSWindow; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                addIncludeFolder = id; 
+                addLibrary = id; 
+                addPreprocessorConstant = id; 
+                addSourceFile = id; 
+                addToCurrentProject = id; 
+                buildAndDebugGame = id; 
+                buildAndRunGame = id; 
+                buildGame = id; 
+                cleanGame = id; 
+                extractGameText = id; 
+                indentSelection = id; 
+                openQuickly = id; 
+                recolorCompleteFile = id; 
+                showErrorWindow = id; 
+                showGoToPanel = id; 
+                showSettings = id; 
+                toggleAutoSyntaxColoring = id; 
+                unindentSelection = id; 
+            }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                buildAndDebugGame = id; 
+                buildAndRunGame = id; 
+                buildGame = id; 
+                cleanGame = id; 
+                showSettings = id; 
+            }; 
+            CLASS = ProjectDocument; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                debugSymbols = NSButton; 
+                listView = NSOutlineView; 
+                otherConfig = NSTextView; 
+                otherOptions = NSTextView; 
+                outputFile = NSTextField; 
+                preInit = NSMatrix; 
+                progressBar = NSProgressIndicator; 
+                quietMode = NSButton; 
+                rebuildUnchanged = NSButton; 
+                relinkUnchanged = NSButton; 
+                settingsPanel = NSPanel; 
+                sourcesComment = NSTextView; 
+                statusText = NSTextField; 
+                topComment = NSTextView; 
+                verboseErrors = NSButton; 
+                warningsMode = NSMatrix; 
+                window = NSWindow; 
+            }; 
+            SUPERCLASS = NSDocument; 
+        }, 
+        {CLASS = UKBorderlessWindow; LANGUAGE = ObjC; SUPERCLASS = NSPanel; }, 
+        {
+            ACTIONS = {
+                closeFeedbackWindow = id; 
+                openURL = id; 
+                orderFrontFeedbackWindow = id; 
+                sendFeedback = id; 
+                sendFeedbackButtonAction = id; 
+            }; 
+            CLASS = UKFeedbackProvider; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                feedbackWindow = NSWindow; 
+                messageText = NSTextView; 
+                subjectField = NSComboBox; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                takeComments2ColorFrom = id; 
+                takeCommentsColorFrom = id; 
+                takeIdentifiers2ColorFrom = id; 
+                takeIdentifiersColorFrom = id; 
+                takePreprocessorColorFrom = id; 
+                takeStringsColorFrom = id; 
+                takeTagsColorFrom = id; 
+            }; 
+            CLASS = UKSCTDColorWellPrefsController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                comments2Color = NSColorWell; 
+                commentsColor = NSColorWell; 
+                identifiers2Color = NSColorWell; 
+                identifiersColor = NSColorWell; 
+                preprocessorColor = NSColorWell; 
+                stringsColor = NSColorWell; 
+                tagsColor = NSColorWell; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {createNewIdentifier = id; deleteIdentifier = id; }; 
+            CLASS = UKSCTDUserIdentifiersPrefsController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {identifiersList = NSTableView; removeButton = NSButton; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {checkForUpdates = id; takeBoolFromObject = id; }; 
+            CLASS = UKUpdateChecker; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {prefsButton = NSButton; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
