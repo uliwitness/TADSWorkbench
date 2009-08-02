@@ -1,4 +1,0 @@
-t3compiler/tads3/tcglob.o t3compiler/tads3/tcglob.o:  \
- t3compiler/tads3/tcglob.cpp t3compiler/tads3/tcglob.h
-
-t3compiler/tads3/tcglob.h:
