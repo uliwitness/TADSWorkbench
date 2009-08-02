@@ -95,6 +95,7 @@
 		556EC5D61025904D007FBE38 /* t3std.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC5D51025904D007FBE38 /* t3std.h */; };
 		556EC5F410259183007FBE38 /* missing.cc in Sources */ = {isa = PBXBuildFile; fileRef = 556EC5F310259183007FBE38 /* missing.cc */; };
 		556EC5F610259189007FBE38 /* missing.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC5F510259189007FBE38 /* missing.h */; };
+		556EC6BB1025F149007FBE38 /* t3_hdr in Resources */ = {isa = PBXBuildFile; fileRef = 556EC69C1025F149007FBE38 /* t3_hdr */; };
 		5598C9CE102582B9000272CF /* frob in Resources */ = {isa = PBXBuildFile; fileRef = 5598C9CC102582B9000272CF /* frob */; };
 		5598C9CF102582B9000272CF /* t3make in Resources */ = {isa = PBXBuildFile; fileRef = 5598C9CD102582B9000272CF /* t3make */; };
 /* End PBXBuildFile section */
@@ -201,12 +202,13 @@
 		3DFB258704841596006ACD61 /* Folder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Folder.icns; sourceTree = "<group>"; };
 		3DFB258D04841692006ACD61 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		556EBBCC102584B4007FBE38 /* t3doc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = t3doc; sourceTree = "<group>"; };
-		556EC571102584D0007FBE38 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		556EC571102584D0007FBE38 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = adv3/lib; sourceTree = "<group>"; };
 		556EC57F10258586007FBE38 /* wchar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wchar.h; path = frobtads/src/wchar/wchar.h; sourceTree = "<group>"; };
 		556EC59410258792007FBE38 /* osfrobtads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osfrobtads.h; path = frobtads/src/osfrobtads.h; sourceTree = "<group>"; };
 		556EC5D51025904D007FBE38 /* t3std.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = t3std.h; path = frobtads/tads3/t3std.h; sourceTree = "<group>"; };
 		556EC5F310259183007FBE38 /* missing.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = missing.cc; path = frobtads/src/missing.cc; sourceTree = "<group>"; };
 		556EC5F510259189007FBE38 /* missing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = missing.h; path = frobtads/src/missing.h; sourceTree = "<group>"; };
+		556EC69C1025F149007FBE38 /* t3_hdr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = t3_hdr; sourceTree = "<group>"; };
 		5598C9CC102582B9000272CF /* frob */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = frob; path = frobtads/frob; sourceTree = "<group>"; };
 		5598C9CD102582B9000272CF /* t3make */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = t3make; path = frobtads/t3make; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -299,6 +301,7 @@
 				5598C9CC102582B9000272CF /* frob */,
 				5598C9CD102582B9000272CF /* t3make */,
 				556EBBCC102584B4007FBE38 /* t3doc */,
+				556EC69C1025F149007FBE38 /* t3_hdr */,
 				556EC571102584D0007FBE38 /* lib */,
 				3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */,
 				3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */,
@@ -537,6 +540,7 @@
 				5598C9CF102582B9000272CF /* t3make in Resources */,
 				556EC570102584B5007FBE38 /* t3doc in Resources */,
 				556EC576102584D0007FBE38 /* lib in Resources */,
+				556EC6BB1025F149007FBE38 /* t3_hdr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

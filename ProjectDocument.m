@@ -528,14 +528,14 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	[tadsc setArguments:params];					// Hand params to t3make
 	
 	// Set up environment variables so t3make knows where to look for libraries etc.:
-	NSString*		t3libPath = [bndl pathForResource:@"t3library" ofType:@""];
-	NSString*		t3includePath = [bndl pathForResource:@"t3include" ofType:@""];
-	NSString*		t3resPath = [bndl pathForResource:@"t3resource" ofType:@""];
+	NSString*		t3libPath = [bndl pathForResource:@"lib" ofType:@""];
+	NSString*		t3includePath = [bndl pathForResource:@"t3_hdr" ofType:@""];
+	/*NSString*		t3resPath = [bndl pathForResource:@"t3resource" ofType:@""];*/
 	NSString*		t3libIncludePath = [NSString stringWithFormat: @"%@:%@", t3libPath, t3includePath];
 	environment = [NSDictionary dictionaryWithObjectsAndKeys:
 					t3includePath, @"T3_INCDIR",
 					t3libPath, @"T3_LIBDIR",
-					t3resPath, @"T3_RESDIR",
+					/*t3resPath, @"T3_RESDIR",*/
 					t3libIncludePath, @"T3_USERLIBDIR",
 					nil ];
 	[tadsc setEnvironment: environment];
