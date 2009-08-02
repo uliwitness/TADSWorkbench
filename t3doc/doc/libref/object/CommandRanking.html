@@ -1,0 +1,307 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>CommandRanking</title></head><body>
+<table class=ban><tr><td align=left><span class=title>CommandRanking</span><span class=type>class</span><td align=right><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#5854">5854</a>]</table><p>
+<table class=nav><tr>
+<td><a href="#_SuperClassTree_">Superclass<br>Tree</a>
+<td><a href="#_SubClassTree_">Subclass<br>Tree</a>
+<td><a href="#_ObjectSummary_">Global<br>Objects</a>
+<td><a href="#_PropSummary_">Property<br>Summary</a>
+<td><a href="#_MethodSummary_">Method<br>Summary</a>
+<td><a href="#_Properties_">Property<br>Details</a>
+<td><a href="#_Methods_">Method<br>Details</a>
+</table><div class=fdesc>
+   Production match ranking object.  We create one of these objects for   each match tree that we wish to rank. <p>   This class is generally not instantiated by client code - instead,   clients use the sortByRanking() class method to rank a list of   production matches. 
+<p>
+<code>class 
+<b>CommandRanking</b> :  &nbsp; <a href="../object/ResolveResults.html">ResolveResults</a></code>
+</div>
+<a name="_SuperClassTree_"></a><p><div class=mjhd><span class=hdln>Superclass Tree</span> &nbsp; (in declaration order)</div><p>
+<code><b>CommandRanking</b></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; <a href="../object/ResolveResults.html">ResolveResults</a></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; object</code><br>
+<a name="_SubClassTree_"></a><p><div class=mjhd><span class=hdln>Subclass Tree</span> &nbsp; </div><p>
+<code><b>CommandRanking</b></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; <a href="../object/DisambigRanking.html">DisambigRanking</a></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; <a href="../object/MissingObjectRanking.html">MissingObjectRanking</a></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; <a href="../object/OopsResults.html">OopsResults</a></code><br>
+<a name="_ObjectSummary_"></a><p><div class=mjhd><span class=hdln>Global Objects</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_PropSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Properties</span> &nbsp; </div><p>
+<code>
+<a href="#actorSpecifiedCount">actorSpecifiedCount</a>&nbsp; 
+<a href="#allExcludedCount">allExcludedCount</a>&nbsp; 
+<a href="#allowActionRemapping">allowActionRemapping</a>&nbsp; 
+<a href="#ambigCount">ambigCount</a>&nbsp; 
+<a href="#commandCount">commandCount</a>&nbsp; 
+<a href="#emptyButCount">emptyButCount</a>&nbsp; 
+<a href="#endAdjCount">endAdjCount</a>&nbsp; 
+<a href="#indefiniteCount">indefiniteCount</a>&nbsp; 
+<a href="#inSingleObjSlot">inSingleObjSlot</a>&nbsp; 
+<a href="#insufficientCount">insufficientCount</a>&nbsp; 
+<a href="#listForSingle">listForSingle</a>&nbsp; 
+<a href="#literalLength">literalLength</a>&nbsp; 
+<a href="#match">match</a>&nbsp; 
+<a href="#miscWordListCount">miscWordListCount</a>&nbsp; 
+<a href="#missingCount">missingCount</a>&nbsp; 
+<a href="#nonMatchCount">nonMatchCount</a>&nbsp; 
+<a href="#nounSlotCount">nounSlotCount</a>&nbsp; 
+<a href="#pluralTruncCount">pluralTruncCount</a>&nbsp; 
+<a href="#pronounCount">pronounCount</a>&nbsp; 
+<a href="#rankingCriteria">rankingCriteria</a>&nbsp; 
+<a href="#tokCount">tokCount</a>&nbsp; 
+<a href="#truncCount">truncCount</a>&nbsp; 
+<a href="#unknownWordCount">unknownWordCount</a>&nbsp; 
+<a href="#unwantedPluralCount">unwantedPluralCount</a>&nbsp; 
+<a href="#vocabNonMatchCount">vocabNonMatchCount</a>&nbsp; 
+<a href="#weaknessLevel">weaknessLevel</a>&nbsp; 
+</code><p>
+<code>
+</code><p>
+<a name="_MethodSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Methods</span> &nbsp; </div><p>
+<code>
+<a href="#allNotAllowed">allNotAllowed</a>&nbsp; 
+<a href="#ambiguousNounPhrase">ambiguousNounPhrase</a>&nbsp; 
+<a href="#askMissingObject">askMissingObject</a>&nbsp; 
+<a href="#beginSingleObjSlot">beginSingleObjSlot</a>&nbsp; 
+<a href="#calcRanking">calcRanking</a>&nbsp; 
+<a href="#compareRanking">compareRanking</a>&nbsp; 
+<a href="#construct">construct</a>&nbsp; 
+<a href="#emptyNounPhrase">emptyNounPhrase</a>&nbsp; 
+<a href="#endSingleObjSlot">endSingleObjSlot</a>&nbsp; 
+<a href="#getImpliedObject">getImpliedObject</a>&nbsp; 
+<a href="#incCommandCount">incCommandCount</a>&nbsp; 
+<a href="#insufficientQuantity">insufficientQuantity</a>&nbsp; 
+<a href="#noMatch">noMatch</a>&nbsp; 
+<a href="#noMatchForAll">noMatchForAll</a>&nbsp; 
+<a href="#noMatchForAllBut">noMatchForAllBut</a>&nbsp; 
+<a href="#noMatchForListBut">noMatchForListBut</a>&nbsp; 
+<a href="#noMatchForLocation">noMatchForLocation</a>&nbsp; 
+<a href="#noMatchForPossessive">noMatchForPossessive</a>&nbsp; 
+<a href="#noMatchForPronoun">noMatchForPronoun</a>&nbsp; 
+<a href="#noteActorSpecified">noteActorSpecified</a>&nbsp; 
+<a href="#noteAdjEnding">noteAdjEnding</a>&nbsp; 
+<a href="#noteBadPrep">noteBadPrep</a>&nbsp; 
+<a href="#noteEmptyBut">noteEmptyBut</a>&nbsp; 
+<a href="#noteIndefinite">noteIndefinite</a>&nbsp; 
+<a href="#noteLiteral">noteLiteral</a>&nbsp; 
+<a href="#noteMatches">noteMatches</a>&nbsp; 
+<a href="#noteMiscWordList">noteMiscWordList</a>&nbsp; 
+<a href="#noteNounSlots">noteNounSlots</a>&nbsp; 
+<a href="#notePlural">notePlural</a>&nbsp; 
+<a href="#notePronoun">notePronoun</a>&nbsp; 
+<a href="#noteWeakPhrasing">noteWeakPhrasing</a>&nbsp; 
+<a href="#nothingInLocation">nothingInLocation</a>&nbsp; 
+<a href="#noVocabMatch">noVocabMatch</a>&nbsp; 
+<a href="#reflexiveNotAllowed">reflexiveNotAllowed</a>&nbsp; 
+<a href="#singleObjectRequired">singleObjectRequired</a>&nbsp; 
+<a href="#sortByRanking">sortByRanking</a>&nbsp; 
+<a href="#uniqueObjectRequired">uniqueObjectRequired</a>&nbsp; 
+<a href="#unknownNounPhrase">unknownNounPhrase</a>&nbsp; 
+<a href="#wrongReflexive">wrongReflexive</a>&nbsp; 
+<a href="#zeroQuantity">zeroQuantity</a>&nbsp; 
+</code><p>
+<code>
+</code><p>
+<a name="_Properties_"></a><p><div class=mjhd><span class=hdln>Properties</span> &nbsp; </div><p>
+<a name="actorSpecifiedCount"></a>
+<table class=decl><tr><td><code>actorSpecifiedCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6133">6133</a>]</table><div class=desc>an actor is specified<p>
+</div>
+<a name="allExcludedCount"></a>
+<table class=decl><tr><td><code>allExcludedCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6106">6106</a>]</table><div class=desc>number of "all" or "any" lists totally excluded by "but"<p>
+</div>
+<a name="allowActionRemapping"></a>
+<table class=decl><tr><td><code>allowActionRemapping</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6449">6449</a>]</table><div class=desc>don't allow action remapping while ranking<p>
+</div>
+<a name="ambigCount"></a>
+<table class=decl><tr><td><code>ambigCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6127">6127</a>]</table><div class=desc>number of ambiguous noun phrases<p>
+</div>
+<a name="commandCount"></a>
+<table class=decl><tr><td><code>commandCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6130">6130</a>]</table><div class=desc>number of subcommands in the command<p>
+</div>
+<a name="emptyButCount"></a>
+<table class=decl><tr><td><code>emptyButCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6103">6103</a>]</table><div class=desc>number of empty "but" lists<p>
+</div>
+<a name="endAdjCount"></a>
+<table class=decl><tr><td><code>endAdjCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6115">6115</a>]</table><div class=desc>number of phrases ending in adjectives<p>
+</div>
+<a name="indefiniteCount"></a>
+<table class=decl><tr><td><code>indefiniteCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6118">6118</a>]</table><div class=desc>number of phrases with indefinite noun phrase structure<p>
+</div>
+<a name="inSingleObjSlot"></a>
+<table class=decl><tr><td><code>inSingleObjSlot</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6405">6405</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="insufficientCount"></a>
+<table class=decl><tr><td><code>insufficientCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6097">6097</a>]</table><div class=desc>number of phrases requiring quantity higher than can be fulfilled<p>
+</div>
+<a name="listForSingle"></a>
+<table class=decl><tr><td><code>listForSingle</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6100">6100</a>]</table><div class=desc>number of noun lists in single-noun slots<p>
+</div>
+<a name="literalLength"></a>
+<table class=decl><tr><td><code>literalLength</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6139">6139</a>]</table><div class=desc>total character length of literal text phrases<p>
+</div>
+<a name="match"></a>
+<table class=decl><tr><td><code>match</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6072">6072</a>]</table><div class=desc>the match tree I'm ranking<p>
+</div>
+<a name="miscWordListCount"></a>
+<table class=decl><tr><td><code>miscWordListCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6121">6121</a>]</table><div class=desc>number of miscellaneous word lists as noun phrases<p>
+</div>
+<a name="missingCount"></a>
+<table class=decl><tr><td><code>missingCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6109">6109</a>]</table><div class=desc>missing phrases (structurally omitted, as in "put book")<p>
+</div>
+<a name="nonMatchCount"></a>
+<table class=decl><tr><td><code>nonMatchCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6094">6094</a>]</table><div class=desc>number of noun phrases matching nothing in scope<p>
+</div>
+<a name="nounSlotCount"></a>
+<table class=decl><tr><td><code>nounSlotCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6088">6088</a>]</table><div class=desc>   The number of structural "noun phrase slots" in the verb.  An   intransitive verb has no noun phrase slots; a transitive verb   with a direct object has one; a verb with a direct and indirect   object has two slots. <p>
+</div>
+<a name="pluralTruncCount"></a>
+<table class=decl><tr><td><code>pluralTruncCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6112">6112</a>]</table><div class=desc>number of truncated plurals<p>
+</div>
+<a name="pronounCount"></a>
+<table class=decl><tr><td><code>pronounCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6142">6142</a>]</table><div class=desc>number of pronoun phrases<p>
+</div>
+<a name="rankingCriteria"></a>
+<table class=decl><tr><td><code>rankingCriteria</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6049">6049</a>]</table><div class=desc>   Our list of ranking criteria.  This is a list of   CommandRankingCriterion objects.  The list is given in order of   importance: the first criterion is the most important, so if it   can discriminate the two match trees, we use its result; if the   first criterion can't tell any difference, then we move on to the   second criterion; and so on through the list. <p>   The most important thing is whether or not we have irresolvable   noun phrases (vocabNonMatchCount).  If one of us has a noun phrase   that refers to nothing anywhere in the game, it's not as good as a   phrase that at least matches something somewhere. <p>   Next, if one of us has noun phrases that cannot be resolved to   something in scope (nonMatchCount), and the other can successfully   resolve its noun phrases, the one that can resolve the phrases is   preferred. <p>   Next, check for insufficient numbers of matches to counted phrases   (insufficientCount). <p>   Next, check for noun lists in single-noun-only slots   (listForSingle). <p>   Next, if we have an empty "but" list in one but not the other,   take the one with the non-empty "but" list (emptyButCount).  We   prefer a non-empty "but" list with an empty "all" even to a   non-empty "all" list with an empty "but", because in the latter   case we probably failed to exclude anything because we   misinterpreted the noun phrase to be excluded. <p>   Next, if we have an empty "all" or "any" phrase due to "but"   exclusion, take the one that's not empty (allExcludedCount). <p>   Next, prefer a command that addresses an actor   (actorSpecifiedCount) - if the actor name looks like a command (we   have someone named "Open Bob," maybe?), we'd prefer to interpret   the name appearing as a command prefix as an actor name. <p>   Next, prefer no unstructured word lists as noun phrases   (miscWordList phrases) (miscWordListCount). <p>   Next, prefer interpretations that treat less text as uninterpreted   literal text.  By "less text," we simply mean that one has a   shorter string treated as a literal than the other. <p>   Prefer no indefinite noun phrases (indefiniteCount). <p>   Prefer no truncated plurals (pluralTruncCount). <p>   Prefer no noun phrases ending in adjectives (endAdjCount). <p>   Prefer no truncated words of any kind (truncCount). <p>   Prefer fewer pronouns.  If we have an interpretation that matches   a word to explicit vocabulary, take it over matching a word as a   pronoun: if a word is given explicitly as vocabulary for an   object, use it if possible. <p>   Prefer no missing phrases (missingCount). <p>   Prefer the one with fewer subcommands - if one has fewer   subcommands than the other, it means that we were able to   interpret ambiguous conjunctions (such as "and") as noun phrase   conjunctions rather than as command conjunctions; since we know by   now that we both either have or don't have unresolved noun   phrases, we'd rather take the interpretation that gives us noun   phrases than the one that involves more separate commands. <p>   Prefer the tree that matches more tokens. <p>   Prefer the one with more structural noun phrases in the verb.  For   example, if we have one interpretation that's DETACH (X FROM Y)   (where X FROM Y is a 'locational' phrase that we treat as the   direct object), and one that's DETACH X FROM Y (where X is the   direct object and Y is in the indirect object), prefer the latter,   because it has both direct and indirect object phrases, whereas   the former has only a direct object phrase.  English speakers   almost always try to put prepositions into a structural role in   the verb phrase like this when they could be either in the verb   phrase or part of a noun phrase. <p>   If all else fails, prefer the one that is initially less   ambiguous.  Ambiguity is a weak test at this point, since we might   end up narrowing things down through automatic "logicalness" tests   later, but it's slightly better to have the match be less   ambiguous now, all other things being equal. <p>
+</div>
+<a name="tokCount"></a>
+<table class=decl><tr><td><code>tokCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6075">6075</a>]</table><div class=desc>the number of tokens my match tree consumes<p>
+</div>
+<a name="truncCount"></a>
+<table class=decl><tr><td><code>truncCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6124">6124</a>]</table><div class=desc>number of truncated words overall<p>
+</div>
+<a name="unknownWordCount"></a>
+<table class=decl><tr><td><code>unknownWordCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6136">6136</a>]</table><div class=desc>unknown words<p>
+</div>
+<a name="unwantedPluralCount"></a>
+<table class=decl><tr><td><code>unwantedPluralCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6148">6148</a>]</table><div class=desc>number of plural phrases encountered in single-object slots<p>
+</div>
+<a name="vocabNonMatchCount"></a>
+<table class=decl><tr><td><code>vocabNonMatchCount</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6091">6091</a>]</table><div class=desc>number of noun phrases matching nothing anywhere in the game<p>
+</div>
+<a name="weaknessLevel"></a>
+<table class=decl><tr><td><code>weaknessLevel</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6145">6145</a>]</table><div class=desc>weakness level (for noteWeakPhrasing)<p>
+</div>
+<a name="_Methods_"></a><p><div class=mjhd><span class=hdln>Methods</span> &nbsp; </div><p>
+<a name="allNotAllowed"></a>
+<table class=decl><tr><td><code>allNotAllowed ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6174">6174</a>]</table><div class=desc>note that we have a noun phrase that matches nothing<p>
+</div>
+<a name="ambiguousNounPhrase"></a>
+<table class=decl><tr><td><code>ambiguousNounPhrase (keeper, asker, txt, matchList, fullMatchList, scopeList, requiredNum, resolver)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6245">6245</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="askMissingObject"></a>
+<table class=decl><tr><td><code>askMissingObject (asker, resolver, responseProd)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6308">6308</a>]</table><div class=desc>count the missing object phrase<p>
+</div>
+<a name="beginSingleObjSlot"></a>
+<table class=decl><tr><td><code>beginSingleObjSlot ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6403">6403</a>]</table><div class=desc>if this object was matched with a truncated plural, note it<p>
+</div>
+<a name="calcRanking"></a>
+<table class=decl><tr><td><code>calcRanking (resolveArguments)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#5903">5903</a>]</table><div class=desc>calculate my ranking<p>
+</div>
+<a name="compareRanking"></a>
+<table class=decl><tr><td><code>compareRanking (other)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#5930">5930</a>]</table><div class=desc>   Compare two production list entries for ranking purposes.  Returns   a negative number if this one ranks worse than the other, 0 if   they have the same ranking, or a positive number if this one ranks   better than the other one. <p>   This routine is designed to run entirely off of our   rankingCriteria property.  In most cases, subclasses should be   able to customize the ranking system simply by overriding the   rankingCriteria property to provide a customized list of criteria   objects. <p>
+</div>
+<a name="construct"></a>
+<table class=decl><tr><td><code>construct (match)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#5893">5893</a>]</table><div class=desc>create a new entry<p>
+</div>
+<a name="emptyNounPhrase"></a>
+<table class=decl><tr><td><code>emptyNounPhrase (resolver)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6324">6324</a>]</table><div class=desc>add the length of this literal to the total literal length<p>
+</div>
+<a name="endSingleObjSlot"></a>
+<table class=decl><tr><td><code>endSingleObjSlot ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6404">6404</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="getImpliedObject"></a>
+<table class=decl><tr><td><code>getImpliedObject (np, resolver)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6301">6301</a>]</table><div class=desc>return the results<p>
+</div>
+<a name="incCommandCount"></a>
+<table class=decl><tr><td><code>incCommandCount ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6417">6417</a>]</table><div class=desc>   if we're resolving a single-object slot, we want to avoid   plurals <p>
+</div>
+<a name="insufficientQuantity"></a>
+<table class=decl><tr><td><code>insufficientQuantity (txt, matchList, requiredNum)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6337">6337</a>]</table><div class=desc>treat this as a non-matching noun phrase<p>
+</div>
+<a name="noMatch"></a>
+<table class=decl><tr><td><code>noMatch (action, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6168">6168</a>]</table><div class=desc>note the unknown phrase<p>
+</div>
+<a name="noMatchForAll"></a>
+<table class=decl><tr><td><code>noMatchForAll ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6180">6180</a>]</table><div class=desc>treat this as a non-matching noun phrase<p>
+</div>
+<a name="noMatchForAllBut"></a>
+<table class=decl><tr><td><code>noMatchForAllBut ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6192">6192</a>]</table><div class=desc>note it<p>
+</div>
+<a name="noMatchForListBut"></a>
+<table class=decl><tr><td><code>noMatchForListBut ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6198">6198</a>]</table><div class=desc>count the total exclusion<p>
+</div>
+<a name="noMatchForLocation"></a>
+<table class=decl><tr><td><code>noMatchForLocation (loc, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6228">6228</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="noMatchForPossessive"></a>
+<table class=decl><tr><td><code>noMatchForPossessive (owner, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6222">6222</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="noMatchForPronoun"></a>
+<table class=decl><tr><td><code>noMatchForPronoun (typ, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6204">6204</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="noteActorSpecified"></a>
+<table class=decl><tr><td><code>noteActorSpecified ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6423">6423</a>]</table><div class=desc>increase our subcommand counter<p>
+</div>
+<a name="noteAdjEnding"></a>
+<table class=decl><tr><td><code>noteAdjEnding ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6357">6357</a>]</table><div class=desc>   ignore this for now - we might get a unique object via   disambiguation during the execution phase <p>
+</div>
+<a name="noteBadPrep"></a>
+<table class=decl><tr><td><code>noteBadPrep ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6234">6234</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="noteEmptyBut"></a>
+<table class=decl><tr><td><code>noteEmptyBut ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6186">6186</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="noteIndefinite"></a>
+<table class=decl><tr><td><code>noteIndefinite ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6363">6363</a>]</table><div class=desc>count it<p>
+</div>
+<a name="noteLiteral"></a>
+<table class=decl><tr><td><code>noteLiteral (txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6318">6318</a>]</table><div class=desc>   no need to do anything here - we'll count the missing object   in getImpliedObject, and we don't want to ask for anything   interactively at this point <p>
+</div>
+<a name="noteMatches"></a>
+<table class=decl><tr><td><code>noteMatches (matchList)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6384">6384</a>]</table><div class=desc>note the presence of a pronoun<p>
+</div>
+<a name="noteMiscWordList"></a>
+<table class=decl><tr><td><code>noteMiscWordList (txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6369">6369</a>]</table><div class=desc>count it<p>
+</div>
+<a name="noteNounSlots"></a>
+<table class=decl><tr><td><code>noteNounSlots (cnt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6429">6429</a>]</table><div class=desc>note it<p>
+</div>
+<a name="notePlural"></a>
+<table class=decl><tr><td><code>notePlural ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6407">6407</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="notePronoun"></a>
+<table class=decl><tr><td><code>notePronoun ( )</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6378">6378</a>]</table><div class=desc>count this as a literal as well<p>
+</div>
+<a name="noteWeakPhrasing"></a>
+<table class=decl><tr><td><code>noteWeakPhrasing (level)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6442">6442</a>]</table><div class=desc>   If this is the first noun slot count we've received, remember   it.  If we already have a count, ignore the new one - we only   want to consider the first verb phrase if there are multiple   verb phrases, since we'll reconsider the next verb phrase when   we're ready to execute it. <p>
+</div>
+<a name="nothingInLocation"></a>
+<table class=decl><tr><td><code>nothingInLocation (txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6239">6239</a>]</table><div class=desc>don't do anything at this point<p>
+</div>
+<a name="noVocabMatch"></a>
+<table class=decl><tr><td><code>noVocabMatch (action, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6162">6162</a>]</table><div class=desc>   ResolveResults implementation.  We use this results receiver when   we're comparing the semantic strengths of multiple structural   matches, so we merely note each error condition without showing   any message to the user or asking the user for any input.  Once   we've ranked all of the matches, we'll choose the one with the   best attributes and then resolve it for real, at which point if   we chose one with any errors, we'll finally get around to showing   the errors to the user. <p>
+</div>
+<a name="reflexiveNotAllowed"></a>
+<table class=decl><tr><td><code>reflexiveNotAllowed (typ, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6210">6210</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="singleObjectRequired"></a>
+<table class=decl><tr><td><code>singleObjectRequired (txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6343">6343</a>]</table><div class=desc>treat this as a non-matching noun phrase<p>
+</div>
+<a name="sortByRanking"></a>
+<table class=decl><tr><td><code>sortByRanking (lst, [resolveArguments])</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#5863">5863</a>]</table><div class=desc>   Sort a list of productions, as returned from   GrammarProd.parseTokens(), in descending order of command   strength.  We return a list of CommandRanking objects whose first   element is the best command interpretation. <p>   Note that this can be used as a class-level method. <p>
+</div>
+<a name="uniqueObjectRequired"></a>
+<table class=decl><tr><td><code>uniqueObjectRequired (txt, matchList)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6349">6349</a>]</table><div class=desc>treat this as a non-matching noun phrase<p>
+</div>
+<a name="unknownNounPhrase"></a>
+<table class=decl><tr><td><code>unknownNounPhrase (match, resolver)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6271">6271</a>]</table><div class=desc>return the abbreviated list<p>
+</div>
+<a name="wrongReflexive"></a>
+<table class=decl><tr><td><code>wrongReflexive (typ, txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6216">6216</a>]</table><div class=desc>treat this as any other noun phrase that matches nothing<p>
+</div>
+<a name="zeroQuantity"></a>
+<table class=decl><tr><td><code>zeroQuantity (txt)</code><td align=right><code><a href="../file/parser.t.html">parser.t</a>[<a href="../source/parser.t.html#6331">6331</a>]</table><div class=desc>treat this as a non-matching noun phrase<p>
+</div>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

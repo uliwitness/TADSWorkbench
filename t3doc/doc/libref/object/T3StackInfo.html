@@ -1,0 +1,67 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>T3StackInfo</title></head><body>
+<table class=ban><tr><td align=left><span class=title>T3StackInfo</span><span class=type>class</span><td align=right><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#819">819</a>]</table><p>
+<table class=nav><tr>
+<td><a href="#_SuperClassTree_">Superclass<br>Tree</a>
+<td><a href="#_SubClassTree_">Subclass<br>Tree</a>
+<td><a href="#_ObjectSummary_">Global<br>Objects</a>
+<td><a href="#_PropSummary_">Property<br>Summary</a>
+<td><a href="#_MethodSummary_">Method<br>Summary</a>
+<td><a href="#_Properties_">Property<br>Details</a>
+<td><a href="#_Methods_">Method<br>Details</a>
+</table><div class=fdesc>
+   The stack information object.  The intrinsic function   t3GetStackTrace() in the 't3vm' function set returns a list of these   objects; each object represents a level in the stack trace. 
+<p>
+<code>class 
+<b>T3StackInfo</b> :  &nbsp; object</code>
+</div>
+<a name="_SuperClassTree_"></a><p><div class=mjhd><span class=hdln>Superclass Tree</span> &nbsp; (in declaration order)</div><p>
+<code><b>T3StackInfo</b></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; object</code><br>
+<a name="_SubClassTree_"></a><p><div class=mjhd><span class=hdln>Subclass Tree</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_ObjectSummary_"></a><p><div class=mjhd><span class=hdln>Global Objects</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_PropSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Properties</span> &nbsp; </div><p>
+<code>
+<a href="#argList_">argList_</a>&nbsp; 
+<a href="#func_">func_</a>&nbsp; 
+<a href="#obj_">obj_</a>&nbsp; 
+<a href="#prop_">prop_</a>&nbsp; 
+<a href="#self_">self_</a>&nbsp; 
+<a href="#srcInfo_">srcInfo_</a>&nbsp; 
+</code><p>
+<a name="_MethodSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Methods</span> &nbsp; </div><p>
+<code>
+<a href="#construct">construct</a>&nbsp; 
+<a href="#isSystem">isSystem</a>&nbsp; 
+</code><p>
+<a name="_Properties_"></a><p><div class=mjhd><span class=hdln>Properties</span> &nbsp; </div><p>
+<a name="argList_"></a>
+<table class=decl><tr><td><code>argList_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#871">871</a>]</table><div class=desc>the list of arguments to the function or method<p>
+</div>
+<a name="func_"></a>
+<table class=decl><tr><td><code>func_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#852">852</a>]</table><div class=desc>   the function running at this stack level - this is nil if an   object property is running instead of a function <p>
+</div>
+<a name="obj_"></a>
+<table class=decl><tr><td><code>obj_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#861">861</a>]</table><div class=desc>   The object and property running at this stack level - these are   nil if a function is running instead of an object method.  The   object is the object where the method is actually defined - this   might not be the same as self, because the object might have   inherited the method from a base class. <p>
+</div>
+<a name="prop_"></a>
+<table class=decl><tr><td><code>prop_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#862">862</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="self_"></a>
+<table class=decl><tr><td><code>self_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#868">868</a>]</table><div class=desc>   the 'self' object at this level - this is nil if a function is   running at this level instead of an object method <p>
+</div>
+<a name="srcInfo_"></a>
+<table class=decl><tr><td><code>srcInfo_</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#892">892</a>]</table><div class=desc>   The source location of the next code to be executed in the   function or method in this frame.  If debugging records are   available for the current execution point in this frame, this   will contain a list of two values: <p>   srcInfo_[1] = string giving the name of the source file <br> srcInfo_[2] = integer giving the line number in the source file <p>   If the program wasn't compiled with debugging records, or the   current code location in the frame doesn't have any source   information, this will be set to nil. <p>   Note that this gives the location of the *next* statement to be   executed in this frame, when control returns to the frame.  This   means that the location is frequently the next statement after   the one that called the next inner frame, because this is where   execution will resume when control returns to the frame. <p>
+</div>
+<a name="_Methods_"></a><p><div class=mjhd><span class=hdln>Methods</span> &nbsp; </div><p>
+<a name="construct"></a>
+<table class=decl><tr><td><code>construct (func, obj, prop, selfObj, argList, srcInfo)</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#824">824</a>]</table><div class=desc>   Construct a stack level object.  The system invokes this   constructor with information on the stack level. <p>
+</div>
+<a name="isSystem"></a>
+<table class=decl><tr><td><code>isSystem ( )</code><td align=right><code><a href="../file/_main.t.html">_main.t</a>[<a href="../source/_main.t.html#839">839</a>]</table><div class=desc>   Is this a system routine?  This returns true if an intrinsic   function or an intrinsic class method is running at this level. <p>
+</div>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

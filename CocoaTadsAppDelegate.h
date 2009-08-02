@@ -17,18 +17,12 @@
 
 @interface CocoaTadsAppDelegate : NSObject
 {
-	IBOutlet NSWindow*		splashWindow;
-	BOOL					splashVisible;
 }
 
 
 -(id)	init;
 -(void)	applicationWillFinishLaunching:(NSNotification *)notification;
--(void)	applicationDidBecomeActive:(NSNotification *)notification;
--(void)	showSplash;
--(void)	hideSplash: (NSTimer*) timer;
 
 -(IBAction)	newTextFile: (id)sender;
--(BOOL)	splashVisible;
 
 @end

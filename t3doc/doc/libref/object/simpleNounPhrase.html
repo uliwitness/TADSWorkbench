@@ -1,0 +1,33 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>simpleNounPhrase</title></head><body>
+<table class=ban><tr><td align=left><span class=title>simpleNounPhrase</span><span class=type>GrammarProd</span></table><p>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(adj).html">simpleNounPhrase(adj)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6300">6300</a>]</code></table><div class=gramrule> adjWord-&gt;adj_</div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(adjAndOne).html">simpleNounPhrase(adjAndOne)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6325">6325</a>]</code></table><div class=gramrule> adjective-&gt;adj_ 'one'<br></div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(adjNP).html">simpleNounPhrase(adjNP)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6162">6162</a>]</code></table><div class=gramrule> adjWord-&gt;adj_ simpleNounPhrase-&gt;np_<br></div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(empty).html">simpleNounPhrase(empty)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6385">6385</a>]</code></table><div class=gramrule> [badness 600]</div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(misc).html">simpleNounPhrase(misc)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6355">6355</a>]</code></table><div class=gramrule>    [badness 200] miscWordList-&gt;lst_</div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(noun).html">simpleNounPhrase(noun)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6146">6146</a>]</code></table><div class=gramrule> nounWord-&gt;noun_</div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(nounAndNumber).html">simpleNounPhrase(nounAndNumber)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6260">6260</a>]</code></table><div class=gramrule>    nounWord-&gt;noun_ literalAdjPhrase-&gt;adj_<br></div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(number).html">simpleNounPhrase(number)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6201">6201</a>]</code></table><div class=gramrule> literalAdjPhrase-&gt;adj_<br></div>
+<table class=decl><tr><td align=left><code>grammar 
+<b><a href="../object/simpleNounPhrase(numberAndNoun).html">simpleNounPhrase(numberAndNoun)</a></b> :  &nbsp; <a href="../object/NounPhraseWithVocab.html">NounPhraseWithVocab</a></code>
+<td align=right><code><a href="../file/en_us.t.html">en_us.t</a>[<a href="../source/en_us.t.html#6233">6233</a>]</code></table><div class=gramrule>    literalAdjPhrase-&gt;adj_ nounWord-&gt;noun_<br></div>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

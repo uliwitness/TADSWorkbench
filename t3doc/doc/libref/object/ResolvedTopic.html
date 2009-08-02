@@ -1,0 +1,89 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>ResolvedTopic</title></head><body>
+<table class=ban><tr><td align=left><span class=title>ResolvedTopic</span><span class=type>class</span><td align=right><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#5979">5979</a>]</table><p>
+<table class=nav><tr>
+<td><a href="#_SuperClassTree_">Superclass<br>Tree</a>
+<td><a href="#_SubClassTree_">Subclass<br>Tree</a>
+<td><a href="#_ObjectSummary_">Global<br>Objects</a>
+<td><a href="#_PropSummary_">Property<br>Summary</a>
+<td><a href="#_MethodSummary_">Method<br>Summary</a>
+<td><a href="#_Properties_">Property<br>Details</a>
+<td><a href="#_Methods_">Method<br>Details</a>
+</table><div class=fdesc>
+   Resolved Topic object.  The topic of a TopicTAction always resolves to   one of these objects. 
+<p>
+<code>class 
+<b>ResolvedTopic</b> :  &nbsp; object</code>
+</div>
+<a name="_SuperClassTree_"></a><p><div class=mjhd><span class=hdln>Superclass Tree</span> &nbsp; (in declaration order)</div><p>
+<code><b>ResolvedTopic</b></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; object</code><br>
+<a name="_SubClassTree_"></a><p><div class=mjhd><span class=hdln>Subclass Tree</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_ObjectSummary_"></a><p><div class=mjhd><span class=hdln>Global Objects</span> &nbsp; </div><p>
+<code>
+<a href="../object/resolvedTopicNothing.html">resolvedTopicNothing</a>&nbsp; 
+</code>
+<a name="_PropSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Properties</span> &nbsp; </div><p>
+<code>
+<a href="#canMatchLiterally">canMatchLiterally</a>&nbsp; 
+<a href="#inScopeList">inScopeList</a>&nbsp; 
+<a href="#likelyList">likelyList</a>&nbsp; 
+<a href="#otherList">otherList</a>&nbsp; 
+<a href="#topicProd">topicProd</a>&nbsp; 
+</code><p>
+<a name="_MethodSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Methods</span> &nbsp; </div><p>
+<code>
+<a href="#canMatchObject">canMatchObject</a>&nbsp; 
+<a href="#construct">construct</a>&nbsp; 
+<a href="#getBestMatch">getBestMatch</a>&nbsp; 
+<a href="#getTopicText">getTopicText</a>&nbsp; 
+<a href="#getTopicTokens">getTopicTokens</a>&nbsp; 
+<a href="#getTopicWords">getTopicWords</a>&nbsp; 
+<a href="#wrapActionObject">wrapActionObject</a>&nbsp; 
+<a href="#wrapObject">wrapObject</a>&nbsp; 
+</code><p>
+<a name="_Properties_"></a><p><div class=mjhd><span class=hdln>Properties</span> &nbsp; </div><p>
+<a name="canMatchLiterally"></a>
+<table class=decl><tr><td><code>canMatchLiterally</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6108">6108</a>]</table><div class=desc>   Are we allowed to match the topic text literally, for parsing   purposes?  If this is true, it means that we can match the literal   text the player entered against strings, regular expressions,   etc.; for example, we can match a TopicMatchTopic's matchPattern   regular expression.  If this is nil, it means that we can only   interpret the meaning of the resolved topic by looking at the   various topic match lists (inScopeList, likelyList, otherList). <p>   By default, we simply return true.  Note that the base library   never has any reason of its own to disallow literal matching of   topic text; this property is purely for the use of language   modules, to handle language-specific input that parses at a high   level as a topic phrase but which has some idiomatic or   grammatical function that makes it in appropriate to try to   extract the meaning of the resolved topic from the literal text of   the topic phrase in isolation.  This case doesn't seem to arise in   English, but does occur in other languages: Michel Nizette cites   "parlez-en a Bob" as an example in French, where "en" is   essentially a particle modifying the verb, not a full-fledged   phrase that we can interpret separately as a topic. <p>
+</div>
+<a name="inScopeList"></a>
+<table class=decl><tr><td><code>inScopeList</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6132">6132</a>]</table><div class=desc>   Our lists of resolved objects matching the topic phrase,   separated by classification. <p>
+</div>
+<a name="likelyList"></a>
+<table class=decl><tr><td><code>likelyList</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6133">6133</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="otherList"></a>
+<table class=decl><tr><td><code>otherList</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6134">6134</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="topicProd"></a>
+<table class=decl><tr><td><code>topicProd</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6141">6141</a>]</table><div class=desc>   The production match tree object that matched the topic phrase in   the command.  This can be used to obtain the original tokens of   the command or the original text of the phrase. <p>
+</div>
+<a name="_Methods_"></a><p><div class=mjhd><span class=hdln>Methods</span> &nbsp; </div><p>
+<a name="canMatchObject"></a>
+<table class=decl><tr><td><code>canMatchObject (obj)</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6076">6076</a>]</table><div class=desc>   Is the given object among the possible matches for the topic? <p>
+</div>
+<a name="construct"></a>
+<table class=decl><tr><td><code>construct (inScope, likely, others, prod)</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#5980">5980</a>]</table><div class=desc><i>no description available</i><p>
+</div>
+<a name="getBestMatch"></a>
+<table class=decl><tr><td><code>getBestMatch ( )</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6052">6052</a>]</table><div class=desc>   Get the best object match to the topic.  This is a default   implementation that can be changed by game authors or library   extensions to implement different topic-matching strategies.  This   implementation simply picks an object arbitrarily from the   "strongest" of the three lists we build: if there's anything in   the inScopeList, we choose an object from that list; otherwise, if   there's anything in the likelyList, we choose an object from that   list; otherwise we choose an object from the otherList. <p>
+</div>
+<a name="getTopicText"></a>
+<table class=decl><tr><td><code>getTopicText ( )</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6084">6084</a>]</table><div class=desc>get the original text of the topic phrase<p>
+</div>
+<a name="getTopicTokens"></a>
+<table class=decl><tr><td><code>getTopicTokens ( )</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6114">6114</a>]</table><div class=desc>   get the original tokens of the topic phrase, in canonical   tokenizer format <p>
+</div>
+<a name="getTopicWords"></a>
+<table class=decl><tr><td><code>getTopicWords ( )</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6122">6122</a>]</table><div class=desc>   get the original word strings of the topic phrase - this is   simply a list of the original word strings (in their original   case), without any of the extra information of the more   complicated canonical tokenizer format <p>
+</div>
+<a name="wrapActionObject"></a>
+<table class=decl><tr><td><code>wrapActionObject (role)</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6007">6007</a>]</table><div class=desc>   Static method: create a ResolvedTopic to represent an object   that's already been resolved to a game object for the current   action.  'role' is the object role to wrap (DirectObject,   IndirectObject, etc). <p>
+</div>
+<a name="wrapObject"></a>
+<table class=decl><tr><td><code>wrapObject (obj)</code><td align=right><code><a href="../file/action.t.html">action.t</a>[<a href="../source/action.t.html#6028">6028</a>]</table><div class=desc>   Static method: create a ResolvedTopic to represent the given   object. <p>
+</div>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

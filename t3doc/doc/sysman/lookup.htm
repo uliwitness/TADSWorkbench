@@ -1,0 +1,279 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>LookupTable</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+LookupTable
+<br><span class="navnp"><a class="nav" href="list.htm"><i>Prev:</i> List</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="objic.htm"><i>Next:</i> Object</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>LookupTable</h1>
+
+<p>A LookupTable is an unordered collection of values; each value
+indexed by a "key," which is a value of any type that's used to look
+up a value stored in the collection.  In effect, this class provides
+what some programming languages call an "associative array," because it
+allows a value to be associated with an arbitrary key, and then
+efficiently found given the same key.
+
+<p>You must <span class="code">#include &lt;lookup.h&gt;</span> in your source code to use the
+LookupTable class.
+
+<h2>Creating a LookupTable</h2>
+
+<p>You create a lookup table with the <span class="code">new</span> operator:
+
+<p><div class="code"><pre>
+local tab = new LookupTable();
+</pre></div>
+
+<p>You can optionally specify two parameters to fine-tune the table's
+efficiency: the "bucket count," and the initial capacity.  When you
+create a LookupTable with no arguments as shown above, the object uses
+default values for these parameters; the default values will always
+work, but you might be able to improve a table's performance by
+overriding the default values, especially if the table will contain an
+especially large or small number of entries.  Note that it is never
+necessary to specify the parameters, since a lookup table will always
+work properly with the defaults; the only thing the parameters do is
+tune the object's performance.
+
+<p><div class="code"><pre>
+// override the default creation parameters
+// use 256 hash slots and an initial capacity of 1024 entries
+local tab = new LookupTable(256, 1024);
+</pre></div>
+
+<p>The first parameter, the bucket count, specifies the size of the
+hash table that the object uses to organize the keys.  See <a
+href='#details'>below</a> for more information about what the bucket
+count means and how to select this value.
+
+<p>Note that the bucket count is fixed over the life of the object.
+
+<p>The second parameter, the initial capacity, is purely advisory.
+This parameter sets the amount of memory the table initially allocates
+so that it can accommodate the given number of stored values.  If you
+eventually add more values to the table than the initial entry count,
+the object will automatically expand to accommodate more entries.  For
+maximum efficiency, you should choose a value that's about the same as
+the number of entries you ultimately expect; this will ensure that you
+don't use excessive memory by allocating many more initial slots than
+you end up using, while at the same time avoiding repeated expansion
+of the table.
+
+<h2>Storing and Retrieving Values</h2>
+
+<p>You use a lookup table as though it were a list or Vector, except
+that you can use any type of value as an "index."  For example, we
+could use a lookup table to associate objects with strings:
+
+<p><div class="code"><pre>
+symtab['book'] = book;
+symtab['ball'] = ball;
+symtab['table'] = table;
+</pre></div>
+
+<p>Now, if we want to look up the object associated with one of these
+words, we simply index the lookup table:
+
+<p><div class="code"><pre>
+obj = symtab['ball'];
+</pre></div>
+
+<p>If you store a value in the lookup table, and a value was already
+stored at the same key, the old value at the key is discarded and
+replaced by the new value.  If you look up a key, but the key was
+never stored in the table, the result is nil.
+
+<p>A LookupTable matches key values the same way the <span class="code">==</span> operator does.
+
+<h2>Iterating over a LookupTable's contents</h2>
+
+<p>LookupTable is a subclass of <a href='collect.htm'>Collection</a>,
+so you can use the <span class="code">createIterator()</span> method to create an Iterator
+to iterate over the elements of the lookup table.  The Iterator that a
+LookupTable creates is called a LookupTableIterator; it visits the
+values stored in the table in an arbitrary order.
+
+<p>Because a LookupTable is a Collection, you can also use the
+<span class="code">foreach</span> statement to iterate over its values.  When you use
+<span class="code">foreach</span> with a LookupTable, the iteration variable is assigned a
+value from the table (not a key) on each iteration.
+
+<h2>LookupTable methods</h2>
+
+<p>LookupTable is a subclass of <a href='collect.htm'>Collection</a>,
+and thus includes all Collection methods.  In addition, LookupTable
+defines the methods listed below.
+
+<p><span class="code">applyAll(<i>func</i>)</span>
+<div class=fdef>
+
+For each element in the table, this method invokes the callback
+function <span class="code">(<i>func</i>)(<i>key</i>, <i>value</i>)</span>, and then changes the element's value
+to the return value of <i>func</i>.  This allows you to modify all of
+the values in the table according to the given function.  The keys are
+not changed.  The entries are visited in arbitrary order.  No return
+value.
+
+</div>
+
+<p><span class="code">forEach(<i>func</i>)</span>
+<div class=fdef>
+
+For each element in the table, invokes the function <span class="code">(<i>func</i>)(<i>value</i>)</span>.
+Any return value from <i>func</i> is ignored; the values and keys
+stored in the table are not changed.  The entries are visited in
+arbitrary order.  No return value.
+
+</div>
+
+<p><span class="code">forEachAssoc(<i>func</i>)</span>
+<div class=fdef>
+
+For each element in the table, invokes the callback function
+<span class="code">(<i>func</i>)(<i>key</i>, <i>value</i>)</span>.  Any return value from <i>func</i> is ignored;
+the values and keys stored in the table are not changed.  The entries
+are visited in arbitrary order.  This argument is the same as
+<span class="code">forEach()</span>, except that this method provides the callback with the key
+in addition to the value for each element.  No return value.
+
+</div>
+
+<p><span class="code">getBucketCount()</span>
+<div class=fdef>
+
+Returns the number of "hash buckets" in the table.  Since the number
+of buckets is fixed over the life of the object, this simply returns
+the bucket count that was specified when the object was created.
+
+</div>
+
+<p><span class="code">getEntryCount()</span>
+<div class=fdef>
+
+Returns the number of key/value entries in the table.  This returns
+the number of entries actually stored in the table, which is unrelated
+to the initial capacity that was specified when the object was
+created.
+
+</div>
+
+<p><span class="code">isKeyPresent(<i>key</i>)</span>
+<div class=fdef>
+
+Checks to see if an entry with the given key is present in the
+table.  Returns <span class="code">true</span> if the key is present, <span class="code">nil</span> if not.
+
+</div>
+
+<p><span class="code">keysToList()</span>
+<div class=fdef>
+
+Returns a list consisting of all of the keys in the table.  The order
+of the keys is arbitrary, so callers must not assume any particular
+ordering.
+
+</div>
+
+<p><span class="code">removeElement(<i>key</i>)</span>
+<div class=fdef>
+
+Removes the element with the given key, if any.  If there is no
+element with the given key in the table, this makes no change to the
+table and simply returns nil.  If an element is found, the element is
+removed, and the value associated with the key (before the removal) is
+returned.
+
+</div>
+
+<p><span class="code">valsToList()</span>
+<div class=fdef>
+
+</div>
+
+Returns a list consisting of all of the values in the table.  The
+order of the values is arbitrary.
+
+<h2><a name=details></a>How a LookupTable works</h2>
+
+<p>A LookupTable is internally implemented as a "hash table," which is
+programming jargon for a particular way of organizing a set of values
+for efficient retrieval.  For the most part, there is no practical
+need for you to know anything about this internal organization,
+because it's largely invisible when you're using the class.  However,
+the class lets you optionally specify some parameters at creation time
+that can affect its efficiency, so we'll briefly explain how hash
+tables work to help you understand how to select these parameters.
+
+<p>A hash table operates by computing a hash value for each key.  A
+hash value is an integer calculated from the key value, and once
+calculated, the hash value is used to select a bucket to store the
+key.  Since the hash value selects a bucket, the range of the hash is
+determined by the number of buckets: if we have ten buckets, we
+calculate a hash value from 1 to 10 for each key.
+
+<p>Ideally, each distinct key value would end up in its own bucket,
+but this obviously cannot be the case: the number of buckets we have
+is finite, and almost always smaller than the number of possible key
+values.  Even if we consider only strings as possible keys, we can
+clearly create more unique values than buckets, no matter how many
+buckets we use; and then we have lists and all the other types to hash
+as well.  Therefore, a hash table must be able to cope with "hash
+collisions," where two distinct key values have the same hash value.
+
+<p>Hash tables handle collisions by using the hash value merely as a
+first-order approximation to finding the key; once we compute the hash
+value, and thus know the bucket, we must look at each key stored in
+that bucket to find the particular key we're seeking.  If we have N
+entries stored in a hash table, and M hash buckets, we will have N/M
+values, on average, stored in each bucket.  The more buckets we have,
+the fewer values we'll have in each bucket, so the faster lookups will
+be.  On the other hand, once the number of buckets is as large as the
+number of values stored, adding more buckets becomes less helpful.  In
+addition, the greater the number of buckets, the more memory the hash
+table consumes, so we trade speed for greater memory usage.
+
+<p>Note that it isn't possible in general to guarantee that a hash
+table will have no collisions, no matter how many buckets you use; if
+lots of the keys you store all happen to hash to the same value, you
+still have many keys in one bucket.  Fortunately, in practice, most
+sets of keys end up distributing fairly evenly.
+
+<p>When you create a LookupTable object, you can specify the number of
+buckets in the object's hash table.  If you have some idea of how much
+data the table might contain, this lets you set up a LookupTable to
+make it more likely that there will be an efficient distribution of
+hash values while not using excessive memory.  In particular, you
+should choose the number of buckets so that it is a reasonably high
+fraction of the number of values you expect, although just how high a
+fraction depends on the total number of entries as well.  For example,
+if you expect only ten or twenty values to be stored in the table, you
+should probably use a bucket count of about the same number; if you
+expect a thousand values, six or seven hundred buckets might be
+reasonable.
+
+
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+LookupTable
+<br><span class="navnp"><a class="nav" href="list.htm"><i>Prev:</i> List</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="objic.htm"><i>Next:</i> Object</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

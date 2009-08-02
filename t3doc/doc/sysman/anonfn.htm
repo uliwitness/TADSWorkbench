@@ -1,0 +1,313 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>Anonymous Functions</title>
+
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="langsec.htm">The Language</a> &gt; 
+Anonymous Functions
+<br><span class="navnp"><a class="nav" href="except.htm"><i>Prev:</i> Exceptions and Error Handling</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="undef.htm"><i>Next:</i> Capturing Calls to Undefined Methods</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>Anonymous Functions</h1>
+
+<p>It's often useful to define a function or method that takes a
+pointer to another function as an argument; we refer to such an
+argument function as a "callback" function, because it's a way for the
+function or method to call back to code provided by its caller.
+
+<p>Callbacks are especially useful in libraries, because they allow a
+function to be written generically and then re-used for multiple
+purposes.  The part of the task that's common to all of the different
+uses is made into the library function, and it in turn invokes a
+callback to carry out the specialized parts.  Not only does this save
+the trouble of writing the common part of the code multiple times, but
+it also makes the code much easier to maintain, because there's only
+one copy of the common library function.
+
+<p>Callbacks are especially useful for "enumerating" the items in a
+set, which simply means that we're performing an operation on a number
+of items that are somehow related together into a group.  Some sets
+are easy to enumerate; for example, performing an operation on each
+item in a list is easy:
+
+<p><div class="code"><pre>
+for (local i = 1, local cnt = lst.length() ; i &lt;= cnt ; ++i)
+  doSomethingWith(lst[i]);
+</pre></div>
+
+<p>Some sets are much more complicated to enumerate, though.  For
+example, we might want to display all of the things a character in a
+game is carrying, and all of the things those items contain, all of
+the things they contain, and so forth.  This type of enumeration
+requires a more complicated algorithm than the simple loop we can use
+for a list, because we must traverse a tree of unknown depth.
+
+<p>We could write our display function so that it contains the
+algorithm to traverse the containment tree, but suppose that later we
+wanted to write a function that counts all of the items in the same
+tree.  It seems tedious to write all of that same traversal code
+again, changing the lines of code that display names so that they
+increment a counter instead.
+
+<p>Fortunately, there is a better way - use a callback!  Rather than
+writing a function that traverses the containment tree and displays
+object names, we instead write two functions.  The first function
+simply displays the name of an object.  The second only traverses the
+containment tree - but what it does with each element is to invoke a
+callback function, passing the current element as the parameter.  We
+combine these two by calling the second function, passing the first
+function as the callback function pointer, and between the two we have
+a way of traversing the tree and displaying the contents.  If we want
+to count the contents, all we have to do is write a new callback
+function that increments a counter variable.
+
+<p>Callbacks provide an excellent way of re-using common code, but
+using regular functions as callbacks has some disadvantages.  First,
+it makes for somewhat verbose code, especially when the callback
+functions themselves are very simple, as they tend to be - for our
+examples of displaying a name or incrementing a counter, we've turned
+what would probably be a single line of code into four or five lines
+to define a new function.  Second, it scatters code around in the
+source files, because the callback has to appear in a separate
+function from the code that passes it to the library function.  Third,
+if the calling function wants to share information with the callback
+(which would be necessary for something like incrementing a counter,
+because the counter's final value ultimately has to make it back to
+the calling function), it's necessary for the caller and the callback
+to come up with some way of passing information between one another;
+while this isn't usually difficult, it does tend to add even more
+verbosity.
+
+<p>Once again, there is a better way, which is to use "anonymous"
+functions.  An anonymous function is a function that you write
+directly where you want to use it as a function pointer.  Anonymous
+functions solve all of the problems we just listed:
+
+<ul>
+
+<li>An anonymous function is much less verbose than a separate named
+function.
+
+<li>An anonymous function is written directly in the code where it's
+used.
+
+<li>An anonymous function directly shares all of the local variables
+of the scope in which it is defined.
+
+</ul>
+
+<h2>Anonymous Function Syntax</h2>
+
+<p>An anonymous function definition looks like this:
+
+<p><div class="code"><pre>
+new function(x) { "Hello from anonymous! x = &lt;&lt;x&gt;&gt;\n"; }
+</pre></div>
+
+<p>An anonymous function is effectively an object in its own right,
+which is why the "new" keyword is used.  The function has no name, so
+we use the keyword "function" to indicate that we want to create a new
+function.  If this function takes any parameters, they appear in
+parentheses after the "function" keyword.  Finally, we write the body
+of the function, enclosed in braces; the body can contain any code
+that we could put in an ordinary function.
+
+<p>An anonymous function can be defined anywhere an expression can go,
+so you can assign an anonymous function to a variable, or pass it as
+an argument to another function.  The latter case is the more common
+case, because it allows us to invoke enumeration functions very
+concisely.  For example, suppose we had an enumerator function called
+enumItems() that enumerated some set of items through a callback
+function.  If we wanted to display all of the items that the function
+enumerates, we could write something like this:
+
+<p><div class="code"><pre>
+enumItems(new function(obj) { obj.sdesc; });
+</pre></div>
+
+<p>If at some other point we wanted to count all of the items the
+function enumerates, we could write this:
+
+<p><div class="code"><pre>
+local cnt = 0;
+enumItems(new function(obj) { ++cnt; });
+</pre></div>
+
+<p>Since the value of an anonymous function is simply a pointer to the
+function, we can assign an anonymous function to a local variable or
+to a property:
+
+<p><div class="code"><pre>
+local f = new function(x) { "Hello from anonymous! x = &lt;&lt;x&gt;&gt;\n"; }
+</pre></div>
+
+<p>We call the function to which the local variable "f" refers using
+the same syntax we'd use with an ordinary function pointer:
+
+<p><div class="code"><pre>
+   f(7);
+</pre></div>
+
+<h2>Referring to Local Variables</h2>
+
+<p>Anonymous functions are especially useful for iterators and
+enumerators, which are routines that invoke a callback function for
+each member of a collection of some sort.  For example, we could
+define an object class with a "contents" property, and write an
+enumerator that invokes a callback for each entry in the contents
+list:
+
+<p><div class="code"><pre>
+class Thing: object
+  contents = []
+  enumContents(func)
+  {
+    for (local i = 1, local len = contents.length() ;
+         i &lt;= len ; ++i)
+      func(contents[i]);
+  }
+;
+</pre></div>
+
+<p>Now, suppose we wanted to count the contents of the object.  We
+could do this using the enumContents() enumerator and an anonymous
+function:
+
+<p><div class="code"><pre>
+local cnt = 0;
+myThing.enumContents(new function { ++cnt; });
+</pre></div>
+
+<p>Note that the anonymous function is accessing the local variable
+cnt from the enclosing function.  This might seem perfectly obvious
+and natural, but it is a very powerful feature of anonymous functions
+that traditional function pointers don't offer: with a regular
+function pointer, the callback function obviously can't access the
+local variables of the function where the pointer is used, so we would
+have to arrange some other way to share information.  Anonymous
+functions make this information sharing simple by allowing us to share
+local variables directly.
+
+<p>Anonymous functions share not only the local variables of the scope
+in which they were defined, but the "self" object as well.  So, an
+anonymous function that appears in a method can refer to the
+properties of the "self" object.
+
+<p>Programmers familiar with languages such as C or C++ might be
+concerned about what happens if we create an anonymous function object
+that references local variables, and then try to call the function
+after the stack frame in which the function was created has been
+deactivated.  Consider this example:
+
+<p><div class="code"><pre>
+myFunc()
+{
+  f = createAnonFunc();
+  f();
+}
+
+createAnonFunc()
+{
+  local i = 100;
+  return new function() { tadsSay(i); }
+}
+</pre></div>
+
+<p>This might look like a classic programming error to a C++
+programmer, in that it looks as though we've created a reference to a
+stack variable, and then retained the reference even after the stack
+variable has ceased to exist.  This is a form of the "dangling
+reference" problem, and can be very difficult to track down in C++.
+
+<p>In TADS 3, however, this example is completely legal, and has
+well-defined behavior.  When you create an anonymous function that
+references local variables in the enclosing scope, TADS moves the
+local variables to a "context object" that is shared between the
+enclosing scope and the anonymous functions.  The context object is
+shared by reference, so any changes to the local variables made in the
+anonymous function affect the enclosing scope, and vice versa.  The
+context object is not a "stack variable," but is referenced from the
+activation frame (i.e., an internal stack variable) of the enclosing
+scope, and is also referenced by the anonymous function.  When the
+creating scope returns to its caller, its reference to the context
+object disappears, because its activation frame is deleted.  However,
+if any anonymous function objects are still reachable, as in the
+example above, the local variable context object will remain reachable
+through the anonymous function object.  This means that the lifetimes
+of the local variables is automatically extended so that the variables
+remain valid as long as any anonymous functions can access them.
+
+<p>In short, the anonymous function mechanism is designed to be simple
+to use, and doesn't come with any warnings or limitations.
+
+<h2>Short-Form Anonymous Functions</h2>
+
+<p>Even though anonymous functions are already much more concise for
+callbacks than traditional functions, TADS 3 provides an even more
+concise alternative syntax for situations where you only need to write
+a simple expression as the body of the callback function.  In these
+cases, you can omit the "new function" keywords, and write only the
+parameter list and the expression, enclosed in braces, with a colon
+(":") separating the expression from the parameter list.  So, rather
+than writing this:
+
+<p><div class="code"><pre>
+new function(x, y) { return x + y; }
+</pre></div>
+
+<p>we could write this:
+
+<p><div class="code"><pre>
+{ x, y: x + y }
+</pre></div>
+
+<p>Note that there is no semicolon at the end of the expression: no
+semicolon is used because the body of a short-form anonymous function
+is simply an expression, not a statement.  In TADS, semicolons
+terminate statements, so since we're not writing a statement we don't
+need a semicolon.
+
+<p>Note that the colon that ends the argument list must always be
+present, whether or not there are any parameters.  So, to write an
+anonymous function that takes no arguments, you'd have to put a colon
+immediately after the opening brace:
+
+<p><div class="code"><pre>
+{ : ++cnt }
+</pre></div>
+
+<p>The body of a short-form anonymous function is a single expression,
+and the function implicitly returns the value of the expression.
+Note, however, that you can use the comma operator to create a
+short-form anonymous function that evaluates multiple sub-expressions:
+
+<p><div class="code"><pre>
+{ x, y: tadsSay(x), tadsSay(y), x*y }
+</pre></div>
+
+<p>This example would print out the values of x and y, then return the
+product of the two values as the result of the function.
+
+<p>Short-form and long-form anonymous functions behave in exactly the
+same way.  The only difference is the syntax used to define them.
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="langsec.htm">The Language</a> &gt; 
+Anonymous Functions
+<br><span class="navnp"><a class="nav" href="except.htm"><i>Prev:</i> Exceptions and Error Handling</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="undef.htm"><i>Next:</i> Capturing Calls to Undefined Methods</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

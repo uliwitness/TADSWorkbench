@@ -6,234 +6,10 @@
 	objectVersion = 42;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		3DC5E4280486E72A009225F9 /* All Targets */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 3D77754E09C119DA00F1FADB /* Build configuration list for PBXAggregateTarget "All Targets" */;
-			buildPhases = (
-			);
-			dependencies = (
-				3DC5E42A0486E73B009225F9 /* PBXTargetDependency */,
-				3DE2EFD90BA0036100A71444 /* PBXTargetDependency */,
-			);
-			name = "All Targets";
-			productName = "All Targets";
-		};
-/* End PBXAggregateTarget section */
-
-/* Begin PBXApplicationTarget section */
-		2A37F4C6FDCFA73011CA2CEA /* CocoaTADS */ = {
-			isa = PBXApplicationTarget;
-			buildConfigurationList = 3D77754209C119DA00F1FADB /* Build configuration list for PBXApplicationTarget "CocoaTADS" */;
-			buildPhases = (
-				3DD4DA7107FACDBC008CFF52 /* ShellScript */,
-				2A37F4C7FDCFA73011CA2CEA /* Headers */,
-				2A37F4C9FDCFA73011CA2CEA /* Resources */,
-				2A37F4CEFDCFA73011CA2CEA /* Sources */,
-				2A37F4D1FDCFA73011CA2CEA /* Frameworks */,
-				3D3FB37C07EB364C003751D4 /* CopyFiles */,
-				3D3FB47207EB36FF003751D4 /* CopyFiles */,
-				3D3FB47B07EB37BD003751D4 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = CocoaTADS;
-			productInstallPath = "$(HOME)/Applications";
-			productName = CocoaTADS;
-			productReference = 1758732AFF379DA111CA2CBB /* Workbench.app */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>t3m</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>DocIcon</string>
-			<key>CFBundleTypeName</key>
-			<string>TADS Project File</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>ProjectDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>t</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>SourceIcon</string>
-			<key>CFBundleTypeName</key>
-			<string>TADS Source File</string>
-			<key>CFBundleTypeOSTypes</key>
-			<array>
-				<string>TEXT</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>ProjectTextDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>h</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>SourceIcon</string>
-			<key>CFBundleTypeName</key>
-			<string>TADS Header File</string>
-			<key>CFBundleTypeOSTypes</key>
-			<array>
-				<string>TEXT</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>ProjectTextDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>tl</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>Suitcase</string>
-			<key>CFBundleTypeName</key>
-			<string>TADS Library File</string>
-			<key>CFBundleTypeRole</key>
-			<string>None</string>
-		</dict>
-	</array>
-	<key>CFBundleExecutable</key>
-	<string>Workbench</string>
-	<key>CFBundleGetInfoString</key>
-	<string>0.4, © 2003-05 by M. Uli Kusterer, all rights reserved.</string>
-	<key>CFBundleHelpBookFolder</key>
-	<string>Workbench Help</string>
-	<key>CFBundleHelpBookName</key>
-	<string>Workbench Help</string>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.ulikusterer.tads.workbench</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>Workbench</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.4</string>
-	<key>CFBundleSignature</key>
-	<string>UTDS</string>
-	<key>CFBundleVersion</key>
-	<string>0.4</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-</dict>
-</plist>
-";
-		};
-/* End PBXApplicationTarget section */
-
 /* Begin PBXBuildFile section */
-		080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
-		089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
-		1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		32DBCF760370BD2300C91783 /* CocoaTADS_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* CocoaTADS_Prefix.h */; };
-		3D02EB04048962D100906F7E /* CocoaTadsAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D02EB02048962D100906F7E /* CocoaTadsAppDelegate.h */; };
-		3D02EB05048962D100906F7E /* CocoaTadsAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D02EB03048962D100906F7E /* CocoaTadsAppDelegate.m */; };
-		3D02EE77048966FC00906F7E /* Splash.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3D02EE76048966FC00906F7E /* Splash.tiff */; };
-		3D0ECBC107459E240085E9A0 /* UKErrorsWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D0ECBBF07459E240085E9A0 /* UKErrorsWindow.h */; };
-		3D0ECBC207459E240085E9A0 /* UKErrorsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D0ECBC007459E240085E9A0 /* UKErrorsWindow.m */; };
-		3D0ECD210745A7BD0085E9A0 /* UKNibOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D0ECD1F0745A7BD0085E9A0 /* UKNibOwner.h */; };
-		3D0ECD220745A7BD0085E9A0 /* UKNibOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D0ECD200745A7BD0085E9A0 /* UKNibOwner.m */; };
-		3D0ECD3D0745A9780085E9A0 /* UKErrorsWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3D0ECD3B0745A9780085E9A0 /* UKErrorsWindow.nib */; };
-		3D0ECD530745AEFA0085E9A0 /* MacPAD.url in Resources */ = {isa = PBXBuildFile; fileRef = 3D0ECD520745AEFA0085E9A0 /* MacPAD.url */; };
-		3D1705B905D9990800B50FB4 /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1705B805D9990800B50FB4 /* Message.framework */; };
-		3D1861990487CB8C00098381 /* ErrorListEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D1861970487CB8C00098381 /* ErrorListEntry.h */; };
-		3D18619A0487CB8C00098381 /* ErrorListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1861980487CB8C00098381 /* ErrorListEntry.m */; };
-		3D2650290487EEB6002EC4C7 /* NoteIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D2650280487EEB6002EC4C7 /* NoteIcon.icns */; };
-		3D3FB46D07EB36DD003751D4 /* Workbench Help in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D3FB3E607EB3690003751D4 /* Workbench Help */; };
-		3D3FB47307EB370F003751D4 /* t3_doc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D3FB42A07EB36C4003751D4 /* t3_doc */; };
-		3D42532106E9E57A0065BD08 /* t3resource in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252D406E9E5790065BD08 /* t3resource */; };
-		3D42532206E9E57A0065BD08 /* t3include in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252DB06E9E5790065BD08 /* t3include */; };
-		3D42532306E9E57A0065BD08 /* t3library in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252EE06E9E5790065BD08 /* t3library */; };
-		3D51D2BE0555762E00000202 /* wchar.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D51D2BD0555762E00000202 /* wchar.h */; };
-		3D6D9C6605D97C3500FC1C62 /* SyntaxColorDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */; };
-		3D6D9C6805D97C5F00FC1C62 /* SyntaxDefinition.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */; };
-		3D95BD9104898FA8009806D1 /* RunTadsScript.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D95BD9004898FA8009806D1 /* RunTadsScript.txt */; };
-		3D95BD9304899187009806D1 /* DebugTadsScript.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D95BD9204899187009806D1 /* DebugTadsScript.txt */; };
-		3DB36B0D0722E98F00B55A21 /* UKBorderlessWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB36B0B0722E98F00B55A21 /* UKBorderlessWindow.h */; };
-		3DB36B0E0722E98F00B55A21 /* UKBorderlessWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB36B0C0722E98F00B55A21 /* UKBorderlessWindow.m */; };
-		3DB49BD105DCFED4003FBB98 /* ProjectTextDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB49BCF05DCFED4003FBB98 /* ProjectTextDocument.h */; };
-		3DB49BD205DCFED4003FBB98 /* ProjectTextDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB49BD005DCFED4003FBB98 /* ProjectTextDocument.m */; };
-		3DB49BD605DD1FD3003FBB98 /* BrokenDocIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DB49BD505DD1FD3003FBB98 /* BrokenDocIcon.tiff */; };
-		3DB688F8071147940099B94D /* UKFeedbackProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB688F4071147940099B94D /* UKFeedbackProvider.m */; };
-		3DB688F9071147940099B94D /* UKUpdateChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB688F5071147940099B94D /* UKUpdateChecker.m */; };
-		3DB688FA071147950099B94D /* UKUpdateChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB688F6071147940099B94D /* UKUpdateChecker.h */; };
-		3DB688FB071147950099B94D /* UKFeedbackProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB688F7071147940099B94D /* UKFeedbackProvider.h */; };
-		3DB68903071147D90099B94D /* UKFeedbackProvider.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DB68901071147D90099B94D /* UKFeedbackProvider.nib */; };
-		3DB68908071147F00099B94D /* UKUpdateChecker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DB68906071147F00099B94D /* UKUpdateChecker.strings */; };
-		3DBF1F55048B6FD000000202 /* t3run in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF1F54048B6FD000000202 /* t3run */; };
-		3DBF22CB048B797900000202 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF22CA048B797900000202 /* Preferences.plist */; };
-		3DC5E3290486D165009225F9 /* OtherConfig.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3260486D165009225F9 /* OtherConfig.txt */; };
-		3DC5E32B0486D165009225F9 /* OtherOptions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3280486D165009225F9 /* OtherOptions.txt */; };
-		3DC5E32F0486D2B0009225F9 /* TopComment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E32E0486D2AF009225F9 /* TopComment.txt */; };
-		3DC5E3310486D2B7009225F9 /* SourcesComment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3300486D2B6009225F9 /* SourcesComment.txt */; };
-		3DC5E3330486D3B2009225F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3320486D3B2009225F9 /* Localizable.strings */; };
-		3DC5E3350486D801009225F9 /* t3make in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3340486D801009225F9 /* t3make */; };
-		3DC5E42E0486FF16009225F9 /* ErrorIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E42C0486FF16009225F9 /* ErrorIcon.icns */; };
-		3DC5E4300486FF64009225F9 /* WarningIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E42F0486FF64009225F9 /* WarningIcon.icns */; };
-		3DCB1AAC04835DCD00EF1DCB /* ProjectDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AA804835DCD00EF1DCB /* ProjectDocument.h */; };
-		3DCB1AAD04835DCD00EF1DCB /* NSTadsOptFileHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AA904835DCD00EF1DCB /* NSTadsOptFileHelper.h */; };
-		3DCB1AAE04835DCD00EF1DCB /* ProjectDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AAA04835DCD00EF1DCB /* ProjectDocument.m */; };
-		3DCB1AAF04835DCD00EF1DCB /* NSTadsOptFileHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AAB04835DCD00EF1DCB /* NSTadsOptFileHelper.mm */; };
-		3DCB1AB304835EB300EF1DCB /* os.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB204835EB300EF1DCB /* os.h */; };
-		3DCB1AB904835EF800EF1DCB /* osgen.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB504835EF800EF1DCB /* osgen.h */; };
-		3DCB1ABA04835EF800EF1DCB /* osgen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AB604835EF800EF1DCB /* osgen.c */; };
-		3DCB1ABB04835EF800EF1DCB /* osifc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AB704835EF800EF1DCB /* osifc.c */; };
-		3DCB1ABC04835EF800EF1DCB /* osifc.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB804835EF800EF1DCB /* osifc.h */; };
-		3DCB1ABF04835F0A00EF1DCB /* osunixt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1ABD04835F0A00EF1DCB /* osunixt.c */; };
-		3DCB1AC004835F0A00EF1DCB /* osunixt.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1ABE04835F0A00EF1DCB /* osunixt.h */; };
-		3DCB1AC304835F2900EF1DCB /* tparm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC104835F2900EF1DCB /* tparm.c */; };
-		3DCB1AC404835F2900EF1DCB /* tputs.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC204835F2900EF1DCB /* tputs.c */; };
-		3DCB1AC604835F7000EF1DCB /* tccmdutl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC504835F7000EF1DCB /* tccmdutl.cpp */; };
-		3DCB1AC804835F7D00EF1DCB /* tccmdutl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AC704835F7D00EF1DCB /* tccmdutl.h */; };
-		3DD065600745C39100C18AE2 /* NSFileHandle+AppendToStringAndNotify.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0655F0745C39100C18AE2 /* NSFileHandle+AppendToStringAndNotify.m */; };
-		3DD065620745C39700C18AE2 /* NSFileHandle+AppendToStringAndNotify.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DD065610745C39700C18AE2 /* NSFileHandle+AppendToStringAndNotify.h */; };
-		3DD065A10745C9AE00C18AE2 /* NSString+FetchNextLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD065A00745C9AE00C18AE2 /* NSString+FetchNextLine.m */; };
-		3DD065A30745C9B500C18AE2 /* NSString+FetchNextLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DD065A20745C9B500C18AE2 /* NSString+FetchNextLine.h */; };
-		3DD0661807465B7F00C18AE2 /* Suitcase.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DD0661707465B7F00C18AE2 /* Suitcase.icns */; };
-		3DE01E5F0655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E590655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.h */; };
-		3DE01E600655A2A600D8F491 /* UKSyntaxColoredTextDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E5A0655A2A600D8F491 /* UKSyntaxColoredTextDocument.m */; };
-		3DE01E610655A2A600D8F491 /* UKSyntaxColoredTextDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E5B0655A2A600D8F491 /* UKSyntaxColoredTextDocument.h */; };
-		3DE01E620655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E5C0655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.m */; };
-		3DE01E630655A2A600D8F491 /* UKSCTDColorWellPrefsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E5D0655A2A600D8F491 /* UKSCTDColorWellPrefsController.m */; };
-		3DE01E640655A2A600D8F491 /* UKSCTDColorWellPrefsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E5E0655A2A600D8F491 /* UKSCTDColorWellPrefsController.h */; };
-		3DE01E6B0655A2F000D8F491 /* NSScanner+SkipUpToCharset.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E650655A2F000D8F491 /* NSScanner+SkipUpToCharset.h */; };
-		3DE01E6C0655A2F000D8F491 /* NSArray+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E660655A2F000D8F491 /* NSArray+Color.m */; };
-		3DE01E6D0655A2F000D8F491 /* NSArray+Color.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E670655A2F000D8F491 /* NSArray+Color.h */; };
-		3DE01E6E0655A2F000D8F491 /* NSScanner+SkipUpToCharset.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E680655A2F000D8F491 /* NSScanner+SkipUpToCharset.m */; };
-		3DE01E6F0655A2F000D8F491 /* UKTextDocGoToBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE01E690655A2F000D8F491 /* UKTextDocGoToBox.m */; };
-		3DE01E700655A2F000D8F491 /* UKTextDocGotoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E6A0655A2F000D8F491 /* UKTextDocGotoBox.h */; };
-		3DE01E730655A51A00D8F491 /* SelectionRange.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DE01E710655A51A00D8F491 /* SelectionRange.tiff */; };
-		3DE01E740655A51A00D8F491 /* InsertionMark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DE01E720655A51A00D8F491 /* InsertionMark.tiff */; };
 		3DE2EF6C0BA0033A00A71444 /* CocoaTADS_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* CocoaTADS_Prefix.h */; };
 		3DE2EF6D0BA0033A00A71444 /* ProjectDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AA804835DCD00EF1DCB /* ProjectDocument.h */; };
 		3DE2EF6E0BA0033A00A71444 /* NSTadsOptFileHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AA904835DCD00EF1DCB /* NSTadsOptFileHelper.h */; };
-		3DE2EF6F0BA0033A00A71444 /* os.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB204835EB300EF1DCB /* os.h */; };
 		3DE2EF700BA0033A00A71444 /* osgen.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB504835EF800EF1DCB /* osgen.h */; };
 		3DE2EF710BA0033A00A71444 /* osifc.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1AB804835EF800EF1DCB /* osifc.h */; };
 		3DE2EF720BA0033A00A71444 /* osunixt.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DCB1ABE04835F0A00EF1DCB /* osunixt.h */; };
@@ -241,7 +17,6 @@
 		3DE2EF740BA0033A00A71444 /* osifctyp.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DFB2567048413B8006ACD61 /* osifctyp.h */; };
 		3DE2EF750BA0033A00A71444 /* ErrorListEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D1861970487CB8C00098381 /* ErrorListEntry.h */; };
 		3DE2EF760BA0033A00A71444 /* CocoaTadsAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D02EB02048962D100906F7E /* CocoaTadsAppDelegate.h */; };
-		3DE2EF770BA0033A00A71444 /* wchar.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D51D2BD0555762E00000202 /* wchar.h */; };
 		3DE2EF780BA0033A00A71444 /* ProjectTextDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB49BCF05DCFED4003FBB98 /* ProjectTextDocument.h */; };
 		3DE2EF790BA0033A00A71444 /* UKSCTDUserIdentifiersPrefsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E590655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.h */; };
 		3DE2EF7A0BA0033A00A71444 /* UKSyntaxColoredTextDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE01E5B0655A2A600D8F491 /* UKSyntaxColoredTextDocument.h */; };
@@ -270,23 +45,18 @@
 		3DE2EF920BA0033A00A71444 /* SourcesComment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3300486D2B6009225F9 /* SourcesComment.txt */; };
 		3DE2EF930BA0033A00A71444 /* OtherOptions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3280486D165009225F9 /* OtherOptions.txt */; };
 		3DE2EF940BA0033A00A71444 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3320486D3B2009225F9 /* Localizable.strings */; };
-		3DE2EF950BA0033A00A71444 /* t3make in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E3340486D801009225F9 /* t3make */; };
 		3DE2EF960BA0033A00A71444 /* ErrorIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E42C0486FF16009225F9 /* ErrorIcon.icns */; };
 		3DE2EF970BA0033A00A71444 /* WarningIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5E42F0486FF64009225F9 /* WarningIcon.icns */; };
 		3DE2EF980BA0033A00A71444 /* NoteIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D2650280487EEB6002EC4C7 /* NoteIcon.icns */; };
 		3DE2EF990BA0033A00A71444 /* Splash.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3D02EE76048966FC00906F7E /* Splash.tiff */; };
 		3DE2EF9A0BA0033A00A71444 /* RunTadsScript.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D95BD9004898FA8009806D1 /* RunTadsScript.txt */; };
 		3DE2EF9B0BA0033A00A71444 /* DebugTadsScript.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D95BD9204899187009806D1 /* DebugTadsScript.txt */; };
-		3DE2EF9C0BA0033A00A71444 /* t3run in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF1F54048B6FD000000202 /* t3run */; };
 		3DE2EF9D0BA0033A00A71444 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF22CA048B797900000202 /* Preferences.plist */; };
 		3DE2EF9E0BA0033A00A71444 /* SyntaxColorDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */; };
 		3DE2EF9F0BA0033A00A71444 /* SyntaxDefinition.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */; };
 		3DE2EFA00BA0033A00A71444 /* BrokenDocIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DB49BD505DD1FD3003FBB98 /* BrokenDocIcon.tiff */; };
 		3DE2EFA10BA0033A00A71444 /* SelectionRange.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DE01E710655A51A00D8F491 /* SelectionRange.tiff */; };
 		3DE2EFA20BA0033A00A71444 /* InsertionMark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DE01E720655A51A00D8F491 /* InsertionMark.tiff */; };
-		3DE2EFA30BA0033A00A71444 /* t3resource in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252D406E9E5790065BD08 /* t3resource */; };
-		3DE2EFA40BA0033A00A71444 /* t3include in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252DB06E9E5790065BD08 /* t3include */; };
-		3DE2EFA50BA0033A00A71444 /* t3library in Resources */ = {isa = PBXBuildFile; fileRef = 3D4252EE06E9E5790065BD08 /* t3library */; };
 		3DE2EFA60BA0033A00A71444 /* UKFeedbackProvider.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DB68901071147D90099B94D /* UKFeedbackProvider.nib */; };
 		3DE2EFA70BA0033A00A71444 /* UKUpdateChecker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DB68906071147F00099B94D /* UKUpdateChecker.strings */; };
 		3DE2EFA80BA0033A00A71444 /* UKErrorsWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3D0ECD3B0745A9780085E9A0 /* UKErrorsWindow.nib */; };
@@ -295,11 +65,8 @@
 		3DE2EFAC0BA0033A00A71444 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		3DE2EFAD0BA0033A00A71444 /* ProjectDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AAA04835DCD00EF1DCB /* ProjectDocument.m */; };
 		3DE2EFAE0BA0033A00A71444 /* NSTadsOptFileHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AAB04835DCD00EF1DCB /* NSTadsOptFileHelper.mm */; };
-		3DE2EFAF0BA0033A00A71444 /* osgen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AB604835EF800EF1DCB /* osgen.c */; };
 		3DE2EFB00BA0033A00A71444 /* osifc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AB704835EF800EF1DCB /* osifc.c */; };
-		3DE2EFB10BA0033A00A71444 /* osunixt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1ABD04835F0A00EF1DCB /* osunixt.c */; };
-		3DE2EFB20BA0033A00A71444 /* tparm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC104835F2900EF1DCB /* tparm.c */; };
-		3DE2EFB30BA0033A00A71444 /* tputs.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC204835F2900EF1DCB /* tputs.c */; };
+		3DE2EFB10BA0033A00A71444 /* osportable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1ABD04835F0A00EF1DCB /* osportable.cc */; };
 		3DE2EFB40BA0033A00A71444 /* tccmdutl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DCB1AC504835F7000EF1DCB /* tccmdutl.cpp */; };
 		3DE2EFB50BA0033A00A71444 /* TadsDummies.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB25640484120E006ACD61 /* TadsDummies.c */; };
 		3DE2EFB60BA0033A00A71444 /* ErrorListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1861980487CB8C00098381 /* ErrorListEntry.m */; };
@@ -321,63 +88,18 @@
 		3DE2EFC70BA0033A00A71444 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		3DE2EFC80BA0033A00A71444 /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1705B805D9990800B50FB4 /* Message.framework */; };
 		3DE2EFCA0BA0033A00A71444 /* Workbench Help in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D3FB3E607EB3690003751D4 /* Workbench Help */; };
-		3DE2EFCC0BA0033A00A71444 /* t3_doc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D3FB42A07EB36C4003751D4 /* t3_doc */; };
-		3DFB25660484120E006ACD61 /* TadsDummies.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB25640484120E006ACD61 /* TadsDummies.c */; };
-		3DFB2568048413B8006ACD61 /* osifctyp.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DFB2567048413B8006ACD61 /* osifctyp.h */; };
-		3DFB258204841572006ACD61 /* UKSyntaxColoredTextDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB257D04841572006ACD61 /* UKSyntaxColoredTextDocument.nib */; };
-		3DFB258304841572006ACD61 /* ProjectDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB257F04841572006ACD61 /* ProjectDocument.nib */; };
-		3DFB258804841596006ACD61 /* DocIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB258404841595006ACD61 /* DocIcon.icns */; };
-		3DFB258904841596006ACD61 /* SourceIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB258504841595006ACD61 /* SourceIcon.icns */; };
-		3DFB258A04841596006ACD61 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB258604841595006ACD61 /* AppIcon.icns */; };
-		3DFB258B04841596006ACD61 /* Folder.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB258704841596006ACD61 /* Folder.icns */; };
-		3DFB258E04841692006ACD61 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB258C04841692006ACD61 /* MainMenu.nib */; };
+		556EC570102584B5007FBE38 /* t3doc in Resources */ = {isa = PBXBuildFile; fileRef = 556EBBCC102584B4007FBE38 /* t3doc */; };
+		556EC576102584D0007FBE38 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 556EC571102584D0007FBE38 /* lib */; };
+		556EC58010258586007FBE38 /* wchar.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC57F10258586007FBE38 /* wchar.h */; };
+		556EC59510258792007FBE38 /* osfrobtads.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC59410258792007FBE38 /* osfrobtads.h */; };
+		556EC5D61025904D007FBE38 /* t3std.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC5D51025904D007FBE38 /* t3std.h */; };
+		556EC5F410259183007FBE38 /* missing.cc in Sources */ = {isa = PBXBuildFile; fileRef = 556EC5F310259183007FBE38 /* missing.cc */; };
+		556EC5F610259189007FBE38 /* missing.h in Headers */ = {isa = PBXBuildFile; fileRef = 556EC5F510259189007FBE38 /* missing.h */; };
+		5598C9CE102582B9000272CF /* frob in Resources */ = {isa = PBXBuildFile; fileRef = 5598C9CC102582B9000272CF /* frob */; };
+		5598C9CF102582B9000272CF /* t3make in Resources */ = {isa = PBXBuildFile; fileRef = 5598C9CD102582B9000272CF /* t3make */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		3D7DAE22058A5B4A0001102D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3DC5DFA40486701B009225F9;
-			remoteInfo = "TADS 2";
-		};
-		3D7DAE23058A5B4A0001102D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3DC5DFA604867095009225F9;
-			remoteInfo = "TADS 3";
-		};
-		3DE2EFD80BA0036100A71444 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3DE2EF690BA0033A00A71444;
-			remoteInfo = "CocoaTADS (Upgraded)";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		3D3FB37C07EB364C003751D4 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				3D3FB46D07EB36DD003751D4 /* Workbench Help in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3D3FB47207EB36FF003751D4 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "Workbench Help";
-			dstSubfolderSpec = 7;
-			files = (
-				3D3FB47307EB370F003751D4 /* t3_doc in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3DE2EFC90BA0033A00A71444 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -388,22 +110,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3DE2EFCB0BA0033A00A71444 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "Workbench Help";
-			dstSubfolderSpec = 7;
-			files = (
-				3DE2EFCC0BA0033A00A71444 /* t3_doc in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1758732AFF379DA111CA2CBB /* Workbench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Workbench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -423,13 +134,8 @@
 		3D1861980487CB8C00098381 /* ErrorListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorListEntry.m; sourceTree = "<group>"; };
 		3D2650280487EEB6002EC4C7 /* NoteIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = NoteIcon.icns; sourceTree = "<group>"; };
 		3D3FB3E607EB3690003751D4 /* Workbench Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Workbench Help"; sourceTree = "<group>"; };
-		3D3FB42A07EB36C4003751D4 /* t3_doc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = t3_doc; path = ../t3_doc; sourceTree = "<group>"; };
-		3D4252D406E9E5790065BD08 /* t3resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = t3resource; path = ../tads/tads3/t3resource; sourceTree = "<group>"; };
-		3D4252DB06E9E5790065BD08 /* t3include */ = {isa = PBXFileReference; lastKnownFileType = folder; name = t3include; path = ../tads/tads3/t3include; sourceTree = "<group>"; };
-		3D4252EE06E9E5790065BD08 /* t3library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = t3library; path = ../tads/tads3/t3library; sourceTree = "<group>"; };
-		3D51D2BD0555762E00000202 /* wchar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wchar.h; sourceTree = "<group>"; };
-		3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = SyntaxColorDefaults.plist; path = ../UKSyntaxColoredTextDocument/SyntaxColorDefaults.plist; sourceTree = "<group>"; };
-		3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = SyntaxDefinition.plist; sourceTree = "<group>"; };
+		3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = SyntaxColorDefaults.plist; path = ../UKSyntaxColoredTextDocument/SyntaxColorDefaults.plist; sourceTree = "<group>"; };
+		3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = SyntaxDefinition.plist; sourceTree = "<group>"; };
 		3D95BD9004898FA8009806D1 /* RunTadsScript.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RunTadsScript.txt; sourceTree = "<group>"; };
 		3D95BD9204899187009806D1 /* DebugTadsScript.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = DebugTadsScript.txt; sourceTree = "<group>"; };
 		3DB36B0B0722E98F00B55A21 /* UKBorderlessWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UKBorderlessWindow.h; sourceTree = "<group>"; };
@@ -443,31 +149,26 @@
 		3DB688F7071147940099B94D /* UKFeedbackProvider.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UKFeedbackProvider.h; sourceTree = "<group>"; };
 		3DB68902071147D90099B94D /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../UliKit/English.lproj/UKFeedbackProvider.nib; sourceTree = "<group>"; };
 		3DB68907071147F00099B94D /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = ../UliKit/English.lproj/UKUpdateChecker.strings; sourceTree = "<group>"; };
-		3DBF1F54048B6FD000000202 /* t3run */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = t3run; path = ../tads/tads3/t3run; sourceTree = SOURCE_ROOT; };
 		3DBF22CA048B797900000202 /* Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Preferences.plist; sourceTree = SOURCE_ROOT; };
 		3DC5E3240486D0B2009225F9 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/TopComment.txt; sourceTree = "<group>"; };
 		3DC5E3260486D165009225F9 /* OtherConfig.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = OtherConfig.txt; sourceTree = "<group>"; };
 		3DC5E3270486D165009225F9 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = English; path = English.lproj/SourcesComment.txt; sourceTree = "<group>"; };
 		3DC5E3280486D165009225F9 /* OtherOptions.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = OtherOptions.txt; sourceTree = "<group>"; };
 		3DC5E32C0486D291009225F9 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		3DC5E3340486D801009225F9 /* t3make */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = t3make; path = ../tads/tads3/t3make; sourceTree = SOURCE_ROOT; };
 		3DC5E42C0486FF16009225F9 /* ErrorIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ErrorIcon.icns; sourceTree = SOURCE_ROOT; };
 		3DC5E42F0486FF64009225F9 /* WarningIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = WarningIcon.icns; sourceTree = SOURCE_ROOT; };
 		3DCB1AA804835DCD00EF1DCB /* ProjectDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ProjectDocument.h; sourceTree = "<group>"; };
 		3DCB1AA904835DCD00EF1DCB /* NSTadsOptFileHelper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTadsOptFileHelper.h; sourceTree = "<group>"; };
 		3DCB1AAA04835DCD00EF1DCB /* ProjectDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ProjectDocument.m; sourceTree = "<group>"; };
 		3DCB1AAB04835DCD00EF1DCB /* NSTadsOptFileHelper.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = NSTadsOptFileHelper.mm; sourceTree = "<group>"; };
-		3DCB1AB204835EB300EF1DCB /* os.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = os.h; path = ../tads/tads2/os.h; sourceTree = "<group>"; };
-		3DCB1AB504835EF800EF1DCB /* osgen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osgen.h; path = ../tads/tads2/osgen.h; sourceTree = "<group>"; };
-		3DCB1AB604835EF800EF1DCB /* osgen.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = osgen.c; path = ../tads/tads2/osgen.c; sourceTree = "<group>"; };
-		3DCB1AB704835EF800EF1DCB /* osifc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = osifc.c; path = ../tads/tads2/osifc.c; sourceTree = "<group>"; };
-		3DCB1AB804835EF800EF1DCB /* osifc.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osifc.h; path = ../tads/tads2/osifc.h; sourceTree = "<group>"; };
-		3DCB1ABD04835F0A00EF1DCB /* osunixt.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = osunixt.c; path = ../tads/tads2/osunixt.c; sourceTree = "<group>"; };
-		3DCB1ABE04835F0A00EF1DCB /* osunixt.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osunixt.h; path = ../tads/tads2/osunixt.h; sourceTree = "<group>"; };
-		3DCB1AC104835F2900EF1DCB /* tparm.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = tparm.c; path = ../tads/tads2/tparm.c; sourceTree = "<group>"; };
-		3DCB1AC204835F2900EF1DCB /* tputs.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = tputs.c; path = ../tads/tads2/tputs.c; sourceTree = "<group>"; };
-		3DCB1AC504835F7000EF1DCB /* tccmdutl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = tccmdutl.cpp; path = ../tads/tads3/tccmdutl.cpp; sourceTree = "<group>"; };
-		3DCB1AC704835F7D00EF1DCB /* tccmdutl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = tccmdutl.h; path = ../tads/tads3/tccmdutl.h; sourceTree = "<group>"; };
+		3DCB1AB504835EF800EF1DCB /* osgen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osgen.h; path = frobtads/tads2/osgen.h; sourceTree = "<group>"; };
+		3DCB1AB604835EF800EF1DCB /* osgen3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = osgen3.c; path = frobtads/tads2/osgen3.c; sourceTree = "<group>"; };
+		3DCB1AB704835EF800EF1DCB /* osifc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = osifc.c; path = frobtads/tads2/osifc.c; sourceTree = "<group>"; };
+		3DCB1AB804835EF800EF1DCB /* osifc.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osifc.h; path = frobtads/tads2/osifc.h; sourceTree = "<group>"; };
+		3DCB1ABD04835F0A00EF1DCB /* osportable.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = osportable.cc; path = frobtads/src/osportable.cc; sourceTree = "<group>"; };
+		3DCB1ABE04835F0A00EF1DCB /* osunixt.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osunixt.h; path = frobtads/src/osunixt.h; sourceTree = "<group>"; };
+		3DCB1AC504835F7000EF1DCB /* tccmdutl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = tccmdutl.cpp; path = frobtads/t3compiler/tads3/tccmdutl.cpp; sourceTree = "<group>"; };
+		3DCB1AC704835F7D00EF1DCB /* tccmdutl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = tccmdutl.h; path = frobtads/t3compiler/tads3/tccmdutl.h; sourceTree = "<group>"; };
 		3DD0655F0745C39100C18AE2 /* NSFileHandle+AppendToStringAndNotify.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSFileHandle+AppendToStringAndNotify.m"; sourceTree = "<group>"; };
 		3DD065610745C39700C18AE2 /* NSFileHandle+AppendToStringAndNotify.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSFileHandle+AppendToStringAndNotify.h"; sourceTree = "<group>"; };
 		3DD065A00745C9AE00C18AE2 /* NSString+FetchNextLine.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+FetchNextLine.m"; sourceTree = "<group>"; };
@@ -488,10 +189,10 @@
 		3DE01E6A0655A2F000D8F491 /* UKTextDocGotoBox.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKTextDocGotoBox.h; path = ../UKSyntaxColoredTextDocument/UKTextDocGotoBox.h; sourceTree = "<group>"; };
 		3DE01E710655A51A00D8F491 /* SelectionRange.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SelectionRange.tiff; path = ../UKSyntaxColoredTextDocument/SelectionRange.tiff; sourceTree = "<group>"; };
 		3DE01E720655A51A00D8F491 /* InsertionMark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = InsertionMark.tiff; path = ../UKSyntaxColoredTextDocument/InsertionMark.tiff; sourceTree = "<group>"; };
-		3DE2EFD20BA0033A00A71444 /* Info-CocoaTADS__Upgraded_.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-CocoaTADS__Upgraded_.plist"; sourceTree = "<group>"; };
+		3DE2EFD20BA0033A00A71444 /* Info-CocoaTADS__Upgraded_.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-CocoaTADS__Upgraded_.plist"; sourceTree = "<group>"; };
 		3DE2EFD30BA0033A00A71444 /* Workbench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Workbench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DFB25640484120E006ACD61 /* TadsDummies.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TadsDummies.c; sourceTree = "<group>"; };
-		3DFB2567048413B8006ACD61 /* osifctyp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osifctyp.h; path = ../tads/tads2/osifctyp.h; sourceTree = "<group>"; };
+		3DFB2567048413B8006ACD61 /* osifctyp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = osifctyp.h; path = frobtads/tads2/osifctyp.h; sourceTree = "<group>"; };
 		3DFB257E04841572006ACD61 /* UKSyntaxColoredTextDocument.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = UKSyntaxColoredTextDocument.nib; path = ../UKSyntaxColoredTextDocument/English.lproj/UKSyntaxColoredTextDocument.nib; sourceTree = "<group>"; };
 		3DFB258004841572006ACD61 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ProjectDocument.nib; sourceTree = "<group>"; };
 		3DFB258404841595006ACD61 /* DocIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DocIcon.icns; sourceTree = "<group>"; };
@@ -499,18 +200,18 @@
 		3DFB258604841595006ACD61 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		3DFB258704841596006ACD61 /* Folder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Folder.icns; sourceTree = "<group>"; };
 		3DFB258D04841692006ACD61 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		556EBBCC102584B4007FBE38 /* t3doc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = t3doc; sourceTree = "<group>"; };
+		556EC571102584D0007FBE38 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		556EC57F10258586007FBE38 /* wchar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wchar.h; path = frobtads/src/wchar/wchar.h; sourceTree = "<group>"; };
+		556EC59410258792007FBE38 /* osfrobtads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osfrobtads.h; path = frobtads/src/osfrobtads.h; sourceTree = "<group>"; };
+		556EC5D51025904D007FBE38 /* t3std.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = t3std.h; path = frobtads/tads3/t3std.h; sourceTree = "<group>"; };
+		556EC5F310259183007FBE38 /* missing.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = missing.cc; path = frobtads/src/missing.cc; sourceTree = "<group>"; };
+		556EC5F510259189007FBE38 /* missing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = missing.h; path = frobtads/src/missing.h; sourceTree = "<group>"; };
+		5598C9CC102582B9000272CF /* frob */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = frob; path = frobtads/frob; sourceTree = "<group>"; };
+		5598C9CD102582B9000272CF /* t3make */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = t3make; path = frobtads/t3make; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2A37F4D1FDCFA73011CA2CEA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */,
-				3D1705B905D9990800B50FB4 /* Message.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3DE2EFC60BA0033A00A71444 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -544,7 +245,6 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1758732AFF379DA111CA2CBB /* Workbench.app */,
 				3DE2EFD30BA0033A00A71444 /* Workbench.app */,
 			);
 			name = Products;
@@ -585,7 +285,7 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				3D51D2BD0555762E00000202 /* wchar.h */,
+				556EC57F10258586007FBE38 /* wchar.h */,
 				3DFB25640484120E006ACD61 /* TadsDummies.c */,
 				32DBCF750370BD2300C91783 /* CocoaTADS_Prefix.h */,
 				2A37F4B0FDCFA73011CA2CEA /* main.m */,
@@ -596,11 +296,10 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3DC5E3340486D801009225F9 /* t3make */,
-				3DBF1F54048B6FD000000202 /* t3run */,
-				3D4252D406E9E5790065BD08 /* t3resource */,
-				3D4252DB06E9E5790065BD08 /* t3include */,
-				3D4252EE06E9E5790065BD08 /* t3library */,
+				5598C9CC102582B9000272CF /* frob */,
+				5598C9CD102582B9000272CF /* t3make */,
+				556EBBCC102584B4007FBE38 /* t3doc */,
+				556EC571102584D0007FBE38 /* lib */,
 				3D6D9C6405D97C3500FC1C62 /* SyntaxColorDefaults.plist */,
 				3D6D9C6705D97C5E00FC1C62 /* SyntaxDefinition.plist */,
 				3DB68906071147F00099B94D /* UKUpdateChecker.strings */,
@@ -634,7 +333,6 @@
 				3D0ECD520745AEFA0085E9A0 /* MacPAD.url */,
 				3DE2EFD20BA0033A00A71444 /* Info-CocoaTADS__Upgraded_.plist */,
 				3D3FB3E607EB3690003751D4 /* Workbench Help */,
-				3D3FB42A07EB36C4003751D4 /* t3_doc */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -690,16 +388,17 @@
 			children = (
 				3DFB2567048413B8006ACD61 /* osifctyp.h */,
 				3DCB1AB504835EF800EF1DCB /* osgen.h */,
-				3DCB1AB604835EF800EF1DCB /* osgen.c */,
+				3DCB1AB604835EF800EF1DCB /* osgen3.c */,
 				3DCB1AB704835EF800EF1DCB /* osifc.c */,
 				3DCB1AB804835EF800EF1DCB /* osifc.h */,
-				3DCB1ABD04835F0A00EF1DCB /* osunixt.c */,
+				3DCB1ABD04835F0A00EF1DCB /* osportable.cc */,
 				3DCB1ABE04835F0A00EF1DCB /* osunixt.h */,
-				3DCB1AC104835F2900EF1DCB /* tparm.c */,
-				3DCB1AC204835F2900EF1DCB /* tputs.c */,
-				3DCB1AB204835EB300EF1DCB /* os.h */,
 				3DCB1AC504835F7000EF1DCB /* tccmdutl.cpp */,
 				3DCB1AC704835F7D00EF1DCB /* tccmdutl.h */,
+				556EC59410258792007FBE38 /* osfrobtads.h */,
+				556EC5D51025904D007FBE38 /* t3std.h */,
+				556EC5F510259189007FBE38 /* missing.h */,
+				556EC5F310259183007FBE38 /* missing.cc */,
 			);
 			name = TADS;
 			sourceTree = "<group>";
@@ -720,39 +419,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2A37F4C7FDCFA73011CA2CEA /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				32DBCF760370BD2300C91783 /* CocoaTADS_Prefix.h in Headers */,
-				3DCB1AAC04835DCD00EF1DCB /* ProjectDocument.h in Headers */,
-				3DCB1AAD04835DCD00EF1DCB /* NSTadsOptFileHelper.h in Headers */,
-				3DCB1AB304835EB300EF1DCB /* os.h in Headers */,
-				3DCB1AB904835EF800EF1DCB /* osgen.h in Headers */,
-				3DCB1ABC04835EF800EF1DCB /* osifc.h in Headers */,
-				3DCB1AC004835F0A00EF1DCB /* osunixt.h in Headers */,
-				3DCB1AC804835F7D00EF1DCB /* tccmdutl.h in Headers */,
-				3DFB2568048413B8006ACD61 /* osifctyp.h in Headers */,
-				3D1861990487CB8C00098381 /* ErrorListEntry.h in Headers */,
-				3D02EB04048962D100906F7E /* CocoaTadsAppDelegate.h in Headers */,
-				3D51D2BE0555762E00000202 /* wchar.h in Headers */,
-				3DB49BD105DCFED4003FBB98 /* ProjectTextDocument.h in Headers */,
-				3DE01E5F0655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.h in Headers */,
-				3DE01E610655A2A600D8F491 /* UKSyntaxColoredTextDocument.h in Headers */,
-				3DE01E640655A2A600D8F491 /* UKSCTDColorWellPrefsController.h in Headers */,
-				3DE01E6B0655A2F000D8F491 /* NSScanner+SkipUpToCharset.h in Headers */,
-				3DE01E6D0655A2F000D8F491 /* NSArray+Color.h in Headers */,
-				3DE01E700655A2F000D8F491 /* UKTextDocGotoBox.h in Headers */,
-				3DB688FA071147950099B94D /* UKUpdateChecker.h in Headers */,
-				3DB688FB071147950099B94D /* UKFeedbackProvider.h in Headers */,
-				3DB36B0D0722E98F00B55A21 /* UKBorderlessWindow.h in Headers */,
-				3D0ECBC107459E240085E9A0 /* UKErrorsWindow.h in Headers */,
-				3D0ECD210745A7BD0085E9A0 /* UKNibOwner.h in Headers */,
-				3DD065620745C39700C18AE2 /* NSFileHandle+AppendToStringAndNotify.h in Headers */,
-				3DD065A30745C9B500C18AE2 /* NSString+FetchNextLine.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3DE2EF6B0BA0033A00A71444 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -760,7 +426,6 @@
 				3DE2EF6C0BA0033A00A71444 /* CocoaTADS_Prefix.h in Headers */,
 				3DE2EF6D0BA0033A00A71444 /* ProjectDocument.h in Headers */,
 				3DE2EF6E0BA0033A00A71444 /* NSTadsOptFileHelper.h in Headers */,
-				3DE2EF6F0BA0033A00A71444 /* os.h in Headers */,
 				3DE2EF700BA0033A00A71444 /* osgen.h in Headers */,
 				3DE2EF710BA0033A00A71444 /* osifc.h in Headers */,
 				3DE2EF720BA0033A00A71444 /* osunixt.h in Headers */,
@@ -768,7 +433,6 @@
 				3DE2EF740BA0033A00A71444 /* osifctyp.h in Headers */,
 				3DE2EF750BA0033A00A71444 /* ErrorListEntry.h in Headers */,
 				3DE2EF760BA0033A00A71444 /* CocoaTadsAppDelegate.h in Headers */,
-				3DE2EF770BA0033A00A71444 /* wchar.h in Headers */,
 				3DE2EF780BA0033A00A71444 /* ProjectTextDocument.h in Headers */,
 				3DE2EF790BA0033A00A71444 /* UKSCTDUserIdentifiersPrefsController.h in Headers */,
 				3DE2EF7A0BA0033A00A71444 /* UKSyntaxColoredTextDocument.h in Headers */,
@@ -783,61 +447,34 @@
 				3DE2EF830BA0033A00A71444 /* UKNibOwner.h in Headers */,
 				3DE2EF840BA0033A00A71444 /* NSFileHandle+AppendToStringAndNotify.h in Headers */,
 				3DE2EF850BA0033A00A71444 /* NSString+FetchNextLine.h in Headers */,
+				556EC58010258586007FBE38 /* wchar.h in Headers */,
+				556EC59510258792007FBE38 /* osfrobtads.h in Headers */,
+				556EC5D61025904D007FBE38 /* t3std.h in Headers */,
+				556EC5F610259189007FBE38 /* missing.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
-/* Begin PBXLegacyTarget section */
-		3DC5DFA40486701B009225F9 /* TADS 2 */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = $ACTION;
-			buildConfigurationList = 3D77754609C119DA00F1FADB /* Build configuration list for PBXLegacyTarget "TADS 2" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/gnumake;
-			buildWorkingDirectory = ../tads/tads2/;
-			dependencies = (
-			);
-			name = "TADS 2";
-			passBuildSettingsInEnvironment = 1;
-			productName = "TADS 2";
-		};
-		3DC5DFA604867095009225F9 /* TADS 3 */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = $ACTION;
-			buildConfigurationList = 3D77754A09C119DA00F1FADB /* Build configuration list for PBXLegacyTarget "TADS 3" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/gnumake;
-			buildWorkingDirectory = ../tads/tads3/;
-			dependencies = (
-				3DC5DFA8048670C7009225F9 /* PBXTargetDependency */,
-			);
-			name = "TADS 3";
-			passBuildSettingsInEnvironment = 1;
-			productName = "TADS 3";
-		};
-/* End PBXLegacyTarget section */
-
 /* Begin PBXNativeTarget section */
-		3DE2EF690BA0033A00A71444 /* CocoaTADS (Upgraded) */ = {
+		3DE2EF690BA0033A00A71444 /* CocoaTADS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3DE2EFCE0BA0033A00A71444 /* Build configuration list for PBXNativeTarget "CocoaTADS (Upgraded)" */;
+			buildConfigurationList = 3DE2EFCE0BA0033A00A71444 /* Build configuration list for PBXNativeTarget "CocoaTADS" */;
 			buildPhases = (
-				3DE2EF6A0BA0033A00A71444 /* ShellScript */,
+				5598C9BA10258163000272CF /* Build FrobTADS */,
+				3DE2EF6A0BA0033A00A71444 /* Remove SVN Folders */,
 				3DE2EF6B0BA0033A00A71444 /* Headers */,
 				3DE2EF860BA0033A00A71444 /* Resources */,
+				3DE2EFC90BA0033A00A71444 /* CopyFiles */,
+				5598C9C210258232000272CF /* Index Help */,
 				3DE2EFAB0BA0033A00A71444 /* Sources */,
 				3DE2EFC60BA0033A00A71444 /* Frameworks */,
-				3DE2EFC90BA0033A00A71444 /* CopyFiles */,
-				3DE2EFCB0BA0033A00A71444 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "CocoaTADS (Upgraded)";
+			name = CocoaTADS;
 			productInstallPath = "$(HOME)/Applications";
 			productName = CocoaTADS;
 			productReference = 3DE2EFD30BA0033A00A71444 /* Workbench.app */;
@@ -849,63 +486,18 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 3D77755209C119DA00F1FADB /* Build configuration list for PBXProject "CocoaTADS" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* CocoaTADS */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
-				2A37F4C6FDCFA73011CA2CEA /* CocoaTADS */,
-				3DE2EF690BA0033A00A71444 /* CocoaTADS (Upgraded) */,
-				3DC5DFA40486701B009225F9 /* TADS 2 */,
-				3DC5DFA604867095009225F9 /* TADS 3 */,
-				3DC5E4280486E72A009225F9 /* All Targets */,
+				3DE2EF690BA0033A00A71444 /* CocoaTADS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A37F4C9FDCFA73011CA2CEA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */,
-				089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */,
-				3DFB258204841572006ACD61 /* UKSyntaxColoredTextDocument.nib in Resources */,
-				3DFB258304841572006ACD61 /* ProjectDocument.nib in Resources */,
-				3DFB258804841596006ACD61 /* DocIcon.icns in Resources */,
-				3DFB258904841596006ACD61 /* SourceIcon.icns in Resources */,
-				3DFB258A04841596006ACD61 /* AppIcon.icns in Resources */,
-				3DFB258B04841596006ACD61 /* Folder.icns in Resources */,
-				3DFB258E04841692006ACD61 /* MainMenu.nib in Resources */,
-				3DC5E32F0486D2B0009225F9 /* TopComment.txt in Resources */,
-				3DC5E3290486D165009225F9 /* OtherConfig.txt in Resources */,
-				3DC5E3310486D2B7009225F9 /* SourcesComment.txt in Resources */,
-				3DC5E32B0486D165009225F9 /* OtherOptions.txt in Resources */,
-				3DC5E3330486D3B2009225F9 /* Localizable.strings in Resources */,
-				3DC5E3350486D801009225F9 /* t3make in Resources */,
-				3DC5E42E0486FF16009225F9 /* ErrorIcon.icns in Resources */,
-				3DC5E4300486FF64009225F9 /* WarningIcon.icns in Resources */,
-				3D2650290487EEB6002EC4C7 /* NoteIcon.icns in Resources */,
-				3D02EE77048966FC00906F7E /* Splash.tiff in Resources */,
-				3D95BD9104898FA8009806D1 /* RunTadsScript.txt in Resources */,
-				3D95BD9304899187009806D1 /* DebugTadsScript.txt in Resources */,
-				3DBF1F55048B6FD000000202 /* t3run in Resources */,
-				3DBF22CB048B797900000202 /* Preferences.plist in Resources */,
-				3D6D9C6605D97C3500FC1C62 /* SyntaxColorDefaults.plist in Resources */,
-				3D6D9C6805D97C5F00FC1C62 /* SyntaxDefinition.plist in Resources */,
-				3DB49BD605DD1FD3003FBB98 /* BrokenDocIcon.tiff in Resources */,
-				3DE01E730655A51A00D8F491 /* SelectionRange.tiff in Resources */,
-				3DE01E740655A51A00D8F491 /* InsertionMark.tiff in Resources */,
-				3D42532106E9E57A0065BD08 /* t3resource in Resources */,
-				3D42532206E9E57A0065BD08 /* t3include in Resources */,
-				3D42532306E9E57A0065BD08 /* t3library in Resources */,
-				3DB68903071147D90099B94D /* UKFeedbackProvider.nib in Resources */,
-				3DB68908071147F00099B94D /* UKUpdateChecker.strings in Resources */,
-				3D0ECD3D0745A9780085E9A0 /* UKErrorsWindow.nib in Resources */,
-				3D0ECD530745AEFA0085E9A0 /* MacPAD.url in Resources */,
-				3DD0661807465B7F00C18AE2 /* Suitcase.icns in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3DE2EF860BA0033A00A71444 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -924,109 +516,78 @@
 				3DE2EF920BA0033A00A71444 /* SourcesComment.txt in Resources */,
 				3DE2EF930BA0033A00A71444 /* OtherOptions.txt in Resources */,
 				3DE2EF940BA0033A00A71444 /* Localizable.strings in Resources */,
-				3DE2EF950BA0033A00A71444 /* t3make in Resources */,
 				3DE2EF960BA0033A00A71444 /* ErrorIcon.icns in Resources */,
 				3DE2EF970BA0033A00A71444 /* WarningIcon.icns in Resources */,
 				3DE2EF980BA0033A00A71444 /* NoteIcon.icns in Resources */,
 				3DE2EF990BA0033A00A71444 /* Splash.tiff in Resources */,
 				3DE2EF9A0BA0033A00A71444 /* RunTadsScript.txt in Resources */,
 				3DE2EF9B0BA0033A00A71444 /* DebugTadsScript.txt in Resources */,
-				3DE2EF9C0BA0033A00A71444 /* t3run in Resources */,
 				3DE2EF9D0BA0033A00A71444 /* Preferences.plist in Resources */,
 				3DE2EF9E0BA0033A00A71444 /* SyntaxColorDefaults.plist in Resources */,
 				3DE2EF9F0BA0033A00A71444 /* SyntaxDefinition.plist in Resources */,
 				3DE2EFA00BA0033A00A71444 /* BrokenDocIcon.tiff in Resources */,
 				3DE2EFA10BA0033A00A71444 /* SelectionRange.tiff in Resources */,
 				3DE2EFA20BA0033A00A71444 /* InsertionMark.tiff in Resources */,
-				3DE2EFA30BA0033A00A71444 /* t3resource in Resources */,
-				3DE2EFA40BA0033A00A71444 /* t3include in Resources */,
-				3DE2EFA50BA0033A00A71444 /* t3library in Resources */,
 				3DE2EFA60BA0033A00A71444 /* UKFeedbackProvider.nib in Resources */,
 				3DE2EFA70BA0033A00A71444 /* UKUpdateChecker.strings in Resources */,
 				3DE2EFA80BA0033A00A71444 /* UKErrorsWindow.nib in Resources */,
 				3DE2EFA90BA0033A00A71444 /* MacPAD.url in Resources */,
 				3DE2EFAA0BA0033A00A71444 /* Suitcase.icns in Resources */,
+				5598C9CE102582B9000272CF /* frob in Resources */,
+				5598C9CF102582B9000272CF /* t3make in Resources */,
+				556EC570102584B5007FBE38 /* t3doc in Resources */,
+				556EC576102584D0007FBE38 /* lib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3D3FB47B07EB37BD003751D4 /* ShellScript */ = {
+		3DE2EF6A0BA0033A00A71444 /* Remove SVN Folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Remove SVN Folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "find -d \"${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/\" -name \".svn\" -exec rm -r '{}' \\; -print\n";
+		};
+		5598C9BA10258163000272CF /* Build FrobTADS */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Build FrobTADS";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${PROJECT_DIR}/frobtads/\"\n./configure\nmake\n";
+		};
+		5598C9C210258232000272CF /* Index Help */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Index Help";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "find -d ${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/ -name \".svn\" -exec rm -r '{}' \\; -print";
-		};
-		3DD4DA7107FACDBC008CFF52 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "find -d ${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/ -name \".svn\" -exec rm -r '{}' \\; -print\nopen -a /Developer/Applications/Utilities/Apple\\ Help\\ Indexing\\ Tool.app ${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/${PRODUCT_NAME}\\ Help";
-		};
-		3DE2EF6A0BA0033A00A71444 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "find -d ${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/ -name \".svn\" -exec rm -r '{}' \\; -print\nopen -a /Developer/Applications/Utilities/Apple\\ Help\\ Indexing\\ Tool.app ${BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Resources/${PRODUCT_NAME}\\ Help";
+			shellScript = "open -a /Developer/Applications/Utilities/Help\\ Indexer.app \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Resources/${PRODUCT_NAME} Help\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2A37F4CEFDCFA73011CA2CEA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */,
-				3DCB1AAE04835DCD00EF1DCB /* ProjectDocument.m in Sources */,
-				3DCB1AAF04835DCD00EF1DCB /* NSTadsOptFileHelper.mm in Sources */,
-				3DCB1ABA04835EF800EF1DCB /* osgen.c in Sources */,
-				3DCB1ABB04835EF800EF1DCB /* osifc.c in Sources */,
-				3DCB1ABF04835F0A00EF1DCB /* osunixt.c in Sources */,
-				3DCB1AC304835F2900EF1DCB /* tparm.c in Sources */,
-				3DCB1AC404835F2900EF1DCB /* tputs.c in Sources */,
-				3DCB1AC604835F7000EF1DCB /* tccmdutl.cpp in Sources */,
-				3DFB25660484120E006ACD61 /* TadsDummies.c in Sources */,
-				3D18619A0487CB8C00098381 /* ErrorListEntry.m in Sources */,
-				3D02EB05048962D100906F7E /* CocoaTadsAppDelegate.m in Sources */,
-				3DB49BD205DCFED4003FBB98 /* ProjectTextDocument.m in Sources */,
-				3DE01E600655A2A600D8F491 /* UKSyntaxColoredTextDocument.m in Sources */,
-				3DE01E620655A2A600D8F491 /* UKSCTDUserIdentifiersPrefsController.m in Sources */,
-				3DE01E630655A2A600D8F491 /* UKSCTDColorWellPrefsController.m in Sources */,
-				3DE01E6C0655A2F000D8F491 /* NSArray+Color.m in Sources */,
-				3DE01E6E0655A2F000D8F491 /* NSScanner+SkipUpToCharset.m in Sources */,
-				3DE01E6F0655A2F000D8F491 /* UKTextDocGoToBox.m in Sources */,
-				3DB688F8071147940099B94D /* UKFeedbackProvider.m in Sources */,
-				3DB688F9071147940099B94D /* UKUpdateChecker.m in Sources */,
-				3DB36B0E0722E98F00B55A21 /* UKBorderlessWindow.m in Sources */,
-				3D0ECBC207459E240085E9A0 /* UKErrorsWindow.m in Sources */,
-				3D0ECD220745A7BD0085E9A0 /* UKNibOwner.m in Sources */,
-				3DD065600745C39100C18AE2 /* NSFileHandle+AppendToStringAndNotify.m in Sources */,
-				3DD065A10745C9AE00C18AE2 /* NSString+FetchNextLine.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3DE2EFAB0BA0033A00A71444 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1034,11 +595,8 @@
 				3DE2EFAC0BA0033A00A71444 /* main.m in Sources */,
 				3DE2EFAD0BA0033A00A71444 /* ProjectDocument.m in Sources */,
 				3DE2EFAE0BA0033A00A71444 /* NSTadsOptFileHelper.mm in Sources */,
-				3DE2EFAF0BA0033A00A71444 /* osgen.c in Sources */,
 				3DE2EFB00BA0033A00A71444 /* osifc.c in Sources */,
-				3DE2EFB10BA0033A00A71444 /* osunixt.c in Sources */,
-				3DE2EFB20BA0033A00A71444 /* tparm.c in Sources */,
-				3DE2EFB30BA0033A00A71444 /* tputs.c in Sources */,
+				3DE2EFB10BA0033A00A71444 /* osportable.cc in Sources */,
 				3DE2EFB40BA0033A00A71444 /* tccmdutl.cpp in Sources */,
 				3DE2EFB50BA0033A00A71444 /* TadsDummies.c in Sources */,
 				3DE2EFB60BA0033A00A71444 /* ErrorListEntry.m in Sources */,
@@ -1057,28 +615,11 @@
 				3DE2EFC30BA0033A00A71444 /* UKNibOwner.m in Sources */,
 				3DE2EFC40BA0033A00A71444 /* NSFileHandle+AppendToStringAndNotify.m in Sources */,
 				3DE2EFC50BA0033A00A71444 /* NSString+FetchNextLine.m in Sources */,
+				556EC5F410259183007FBE38 /* missing.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		3DC5DFA8048670C7009225F9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3DC5DFA40486701B009225F9 /* TADS 2 */;
-			targetProxy = 3D7DAE22058A5B4A0001102D /* PBXContainerItemProxy */;
-		};
-		3DC5E42A0486E73B009225F9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3DC5DFA604867095009225F9 /* TADS 3 */;
-			targetProxy = 3D7DAE23058A5B4A0001102D /* PBXContainerItemProxy */;
-		};
-		3DE2EFD90BA0036100A71444 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3DE2EF690BA0033A00A71444 /* CocoaTADS (Upgraded) */;
-			targetProxy = 3DE2EFD80BA0036100A71444 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
@@ -1172,282 +713,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3D77754309C119DA00F1FADB /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.1;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = (
-					"-DOS_ANSI",
-					"-DNEXT",
-					"-DUNIX",
-					"-DHAVE_STRCASECMP",
-					"-Dmemicmp=strncmp",
-				);
-				OTHER_LDFLAGS = "-lncurses";
-				PRECOMPILE_PREFIX_HEADER = YES;
-				PREFIX_HEADER = CocoaTADS_Prefix.h;
-				PRODUCT_NAME = Workbench;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		3D77754409C119DA00F1FADB /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUGGING_SYMBOLS = NO;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.1;
-				OTHER_CFLAGS = (
-					"-DOS_ANSI",
-					"-DNEXT",
-					"-DUNIX",
-					"-DHAVE_STRCASECMP",
-					"-Dmemicmp=strncmp",
-				);
-				OTHER_LDFLAGS = "-lncurses";
-				PRECOMPILE_PREFIX_HEADER = YES;
-				PREFIX_HEADER = CocoaTADS_Prefix.h;
-				PRODUCT_NAME = Workbench;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		3D77754509C119DA00F1FADB /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.1;
-				OTHER_CFLAGS = (
-					"-DOS_ANSI",
-					"-DNEXT",
-					"-DUNIX",
-					"-DHAVE_STRCASECMP",
-					"-Dmemicmp=strncmp",
-				);
-				OTHER_LDFLAGS = "-lncurses";
-				PRECOMPILE_PREFIX_HEADER = YES;
-				PREFIX_HEADER = CocoaTADS_Prefix.h;
-				PRODUCT_NAME = Workbench;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
-			name = Default;
-		};
-		3D77754709C119DA00F1FADB /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = tadsc;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		3D77754809C119DA00F1FADB /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUGGING_SYMBOLS = NO;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = tadsc;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		3D77754909C119DA00F1FADB /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = tadsc;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
-		3D77754B09C119DA00F1FADB /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = t3make;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		3D77754C09C119DA00F1FADB /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUGGING_SYMBOLS = NO;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = t3make;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		3D77754D09C119DA00F1FADB /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = t3make;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
-		3D77754F09C119DA00F1FADB /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "All Targets";
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		3D77755009C119DA00F1FADB /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUGGING_SYMBOLS = NO;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "All Targets";
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		3D77755109C119DA00F1FADB /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "All Targets";
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
 		3D77755309C119DA00F1FADB /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1486,11 +751,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CocoaTADS_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OS_ANSI,
-					NEXT,
-					UNIX,
-					HAVE_STRCASECMP,
-					"memicmp=strncmp",
+					"HAVE_BOOL=1",
+					"HAVE_NOT_KEYWORD=1",
+					"HAVE_AND_KEYWORD=1",
+					"HAVE_OR_KEYWORD=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -1500,6 +764,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = Workbench;
+				SDKROOT = "";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1522,11 +787,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CocoaTADS_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OS_ANSI,
-					NEXT,
-					UNIX,
-					HAVE_STRCASECMP,
-					"memicmp=strncmp",
+					"HAVE_BOOL=1",
+					"HAVE_NOT_KEYWORD=1",
+					"HAVE_AND_KEYWORD=1",
+					"HAVE_OR_KEYWORD=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -1536,6 +800,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = Workbench;
+				SDKROOT = "";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1554,11 +819,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CocoaTADS_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OS_ANSI,
-					NEXT,
-					UNIX,
-					HAVE_STRCASECMP,
-					"memicmp=strncmp",
+					"HAVE_BOOL=1",
+					"HAVE_NOT_KEYWORD=1",
+					"HAVE_AND_KEYWORD=1",
+					"HAVE_OR_KEYWORD=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -1568,6 +832,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = Workbench;
+				SDKROOT = "";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1581,46 +846,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3D77754209C119DA00F1FADB /* Build configuration list for PBXApplicationTarget "CocoaTADS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3D77754309C119DA00F1FADB /* Development */,
-				3D77754409C119DA00F1FADB /* Deployment */,
-				3D77754509C119DA00F1FADB /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
-		3D77754609C119DA00F1FADB /* Build configuration list for PBXLegacyTarget "TADS 2" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3D77754709C119DA00F1FADB /* Development */,
-				3D77754809C119DA00F1FADB /* Deployment */,
-				3D77754909C119DA00F1FADB /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
-		3D77754A09C119DA00F1FADB /* Build configuration list for PBXLegacyTarget "TADS 3" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3D77754B09C119DA00F1FADB /* Development */,
-				3D77754C09C119DA00F1FADB /* Deployment */,
-				3D77754D09C119DA00F1FADB /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
-		3D77754E09C119DA00F1FADB /* Build configuration list for PBXAggregateTarget "All Targets" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3D77754F09C119DA00F1FADB /* Development */,
-				3D77755009C119DA00F1FADB /* Deployment */,
-				3D77755109C119DA00F1FADB /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
 		3D77755209C119DA00F1FADB /* Build configuration list for PBXProject "CocoaTADS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1631,7 +856,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
 		};
-		3DE2EFCE0BA0033A00A71444 /* Build configuration list for PBXNativeTarget "CocoaTADS (Upgraded)" */ = {
+		3DE2EFCE0BA0033A00A71444 /* Build configuration list for PBXNativeTarget "CocoaTADS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DE2EFCF0BA0033A00A71444 /* Development */,

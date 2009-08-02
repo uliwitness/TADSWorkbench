@@ -1,0 +1,105 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>IntrinsicClass</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+IntrinsicClass
+<br><span class="navnp"><a class="nav" href="gramprod.htm"><i>Prev:</i> GrammarProd</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="iter.htm"><i>Next:</i> Iterator</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>IntrinsicClass</h1>
+
+<p>Each intrinsic class that a program uses is represented by an
+instance of the intrinsic class IntrinsicClass.  If you didn't major
+in college in computer science, don't worry if contemplating the
+circularity of this notion induces a slight spinning sensation; the
+IntrinsicClass intrinsic class has only a couple of practical
+applications, which are pretty straightforward.
+
+<p>Each time you use the <span class="code">intrinsic class</span> statement to define an
+intrinsic class, the compiler implicitly creates an instance of
+IntrinsicClass to represent the intrinsic class.  (Actually,
+<i>you</i> probably won't ever use the <span class="code">intrinsic class</span> statement;
+you'll probably just <span class="code">#include</span> system header files that use it.)
+The compiler gives this instance the same name as the class.  For
+example, consider the following statement:
+
+<p><div class="code"><pre>
+intrinsic class BigNumber 'bignumber' { }
+</pre></div>
+
+<p>This defines an intrinsic class called BigNumber.  It also creates
+an object of intrinsic class IntrinsicClass, and calls the object
+BigNumber.
+
+<h2>Using IntrinsicClass instances</h2>
+
+<p>The purpose of an IntrinsicClass instance is to identify the class
+of an instance of the associated intrinsic class.  This is useful in
+two situations:
+
+<ul>
+
+<li>with the ofKind() method
+
+<li>with the getSuperclassList() method
+
+</ul>
+
+<h2>The ofKind() method</h2>
+
+<p>ofKind() returns <span class="code">true</span> if the second argument is the
+IntrinsicClass object representing the intrinsic class of the first
+argument.  For example:
+
+<p><div class="code"><pre>
+local x = new BigNumber('100');
+  
+tadsSay(x.ofKind(BigNumber) ? 'yes' : 'no'); "; ";
+tadsSay(x.ofKind(Dictionary) ? 'yes' : 'no'); "\n";
+</pre></div>
+
+<p>This will display "yes; no", because the object is an instance of
+the BigNumber intrinsic class, and is not an instance of the
+Dictionary intrinsic class.
+
+<h2>The getSuperclassList() method</h2>
+
+<p>getSuperclassList() returns a list of the immediate
+superclasses of a given object.  If the object is an instance of an
+intrinsic class, the list will have one element, which is the
+IntrinsicClass object representing the intrinsic class.  For example:
+
+<p><div class="code"><pre>
+x = new BigNumber('100');
+y = x.getSuperclassList();
+</pre></div>
+
+<p>The value of <span class="code">y</span> will be <span class="code">[BigNumber]</span>.
+
+<p>Most intrinsic classes derive from an "abstract" intrinsic class
+called Object, so, for example, <span class="code">BigNumber.getSuperclassList()</span> will
+return <span class="code">[Object]</span>.  Object itself has no superclass, so
+<span class="code">Object.getSuperclassList()</span> will return an empty list.
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+IntrinsicClass
+<br><span class="navnp"><a class="nav" href="gramprod.htm"><i>Prev:</i> GrammarProd</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="iter.htm"><i>Next:</i> Iterator</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

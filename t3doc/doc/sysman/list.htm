@@ -1,0 +1,466 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>List</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+List
+<br><span class="navnp"><a class="nav" href="iter.htm"><i>Prev:</i> Iterator</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="lookup.htm"><i>Next:</i> LookupTable</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>List</h1>
+
+<p>"List" is a native TADS 3 datatype.  Lists are actually instances
+of the intrinsic class List, which means that you can call methods
+defined by the List intrinsic class on list objects.
+
+<h2>Value Semantics</h2>
+
+<p>Lists have "value semantics," which means that a given list value
+is immutable.  Any operation that appears to modify a list value is
+actually creating a new list value, and leaving the original value
+unchanged.  This behavior makes it very easy to work with lists,
+because you never have to worry about how many variables or properties
+refer to a list - even if several variables refer to a list value,
+each variable effectively has its own private copy of the list, so
+changes made to one variable's list won't affect any others.  This
+also means that you can pass a list to a function without having to
+worry about whether the function will modify the list, and similarly
+that you can modify a list passed in as an argument to your functions
+without having to worry about how the changes will affect the caller.
+
+<p>This is discussed in more detail in the <a href='vector.htm'>Vector</a>
+class section.
+
+<h2>List iterations</h2>
+
+<p>A List is a subclass of <a href='collect.htm'>Collection</a>, so
+you can use the <span class="code">createIterator()</span> method to create an Iterator to
+iterate over the elements of the list.  The Iterator that a List
+creates is called an IndexedIterator, and visits the elements of the
+list in index order (the first element visited is the element at index
+1, the second is the element at index 2, and so forth).
+
+<h2>List methods</h2>
+
+<p>List is a subclass of <a href='collect.htm'>Collection</a>, and
+thus defines the Collection methods.  In addition, List defines the
+methods shown below.
+
+<p><span class="code">append(<i>val</i>)</span>
+<div class=fdef>
+
+Appends the value <i>val</i> to this list, returning the resulting
+list.  This is almost the same as using the <span class="code">+</span> operator to append
+<i>val</i> to the list, but differs in that this method always treats
+<i>val</i> as a single new element, even if <i>val</i> is a list.
+Consider the following:
+
+<p><div class="code"><pre>
+local x = [1, 2, 3];
+local y = x + [4, 5];
+local z = x.append([4, 5]);
+</pre></div>
+
+<p>In this example, the value of <span class="code">y</span> is the list <span class="code">[1, 2, 3, 4, 5]</span>:
+if the value on the right of a <span class="code">+</span> operator is a list, the <span class="code">+</span> operator
+appends each value of the list as a separate element.  In contrast,
+the value of <span class="code">z</span> is <span class="code">[1, 2, 3, [4, 5]]</span>, because the <span class="code">append()</span> method
+always treats its argument as a single element of the new list.
+
+<p>Note that you can achieve the same effect using the <span class="code">+</span> operator by
+constructing a new list for the right operand:
+
+<p><div class="code"><pre>
+local y2 = x + [[4, 5]];
+</pre></div>
+
+<p>This will ensure that the value of <span class="code">y2</span> is the same as the value of
+<span class="code">z</span>: <span class="code">[1, 2, 3, [4, 5]]</span>.  However, the <span class="code">append()</span> method is more efficient
+than constructing a new list for the right operand of <span class="code">+</span>, because it's
+not necessary to construct the intermediate list using <span class="code">append()</span>.
+
+</div>
+
+<p><span class="code">appendUnique(<i>lst</i>)</span>
+<div class=fdef>
+
+Appends the elements of the list <i>lst</i> to this list, returning a
+new list consisting only of the unique elements of the combination.
+Each value appearing in the result list will appear in the result list
+only once.  (The same effect could be obtained by concatenating the
+two lists with the <span class="code">+</span> operator then applying <span class="code">getUnique()</span> to the
+result, but this method is more efficient because it avoids
+constructing the fully concatenated list as an intermediate value.)
+
+</div>
+
+<p><span class="code">car()</span>
+<div class=fdef>
+
+Returns the first element of the list.  If the list has no elements,
+returns <span class="code">nil</span>.
+
+<p>(The names "car" and "cdr" are historical; they come from the Lisp
+programming language, which borrowed them from an old IBM mainframe
+instruction set.)
+
+</div>
+
+<p><span class="code">cdr()</span>
+<div class=fdef>
+
+Returns the "tail" of the list; that is, the rest of the list after
+removing the first element.  If the list has no elements, returns <span class="code">nil</span>.
+This function is almost the same as <span class="code">sublist(2)</span>, except that <span class="code">sublist()</span>
+would return an empty list if given an empty list, whereas <span class="code">cdr()</span>
+returns <span class="code">nil</span> in this case.
+
+<p>(The names "car" and "cdr" are historical; they come from the Lisp
+programming language, which borrowed them from an old IBM mainframe
+instruction set.)
+
+</div>
+
+<p><span class="code">countOf(<i>val</i>)</span>
+<div class=fdef>
+
+Returns the number of elements whose values equal <i>val</i>.
+
+</div>
+
+<p><span class="code">countWhich(<i>cond</i>)</span>
+<div class=fdef>
+
+Returns the number of elements for which the callback function
+<i>cond</i> returns a non-false value (anything but <span class="code">nil</span> or 0).  For
+each element, this method calls the callback, passing the current
+element as the argument.  If the callback returns anything but <span class="code">nil</span> or
+0, the method counts the element.  After invoking the callback for
+each element, the method returns the resulting count.
+
+</div>
+
+<p><span class="code">indexOf(<i>val</i>)</span>
+<div class=fdef>
+
+Returns the index of the first element of the list equal to the given
+value.  If <i>val</i> does not appear anywhere in the list, the method
+returns <span class="code">nil</span>.  The first element is at index 1.
+
+</div>
+
+<p><span class="code">indexWhich(<i>cond</i>)</span>
+<div class=fdef>
+
+Finds the first element for which the given condition is true.  The
+method iterates through the elements of the list, starting at the
+first element and proceeding in order, and applies the callback
+function <i>cond</i> to each element.  The callback takes one
+argument, which is the value of the list element, and returns a
+condition result value.  For each element, if the callback function
+returns a non-false value (i.e., any value except <span class="code">nil</span> or 0), the
+method immediately stops the iteration and returns the index of that
+element.  If the callback returns a false value (<span class="code">nil</span> or 0) for
+every element of the list, the method returns <span class="code">nil</span>.
+
+</div>
+
+<p><span class="code">forEach(<i>func</i>)</span>
+<div class=fdef>
+
+Invokes the callback function <span class="code">(<i>func</i>)(<i>value</i>)</span> for each element, in
+order from first to last, passing the value of one element as
+<i>value</i> to the callback on each invocation.  The callback
+function takes one argument, which is the current element, and returns
+no value.  This method returns no value.  This method is a convenient
+means of executing some code for each element of the list.
+
+</div>
+
+<p><span class="code">forEachAssoc(<i>func</i>)</span>
+<div class=fdef>
+
+Invokes the callback function <span class="code">(<i>func</i>)(<i>index</i>, <i>value</i>)</span> for each
+element, in order from first to last, passing each element's index and
+value to the function <i>func</i>.  The callback function returns no
+value.  This method returns no value.  This method is a convenient
+means of executing some code for each element of the list; unlike
+<span class="code">forEach()</span>, this method provides its callback with the index as well as
+the value for each element it visits.
+
+</div>
+
+<p><span class="code">getUnique()</span>
+<div class=fdef>
+
+Returns a new list consisting of the unique elements of the original
+list.  For each value in the original list, the value will appear in
+the new list only once.  The order of the elements in the new list is
+that of the first appearances of the unique elements of the original
+list.  For example, if the original list is <span class="code">[1, 5, 2, 5, 3, 5, 4, 5]</span>,
+this method will return <span class="code">[1, 5, 2, 3, 4]</span>.
+
+</div>
+
+<p><span class="code">insertAt(<i>index</i>, <i>val1</i>, <i>val2</i>, …)</span>
+<div class=fdef>
+
+Returns a new list which results from inserting the given values
+(<i>val1</i>, <i>val2</i>, and so on) into the existing list before
+the element at the position given by <i>index</i>.  At least one value
+argument is required; if multiple value arguments are provided, the
+values are inserted into the list in the same order in which they
+appear in the arguments.
+
+<p>If <i>index</i> is 1, the values are inserted before the first
+element of the existing list (this means that <span class="code">insertAt(1, x)</span> is
+equivalent to <span class="code">prepend(x)</span>), and if <i>index</i> is equal to the
+number of elements in the original list plus 1, the values are
+inserted after the last element of the existing list (so
+<span class="code">lst.insertAt(lst.length() + 1, x)</span> is equivalent to
+<span class="code">lst.append(x)</span>).  An index value less than 1 or greater than the
+number of elements in the list plus 1 is illegal and results in an
+"index out of range" exception.
+
+<p>Because the new elements are inserted before any existing element
+at the insertion point, the index in the result list of the first
+element inserted always equals <i>index</i>.  For example, consider
+this statement:
+
+<p><div class="code"><pre>
+lst = lst.insertAt(5, 'a', 'b', 'c');
+</pre></div>
+
+<p>After this statement is executed, <span class="code">lst[5]</span> will be <span class="code">'a'</span>.
+
+<p>Note that, if any of the values to be inserted are themselves
+lists, each one is inserted as a single list-valued element, in the
+same manner as <span class="code">append(<i>val</i>)</span> and <span class="code">prepend(<i>val</i>)</span>.
+
+</div>
+
+<p><span class="code">intersect(<i>lst2</i>)</span>
+<div class=fdef>
+
+Returns a new list consisting of the intersection of this list and
+<i>lst2</i>; that is, a list consisting of the elements common to both
+this list and <i>lst2</i>.  <i>lst2</i> must also be a list.  If the
+two lists have no elements in common, the result is an empty list.  If
+an element of the shorter list (or, if the lists are of equal length,
+this list) appears more than once in the shorter list, and that
+element value also appears in the longer list, then the element will
+be in the result list the same number of times that it is in the
+shorter list.  An element repeated in the longer list will not be
+repeated in the result list.
+
+</div>
+
+<p><span class="code">lastIndexOf(<i>val</i>)</span>
+<div class=fdef>
+
+Returns the index of the last element in the list whose value equals
+<i>val</i>.  If no element in the list equals <i>val</i>, this method
+returns <span class="code">nil</span>.
+
+</div>
+
+<p><span class="code">lastIndexWhich(<i>cond</i>)</span>
+<div class=fdef>
+
+Returns the index of the last element in the list for which the
+callback function <i>cond</i> returns a non-false value (anything
+except <span class="code">nil</span> or 0).  This method is similar to <span class="code">indexWhich(<i>cond</i>)</span>,
+but scans the list in reverse order, starting at the last element and
+working towards the first.  Returns <span class="code">nil</span> if the callback returns
+<span class="code">nil</span> or 0 for every element.
+
+</div>
+
+<p><span class="code">lastValWhich(<i>cond</i>)</span>
+<div class=fdef>
+
+Returns the value of the last element in the list for which the
+callback function <i>cond</i> returns a non-false value.  This method
+is similar to <span class="code">lastIndexWhich(<i>cond</i>)</span>, but returns the value of the
+matching element rather than its index.  Returns <span class="code">nil</span> if the callback
+returns <span class="code">nil</span> or 0 for every element.
+
+</div>
+
+<p><span class="code">length()</span>
+<div class=fdef>
+
+Returns the number of elements in the list.
+
+</div>
+
+<p><span class="code">mapAll(<i>func</i>)</span>
+<div class=fdef>
+
+For each element of the list, this method invokes the callback
+function <i>func</i>, passing the current element as the single
+argument, then adds the callback's return value to a new list.  The method
+returns the resulting new list, which has the same number of elements
+as the original list.  Each element of the returned list contains the
+result returned by func for the corresponding element of the original
+list.  This method does not modify the original list, but creates a
+new list.
+
+<p>Here's an example that creates a new list consisting of multiplying
+each element of an original list by 2 (naturally, for this to work,
+the original list must consist entirely of integer values):
+
+<p><div class="code"><pre>
+x = [1, 2, 3, 4];
+y = x.applyAll({x: x*2});
+</pre></div>
+ 
+</div>
+
+<p><span class="code">prepend(<i>val</i>)</span>
+<div class=fdef>
+
+Returns a new list which results from inserting the value <i>val</i>
+before the first element of the existing list.  This method is similar
+to <span class="code">append(<i>val</i>)</span>, but this method inserts the new element at the
+beginning of the list rather than at the end.  Note that if <i>val</i>
+is a list, it is prepended as a single list-valued element.
+
+</div>
+
+<p><span class="code">removeElementAt(<i>index</i>)</span>
+<div class=fdef>
+
+Returns a new list which results from deleting the element at the
+given index.  For example, <span class="code">[100, 200, 300].removeElementAt(2)</span>
+yields <span class="code">[100, 300]</span>.  The <i>index</i> value must be at least 1 and
+at most the number of elements in the list; if <i>index</i> is outside
+this range, the method throws an "index out of range" exception.
+
+</div>
+
+<p><span class="code">removeRange(<i>startIndex</i>, <i>endIndex</i>)</span>
+<div class=fdef>
+
+Returns a new list which results from deleting the elements starting
+at <i>startIndex</i> and ending with (and including) <i>endIndex</i>.
+If <i>endIndex</i> equals <i>startIndex</i>, only one value is
+deleted, so <span class="code">removeRange(<i>x</i>, <i>x</i>)</span> is equivalent to <span class="code">removeElementAt(<i>x</i>)</span>.
+
+<p>Both index values <i>startIndex</i> and <i>endIndex</i> must be at
+least 1 and at most the number of elements in the list, and
+<i>endIndex</i> must be greater than or equal to <i>startIndex</i>;
+the method throws an "index out of range" exception if these
+conditions are not met.
+
+</div>
+
+<p><span class="code">sort(<i>descending</i>?, <i>comparisonFunction</i>?)</span>
+<div class=fdef>
+
+Returns a new list consisting of the elements of this list rearranged
+into a sorted order.  By default, this method sorts the elements of
+the list into ascending order, but you can reverse this ordering by
+specifying <span class="code">true</span> for the <i>descending</i> parameter.
+
+<p>The optional <i>comparisonFunction</i> can be used to specify the
+ordering of the result.  If this argument is not specified (or is
+<span class="code">nil</span>), the method will sort the elements according to the standard
+system ordering of values; hence, the elements must be of comparable
+types (such as all integers or all strings).  By specifying a
+comparison function, you can provide your own special ordering, and
+you can also sort values that have no system-defined order, such as
+object values.
+
+<p>If provided, the <i>comparisonFunction</i> value is a pointer to a
+function taking two arguments, which are two values from the list to
+be compared.  The function returns an integer less than zero if the
+first value is less than the first, zero if the two values are equal,
+or an integer greater than zero if the first value is greater than the
+second.
+
+<p>For example, if you wanted to sort a list of objects so that the
+objects are placed into descending order of their "priority" property
+values, where the "priority" property has an integer value, you could
+do this:
+
+<p><div class="code"><pre>
+lst = [obj1, obj2, obj3];
+sortedLst = lst.sort(true, { a, b: a.priority - b.priority });
+</pre></div>
+
+</div>
+
+<p><span class="code">sublist(<i>start</i>, <i>length</i>?)</span>
+<div class=fdef>
+
+Creates and returns a new list consisting of a sublist of this list
+starting at the element of this list at index <i>start</i>, and
+continuing for the number of elements given by <i>length</i>, if
+present, or to the end of this list if not.  Examples:
+
+<p><div class="code"><pre>
+[1, 2, 3].sublist(2) yields [2, 3]
+[1, 2, 3].sublist(2, 1) yields [2]
+</pre></div>
+
+</div>
+
+<p><span class="code">subset(<i>func</i>)</span>
+<div class=fdef>
+
+Creates and returns a new list containing the elements of this list
+for which the callback function <i>func</i> returns true (i.e., any
+value other than <span class="code">nil</span> or 0).  For each element of the
+source list, this method invokes the callback function, passing the
+value of the current element as the callback function's single
+argument.  If the callback returns <span class="code">nil</span> or 0, the
+method omits the element from the result; otherwise, the method
+includes the element in the result list.  The new list's elements will
+be in the same order as the selected elements from the source list.
+
+<p>This method does not modify the original list.
+
+<p>This example uses a short-form anonymous function to create a new
+list that contains only the elements from an original list whose
+values are greater than 10.
+
+<p><div class="code"><pre>
+x = [5, 10, 15, 20];
+y = x.subset({x: x &gt; 10});
+</pre></div>
+
+</div>
+
+<p><span class="code">valWhich(<i>cond</i>)</span>
+<div class=fdef>
+
+Returns the value of the first element for which the callback function
+<i>cond</i> returns non-false (i.e., anything except <span class="code">nil</span> or 0).
+This method is similar to <span class="code">indexWhich(<i>cond</i>)</span>, but returns the value
+of the first matching element rather than its index.  If <i>cond</i>
+returns <span class="code">nil</span> or 0 for every element of the list, this method returns
+<span class="code">nil</span>.
+
+</div>
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+List
+<br><span class="navnp"><a class="nav" href="iter.htm"><i>Prev:</i> Iterator</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="lookup.htm"><i>Next:</i> LookupTable</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

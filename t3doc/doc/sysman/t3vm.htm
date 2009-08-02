@@ -1,0 +1,293 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>t3vm Function Set</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+t3vm Function Set
+<br><span class="navnp"><a class="nav" href="builtins.htm"><i>Prev:</i> The Intrinsics</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="tadsgen.htm"><i>Next:</i> tads-gen Function Set</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>t3vm Function Set</h1>
+
+<p>The t3vm function set provides access to internal operations in the
+VM.  This function set is provided by all T3 VM implementations and
+all host applications.
+
+<p><span class="code">t3AllocProp()</span>
+<div class=fdef>
+
+Allocates a new property ID value, which is a property not previously
+used by any object in the program.  Note that property ID's are a
+somewhat limited resource: only about 65,000 can be allocated,
+including those defined statically in the program.
+
+</div>
+
+<p><span class="code">t3DebugTrace(<i>mode</i>, ...)</span>
+<div class=fdef>
+
+Debugger interface.  The <i>mode</i> parameter indicates the function
+to be performed.  Any arguments after mode are specific to the mode.
+The valid <i>mode</i> values are:
+
+<ul>
+
+<li><span class="code">T3DebugCheck</span> - check to determine if a debugger is present.
+Returns <span class="code">true</span> if a debugger is present, <span class="code">nil</span> if not.
+
+<li><span class="code">T3DebugBreak</span> - break into the debugger, if present.  Returns
+<span class="code">true</span> if a debugger is present, <span class="code">nil</span> if not.  If the function
+returns <span class="code">nil</span>, it will have had no effect, since it's meaningless to
+break into the debugger if no debugger is present.  If a debugger is
+present, though, the function will activate single-stepping mode,
+which will cause the debugger to take control immediately after the
+function returns.
+
+</ul>
+
+<p>If this function is called with any other values for the
+<i>mode</i> argument, it simply ignores any additional arguments and
+returns <span class="code">nil</span>; this allows for compatible extensions to the function
+in the future by the addition of new mode values.
+
+</div>
+
+<p><span class="code">t3GetGlobalSymbols()</span>
+<div class=fdef>
+
+Returns a LookupTable object populated with all of the program's
+global compile-time symbols.  The symbol table is available during
+pre-initialization (i.e., when <span class="code">t3GetVMPreinitMode()</span> returns
+<span class="code">true</span>), and during normal execution when the program was compiled
+for debugging; at all other times, the symbol table is not available,
+and this function returns nil.
+
+<p>For more information, see the <a href='reflect.htm'>reflection</a>
+section.
+
+</div>
+
+<p><span class="code">t3GetStackTrace(<i>level</i>?)</span>
+<div class=fdef>
+
+Returns information on the current call stack, or on a given stack
+level.
+
+<p>If <i>level</i> is omitted, the function returns a list of
+<span class="code">T3StackInfo objects</span>, one for each level of the entire stack.  Each
+object in the list represents one level, or "frame," of the stack
+trace.  A frame is the data structure that the virtual machine
+establishes each time the program invokes a method or function; the
+frame contains information on the function or object method invoked,
+and the actual parameters (i.e., the argument values).
+
+<p>The first <span class="code">T3StackInfo</span> object in the list represents the current
+function or method - that is, the code that invoked
+<span class="code">t3GetStackTrace()</span>.  The second element of the list represents the
+current code's caller, the third element represents the second
+element's caller, and so on.
+
+<p>If <i>level</i> is specified, it's an integer giving the single
+stack level to retrieve: 1 is the current active level, 2 is the
+immediate caller, and so on.  The function then returns a single
+T3StackInfo object giving the description of that level.  (The return
+value isn't a list in this case-it's simply the <span class="code">T3StackInfo</span>
+object.)
+ 
+<p><span class="code">T3StackInfo</span> is an ordinary class defined in the basic
+system library.  This class defines the following properties:
+
+<ul>
+
+<li><span class="code">func_</span> - the function at this level, as a function pointer, or
+<span class="code">nil</span> if this is an object method
+
+<li><span class="code">obj_</span> - the object whose method is being invoked, or <span class="code">nil</span> if
+this is a function.  Note that this is not necessarily the same as the
+<span class="code">self</span> in the frame: this is the object where the method is actually
+defined, which can be a base class of the <span class="code">self</span> object if the method
+was inherited.
+
+<li><span class="code">prop</span> - the property pointer value for the method invoked, or
+<span class="code">nil</span> if this is a function.
+
+<li><span class="code">self_</span> - the <span class="code">self</span> object in the frame, or <span class="code">nil</span> if this
+is a function.
+
+<li><span class="code">argList_</span> - a list of the actual parameters (argument values)
+to the function or method.  The elements of the list are in the same
+order as the arguments.
+
+<li><span class="code">srcInfo_</span> - the source code location for the next execution
+point in the frame, or <span class="code">nil</span> if source information is not available.
+Source information is available only if the program was compiled for
+debugging, but is never available for system routines.  The source
+information is given as a list of two elements: the first element is a
+string giving the name of a source file, and the second is an integer
+giving the line number in the source file.  Note that <span class="code">srcInfo_</span>
+indicates the location of the next instruction that will be executed
+when control returns to the frame, so this will frequently indicate
+the next source code statement after the one that actually invoked the
+next more nested frame.
+
+</ul>
+
+<p>In addition, the class defines the following method:
+
+<ul>
+
+<li><span class="code">isSystem()</span> - returns true if the frame represents a call to an
+intrinsic function or a intrinsic class method.  If this returns true,
+then none of the other information in the frame is available,
+including the argument list.
+
+</ul>
+
+</div>
+
+<p><span class="code">t3GetVMBanner()</span>
+<div class=fdef>
+
+Returns the T3 VM banner string, which is a string identifying the VM,
+its version number, and its copyright information.  This string is
+suitable for displaying as a start-up banner.
+
+</div>
+
+<p><span class="code">t3GetVMID()</span>
+<div class=fdef>
+
+Returns the T3 VM identification string.  This is a short string
+identifying the particular VM implementation; each different
+implementation has a unique identifier.  The reference T3 VM
+implementation has the identifying string 'mjr-T3'.
+
+<p>Note that the VM identification string identifies the VM itself,
+not the host application environment.
+
+</div>
+
+<p><span class="code">t3GetVMPreinitMode()</span>
+<div class=fdef>
+
+Returns <span class="code">true</span> if the VM is operating in pre-initialization mode,
+<span class="code">nil</span> if the VM is operating in normal execution mode.
+Pre-initialization mode is the mode that's active during the preinit
+phase of compilation.
+
+</div>
+
+<p><span class="code">t3GetVMVsn()</span>
+<div class=fdef>
+
+Get the T3 VM version number.  This returns an integer value; the
+high-order 16 bits of the value give the major version number of the
+VM; the next 8 bits give the minor version number; and the low-order 8
+bits give the patch release number.  So, if <i>V</i> is the return
+value of this function,
+
+<ul>
+<li><span class="code">((V &gt;&gt; 16) &amp; 0xffff)</span> yields the major version number
+<li><span class="code">((V &gt;&gt; 8) &amp; 0xff)</span> yields the minor version number
+<li><span class="code">(V &amp; 0xff)</span> yields the patch release number
+</ul>
+
+</div>
+
+<p><span class="code">t3RunGC()</span>
+<div class=fdef>
+
+Explicitly runs the garbage collector.  Since the garbage collector
+runs automatically from time to time, it is never necessary to call
+this function explicitly.  However, if the programmer identifies a
+particular point at which a large number of objects have suddenly
+become unreachable, and when a large number of objects are likely to
+be allocated soon, it might be advantageous to run the garbage
+collector explicitly so that it can optimize memory.  It might also be
+desirable to run garbage collection explicitly when a natural
+user-interface pause is about to occur anyway, since this would take
+advantage of the natural pause to hide any delay that would occur
+running the collector.  No return value.
+
+</div>
+
+<p><span class="code">t3SetSay(<i>val</i>)</span>
+<div class=fdef>
+
+Set the default output function or method to the given value:
+
+<ul>
+
+<li>If <i>val</i> is a property pointer, this sets the default output
+method to the given property.  The VM invokes this property on
+whatever <span class="code">self</span> object is currently active each time a double-quoted
+string is evaluated and each time an embedded expression in a
+double-quoted string is to be displayed.  The VM invokes this function
+only when all of the following conditions are true at the time a
+string is to be displayed:
+
+  <ul>
+
+  <li>There is a valid <span class="code">self</span> object (i.e., a method is being
+  executed, not a stand-alone function).
+
+  <li>A default display method has been defined with <span class="code">t3SetSay()</span>.
+
+  <li>The current <span class="code">self</span> object defines or inherits the default display
+  method.
+
+  </ul>
+
+If these conditions aren't all true, the VM uses the default display
+function instead.
+
+<li>If <i>val</i> is a function pointer (to a user-defined function,
+not an intrinsic function), this sets the default output function to
+the function <i>val</i> points to.  The function must take a single
+argument, which is the value to be displayed, and returns no value.
+The VM invokes this function when a double-quoted string is evaluated,
+and when an embedded expression in a double-quoted string is to be
+displayed, except that the default display method is called instead
+when applicable.
+
+<li>If <i>val</i> is the special value <span class="code">T3SetSayNoMethod</span>, this
+removes any default output method.
+
+<li>If <i>val</i> is the special value <span class="code">T3SetSayNoFunc</span>, this
+removes any default output function.
+
+</ul>
+
+<p>This return value gives the previous default output function or
+method.  If <i>val</i> is a property pointer or the special value
+<span class="code">T3SetSayNoMethod</span>, the return value is the old default output
+method; otherwise, the return value is the old default output
+function.  The special values <span class="code">T3SetSayNoFunc</span> and
+<span class="code">T3SetSayNoMethod</span> can also be returned, indicating that there was
+no previous function or method, respectively.  The return value allows
+the caller to save and later restore the setting being changed, which
+is useful when the caller just wants to change the setting temporarily
+while running a particular block of code.
+
+</div>
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+t3vm Function Set
+<br><span class="navnp"><a class="nav" href="builtins.htm"><i>Prev:</i> The Intrinsics</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="tadsgen.htm"><i>Next:</i> tads-gen Function Set</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

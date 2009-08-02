@@ -13,7 +13,8 @@
 extern "C" {
 #endif
 
-#include "os.h"
+#include "osifctyp.h"
+#include "osfrobtads.h"
 #include "tccmdutl.h"
 
 #ifdef __cplusplus

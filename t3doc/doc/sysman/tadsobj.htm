@@ -1,0 +1,225 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>TadsObject</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+TadsObject
+<br><span class="navnp"><a class="nav" href="strcomp.htm"><i>Prev:</i> StringComparator</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="vector.htm"><i>Next:</i> Vector</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>TadsObject</h1>
+
+<p>The objects and classes that you define in your program are of
+intrinsic class TadsObject.  Everything that has "object" as its
+superclass is really a subclass of intrinsic class TadsObject.
+
+<p>For example:
+
+<p><div class="code"><pre>
+class Item: object;
+myObj: object;
+</pre></div>
+
+<p>Both Item and myObj are of intrinsic class TadsObject.
+
+<h2>TadsObject methods</h2>
+
+<p>TadsObject is a subclass of the root intrinsic class, Object, so
+all of the methods that Object defines are inherited by TadsObject
+instances as well.  In addition to the Object methods, TadsObject
+provides its own methods, described below.
+
+<p><span class="code">createClone()</span>
+<div class=fdef>
+
+Creates a new object that is an identical copy of this object.  The
+new object will have the same superclasses as the original, and the
+identical set of properties defined in the original.
+
+<p>No constructor is called in creating the new object, since the
+object is explicitly initialized by this method to have the exact
+property values of the original.
+
+<p>The clone is a "shallow" copy of the original, which means that the
+clone refers to all of the same objects as the original.  For example,
+if a property of the original points to a Vector, the corresponding
+property of the clone points to the same Vector, not a copy of the
+Vector.
+
+</div>
+
+<p><span class="code">createInstance(...)</span>
+<div class=fdef>
+
+Creates a new instance of the target object.  This method's arguments
+are passed directly to the constructor, if any, of the new object;
+this method doesn't make any other use of the arguments.  The method
+creates the object, invokes the new object's constructor, then returns
+the new object.
+
+<p>This method can be especially useful in static methods defined in
+base classes that are further subclassed, because it essentially
+allows a parameterized "new" operator.  For example, suppose we had a
+base class, Coin, which you subclass into several types: GoldCoin,
+SilverCoin, CopperCoin.  For each of these classes, you want to
+provide a method that creates a new instance of that kind of coin.
+Using the <span class="code">new</span> operator, you'd have to write a separate method in
+each subclass:
+
+<p><div class="code"><pre>
+class Coin: object;
+class GoldCoin: Coin
+  createCoin() { return new GoldCoin(); }
+;
+class SilverCoin: Coin
+  createCoin() { return new SilverCoin(); }
+;
+class CopperCoin: Coin
+  createCoin() { return new CopperCoin(); }
+;
+</pre></div>
+
+<p>This gets increasingly tedious as we add new subclasses.  What we'd
+really like to do is something like this:
+
+<p><div class="code"><pre>
+class Coin: object
+  createCoin() { return new self(); } // illegal!
+;
+</pre></div>
+
+<p>This would let all the subclasses inherit this one implementation,
+which would create the appropriate kind of object depending on the
+subclass on which the method was invoked.  We can't write exactly this
+code, though, because the <span class="code">new</span> operator doesn't allow a variable like
+<span class="code">self</span> to be used as its argument.
+
+<p>So, it's <span class="code">createInstance()</span> to the rescue.  This method lets us
+do exactly what we'd like: create an instance of the current class,
+writing the code only once in the base class.  Using <span class="code">createInstance(),</span>
+we can rewrite the method to get the effect we want:
+
+<p><div class="code"><pre>
+class Coin: object
+  createCoin() { return createInstance(); }
+;
+</pre></div>
+
+</div>
+
+<p><span class="code">createInstanceOf(...)</span>
+<div class=fdef>
+
+Creates a new instance based on multiple superclasses.  This is a
+static (class-level) method, so you can call it directly on
+TadsObject.  With no arguments, this simply creates a basic TadsObject
+instance; this is equivalent to the <span class="code">createInstance()</span> method.
+
+<p>The arguments give the superclasses, in "dominance" order.  The
+superclasses appear in the argument list in the same order in which
+they'd appear in an object definition: the first argument corresponds
+to the leftmost superclass in an ordinary object definition.  Each
+argument is either a class or a list.  If an argument is a list, the
+first element of the list must be a class, and the remainder of the
+elements are the arguments to pass to that class's constructor.  If an
+argument is simply a class (not a list), then the constructor for this
+superclass is not invoked at all.
+
+<p>For example, suppose we had the following class definitions:
+
+<p><div class="code"><pre>
+class A: object
+  construct(a, b) { ... }
+;
+
+class B: object
+  construct(a, b, c) { ... }
+;
+
+class C: object
+  construct() { ... }
+;
+
+class D: A, B, C
+  construct(x, y)
+  {
+    inherited A(x, y);
+    inherited C();
+
+  }
+;
+</pre></div>
+
+<p>Now, suppose that we had never actually defined class D, but we
+want to create an instance dynamically as though it class D had been
+defined.  We could obtain this effect like so:
+
+<p><div class="code"><pre>
+local d = TadsObject.createInstanceOf([A, x, y], B, [C]);
+</pre></div>
+
+<p>This creates a new instance with superclasses A, B, and C, in that
+dominance order.  During construction of the new object, we will
+inherit A's constructor, passing <span class="code">(x,y)</span> as arguments, and we'll
+inherit C's constructor with no arguments.  Note that we pass a list
+containing C alone; this indicates that we do want to call the
+constructor, since the argument is passed as a list rather than as
+simply the object C, but that we have no arguments to send to C's
+constructor.  Note also that we don't invoke B's constructor at all,
+since B is specified without being wrapped in a list.
+
+<p>Note that if constructors are invoked at all, they can only be
+called in the same order in which they appear in the superclass list.
+
+</div>
+
+<p><span class="code">createTransientInstance(...)</span>
+<div class=fdef>
+
+This works like <span class="code">createInstance()</span>, except that the new instance is
+transient.
+
+</div>
+
+<p><span class="code">createTransientInstanceOf(...)</span>
+<div class=fdef>
+
+This works like <span class="code">createInstanceOf()</span>, except that the new instance is
+transient.
+
+</div>
+
+<p><span class="code">setSuperclassList(<i>lst</i>)</span>
+<div class=fdef>
+
+Sets the object's superclasses to the values in <i>lst</i>, which must
+be a list of objects.  The object's superclass list is replaced with
+the given superclass list.  The objects in <i>lst</i> must all be
+TadsObject objects, with one exception: lst is allowed to be
+<span class="code">[TadsObject]</span> (that is, a single-element list containing the
+TadsObject class itself), in which case the object becomes a root
+TadsObject object.
+
+</div>
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+TadsObject
+<br><span class="navnp"><a class="nav" href="strcomp.htm"><i>Prev:</i> StringComparator</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="vector.htm"><i>Next:</i> Vector</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

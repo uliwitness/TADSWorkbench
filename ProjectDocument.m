@@ -238,7 +238,7 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 
 -(BOOL)	writeToFile: (NSString*)fileName ofType: (NSString*)type
 {	
-	FILE*			theFile = fopen([fileName cString],"w");
+	FILE*			theFile = fopen([fileName UTF8String],"w");
 	NSEnumerator*	itty;
 	NSString*		str;
 
@@ -246,14 +246,14 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 		return NO;
 	
 	// Comment at top of file:
-	fputs( [[topComment string] cString], theFile );
+	fputs( [[topComment string] UTF8String], theFile );
 	if( [[topComment string] characterAtIndex: ([[topComment string] length]-1)] != '\r'
 		&& [[topComment string] characterAtIndex: ([[topComment string] length]-1)] != '\n')
 		fputs("\n",theFile);
 	
 	// Options we understand:
 	if( [[outputFile stringValue] length] > 0 )
-		fprintf( theFile, "-o %s\n", [EscapeNSStringForT3m( [outputFile stringValue] ) cString] );
+		fprintf( theFile, "-o %s\n", [EscapeNSStringForT3m( [outputFile stringValue] ) UTF8String] );
 	if( [debugSymbols state] )
 		fputs( "-d\n", theFile );
 	if( [preInit intValue] == 2 )
@@ -276,12 +276,12 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	// Write defines:
 	itty = [constants objectEnumerator];
 	while( str = [itty nextObject] )
-		fprintf( theFile, "-D %s\n", [str cString] );
+		fprintf( theFile, "-D %s\n", [str UTF8String] );
 	
 	// Options we don't understand:
 	if( [[otherOptions string] length] > 0 )
 	{
-		fputs( [[otherOptions string] cString], theFile );
+		fputs( [[otherOptions string] UTF8String], theFile );
 		if( [[otherOptions string] characterAtIndex: ([[otherOptions string] length]-1)] != '\r'
 			&& [[otherOptions string] characterAtIndex: ([[otherOptions string] length]-1)] != '\n')
 			fputs("\n",theFile);
@@ -292,7 +292,7 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	{
 		if( [[sourcesComment string] rangeOfString: @"##sources"].location == NSNotFound )
 			fputs("##sources\n",theFile);
-		fputs( [[sourcesComment string] cString], theFile );
+		fputs( [[sourcesComment string] UTF8String], theFile );
 		if( [[sourcesComment string] characterAtIndex: ([[sourcesComment string] length]-1)] != '\r'
 			&& [[sourcesComment string] characterAtIndex: ([[sourcesComment string] length]-1)] != '\n')
 			fputs("\n",theFile);
@@ -301,20 +301,20 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	// Now write includes, libs, sources:
 	itty = [headerPaths objectEnumerator];
 	while( str = [itty nextObject] )
-		fprintf( theFile, "-I %s\n", [EscapeNSStringForT3m(str) cString] );
+		fprintf( theFile, "-I %s\n", [EscapeNSStringForT3m(str) UTF8String] );
 	
 	itty = [libraries objectEnumerator];
 	while( str = [itty nextObject] )
-		fprintf( theFile, "-lib %s\n", [EscapeNSStringForT3m(str) cString] );
+		fprintf( theFile, "-lib %s\n", [EscapeNSStringForT3m(str) UTF8String] );
 	
 	itty = [sourceFiles objectEnumerator];
 	while( str = [itty nextObject] )
-		fprintf( theFile, "-source %s\n", [EscapeNSStringForT3m(str) cString] );
+		fprintf( theFile, "-source %s\n", [EscapeNSStringForT3m(str) UTF8String] );
 	
 	// Write config info we don't understand:
 	if( [[otherConfig string] length] > 0 )
 	{
-		fputs( [[otherConfig string] cString], theFile );
+		fputs( [[otherConfig string] UTF8String], theFile );
 		if( [[otherConfig string] characterAtIndex: ([[otherConfig string] length]-1)] != '\r'
 			&& [[otherConfig string] characterAtIndex: ([[otherConfig string] length]-1)] != '\n')
 			fputs("\n",theFile);
@@ -370,6 +370,22 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 }
 
 
+-(NSString*)	gameFileName
+{
+	NSString*	gameFileName = nil;
+	if( [outputFileStore length] > 0 )
+		gameFileName = [[[self fileName] stringByDeletingLastPathComponent] stringByAppendingPathComponent: outputFileStore];
+	else
+	{
+		NSString*		firstFile = [sourceFiles objectAtIndex: 0];
+		NSString*		leafName = [[[firstFile lastPathComponent] stringByDeletingPathExtension] stringByAppendingPathExtension: @"t3"];
+		gameFileName = [[[self fileName] stringByDeletingLastPathComponent] stringByAppendingPathComponent: leafName];
+	}
+	
+	return gameFileName;
+}
+
+
 -(IBAction)	buildGame: (id) sender
 {
 	NSArray* params = [NSArray arrayWithObjects:nil];
@@ -391,16 +407,19 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 {
 	NSString*		runtimeName;
 	
-	runtimeName = [[NSUserDefaults standardUserDefaults] stringForKey: @"Tads:Interpreter"];
+	runtimeName = [[NSUserDefaults standardUserDefaults] stringForKey: @"UKTADSInterpreterPath"];
 	if( runtimeName == nil )
-		runtimeName = [[NSBundle mainBundle] pathForResource: @"t3run" ofType: nil];
-	[self runScriptOnGameFile: @"RunTadsScript" withTool: runtimeName];
+		runtimeName = [[NSBundle mainBundle] pathForResource: @"frob" ofType: nil];
+	if( [[runtimeName pathExtension] caseInsensitiveCompare: @"app"] == NSOrderedSame )
+		[[NSWorkspace sharedWorkspace] openFile: [self gameFileName] withApplication: runtimeName];
+	else
+		[self runScriptOnGameFile: @"RunTadsScript" withTool: runtimeName];
 }
 
 
 -(IBAction)	debugGame: (id)sender
 {
-	[self runScriptOnGameFile: @"DebugTadsScript" withTool: [[NSUserDefaults standardUserDefaults] stringForKey: @"Tads:Debugger"]];
+	[self runScriptOnGameFile: @"DebugTadsScript" withTool: [[NSUserDefaults standardUserDefaults] stringForKey: @"UKTADSDebuggerPath"]];
 }
 
 
@@ -418,16 +437,7 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	EscapeNSStringForCommandline( toolName );	// Escape for command line.
 	EscapeCharInNSString( '\\', toolName );	// Now escape again for AppleScript.
 	
-	// gameFileName is mutableCopied immediately after this, so the typecast is OK.
-	if( [outputFileStore length] > 0 )
-		gameFileName = (NSMutableString*) [[[self fileName] stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileStore];
-	else
-	{
-		NSString*		firstFile = [sourceFiles objectAtIndex:0];
-		NSString*		leafName = [[[firstFile lastPathComponent] stringByDeletingPathExtension] stringByAppendingPathExtension:@"t3"];
-		gameFileName = (NSMutableString*) [[[self fileName] stringByDeletingLastPathComponent] stringByAppendingPathComponent:leafName];
-	}
-	gameFileName = [[gameFileName mutableCopy] autorelease];
+	gameFileName = [[[self gameFileName] mutableCopy] autorelease];
 	EscapeNSStringForCommandline( gameFileName );	// Escape for command line.
 	EscapeCharInNSString( '\\', gameFileName );	// Now escape again for AppleScript.
 	cmd = [NSString stringWithFormat: [NSString stringWithContentsOfFile: [[NSBundle mainBundle] pathForResource:fname ofType:@"txt"]], toolName, gameFileName];
@@ -508,7 +518,10 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
 	tadsc = [[NSTask alloc] init];
 	
 	// Set up the task:
-	[tadsc setLaunchPath: [bndl pathForResource:@"t3make" ofType:nil]];
+	NSString*	tadsCompilerPath = [[NSUserDefaults standardUserDefaults] objectForKey: @"UKTADSCompilerPath"];
+	if( !tadsCompilerPath )
+		tadsCompilerPath = [bndl pathForResource:@"t3make" ofType: nil];
+	[tadsc setLaunchPath: tadsCompilerPath];
 	[tadsc setCurrentDirectoryPath: currentDir];	// Make sure current directory is set to makefile's directory.
 	[tadsc setStandardOutput: tadscPipe];			// Redirect stdout...
 	[tadsc setStandardError: tadscPipe];			// ... and stderr just in case.
@@ -1195,18 +1208,21 @@ static ProjectDocument*		sProjectDocumentCurrDocument = nil;
     // In t3include/t3library?
     if( suffixedPathT )
     {
-        tempPath = [[NSBundle mainBundle] pathForResource:@"t3include" ofType:@""];
+        tempPath = [[NSBundle mainBundle] pathForResource:@"lib" ofType:@""];
         tempPath = [tempPath stringByAppendingPathComponent: suffixedPathT];
-        [arr addObject: tempPath];
+        if( tempPath )
+			[arr addObject: tempPath];
         tempPath = [[NSBundle mainBundle] pathForResource:@"t3library" ofType:@""];
         tempPath = [tempPath stringByAppendingPathComponent: suffixedPathT];
-        [arr addObject: tempPath];
+        if( tempPath )
+			[arr addObject: tempPath];
     }
     if( suffixedPathTL )
     {
         tempPath = [[NSBundle mainBundle] pathForResource:@"t3library" ofType:@""];
         tempPath = [tempPath stringByAppendingPathComponent: suffixedPathTL];
-        [arr addObject: tempPath];
+        if( tempPath )
+			[arr addObject: tempPath];
     }
     
     return arr;

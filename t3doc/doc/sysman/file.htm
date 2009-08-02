@@ -1,0 +1,557 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>File</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+File
+<br><span class="navnp"><a class="nav" href="dict.htm"><i>Prev:</i> Dictionary</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="gramprod.htm"><i>Next:</i> GrammarProd</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>File</h1>
+
+<p>The File intrinsic class provides access to create, read, and write
+files.  A "file," generally speaking, is a stream of bytes stored on a
+device such as a hard disk, with a name that programs and users can
+use to refer to the byte stream.
+
+<p>In addition to reading and writing ordinary operating system files,
+the File class can be used to read "resources."  A resource is
+essentially a file, but has two important differences.  First, a
+resource is referenced using a URL-style notation, which is a
+universal notation that is identical on all operating systems; "URL"
+stands for "uniform resource locator," which is a Web standard.
+Resources don't use true URL's, but rather borrow the standard URL
+notation for representing relative (subdirectory) paths.  Second, a
+resource can be embedded into the program's image file, or into an
+external resource bundle file, using a tool that comes with the TADS 3
+compiler.  The resource mechanism's benefit is that it allows a
+developer to bundle extra data embedded directly in the program's
+image file, which simplifies distributing and installing the program
+by reducing the number of files that have to be shipped along with it.
+
+<p>To use File objects, you must <span class="code">#include &lt;file.h&gt;</span> in your source
+files.
+
+<h2>File Formats</h2>
+
+<p>TADS 3 provides access to files using three basic "formats."  A
+file's format is simply the way the file's data are arranged; each
+format is useful in different situations.  The basic formats are:
+
+<ul>
+
+<li>Text.  A file in text format stores a sequence of ordinary
+characters (letters, numbers, punctuation), organized into "lines."  A
+line of text is simply a sequence of characters ending with a special
+"newline" character or character sequence.  Text format files are
+useful when you want to read or write data intended for direct viewing
+or editing by a person, and because of their simple format can be
+interchanged among many different application programs.  When you use
+a text format file, TADS automatically converts between the Unicode
+characters that TADS uses internally and the local character set used
+by the file, and TADS also automatically translates newline sequences
+in the file according to local conventions, which vary among
+platforms.
+
+<li>Data.  A file in "data" format can store integers, enums, strings,
+ByteArray values, BigNumber values, and "true" values.  Data format
+files use a private data format that only TADS can read and write, so
+this format is not useful for files that must be interchanged with
+other application programs.  When you wish to create a file for use
+only by your program or other TADS programs, though, this format is
+convenient because it allows you to read and write all of the
+datatypes listed above directly - TADS automatically converts the
+values to and from an appropriate representation in the file.  This
+format is also convenient because the format is portable to all TADS
+platforms - a "data" format file is binary-compatible across all
+platforms where TADS runs, with no conversions of any kind necessary
+when you copy a file from one type of system to another.
+
+<li>Raw.  A file in raw format simply stores bytes, and gives your
+program direct access to the bytes with no translation of any kind.
+Raw format is a lot more work than text or data format, because your
+program must interpret all of the bytes in a file with no help from
+TADS, but this format gives you total flexibility to work with file
+formats defined by other applications.  For example, you could use
+the raw format to read a JPEG file.
+
+</ul>
+
+<p>Resources can be read using the Text and Raw formats.
+
+<h2>Creating a File object</h2>
+
+<p>A File object gives you working access to a file on disk.  The File
+object keeps track of all of the information involved with your access
+to the file: the format you're using to read and write the file, the
+type of access you have to the file, and the current position in the
+file where you're reading or writing.
+
+<p>You do <b>not</b> use the <span class="code">new</span> operator to create a File object.
+Instead, you use one of the "open" methods of the File class itself.
+The "open" methods come in two main varities: files and resources.
+They also differentiate which type of format you're using to access
+the file.
+
+<p>
+<span class="code">File.openTextFile(<i>filename</i>, <i>access</i>, <i>charset</i>?)</span><br>
+<span class="code">File.openDataFile(<i>filename</i>, <i>access</i>)</span><br>
+<span class="code">File.openRawFile(<i>filename</i>, <i>access</i>)</span>
+
+<div class=fdef>
+
+The <i>filename</i> argument is a string giving the name of the
+file to be opened or created.
+
+<p>The <i>access</i> argument gives the type of access you want to the
+file, and determines whether an existing file is to be used or a new
+file is to be created.  The <i>access</i> value can be one of the
+following constants:
+
+<ul>
+
+<li><span class="code">FileAccessRead</span> - the file is to be opened for reading.  The file
+must exist, or the method will throw a <span class="code">FileNotFoundException</span>.
+
+<li><span class="code">FileAccessWrite</span> - the file is to be opened for writing.  If no
+file of the given name exists, a new file is created.  If a file with
+the same name already exists, the existing file is replaced with the
+new file, and any contents of the existing file are discarded.  If the
+file cannot be created, a <span class="code">FileCreationException</span> is thrown.
+
+<li><span class="code">FileAccessReadWriteKeep</span> - the file is to be opened for both
+reading and writing.  If the file already exists, the existing file is
+opened, otherwise a new file is created.  If the file cannot be
+opened, a <span class="code">FileOpenException</span> is thrown.
+
+<li><span class="code">FileAccessReadWriteTrunc</span> - the file is to be opened for both
+reading and writing.  If the file already exists, its existing
+contents are discarded (the file is truncated to zero length); if the
+file doesn't exist, a new file is created.  If the file cannot be
+opened, a FileOpenException is thrown.
+
+</ul>
+
+<p><span class="code">File.openTextFile(<i>filename</i>, <i>access</i>, <i>charset</i>?)</span> opens a file in
+text format.  Any access mode may be used with this method.  If the
+<i>charset</i> argument is given, it must be an object of the
+CharacterSet intrinsic class giving the character set to be used to
+translate between the file's character set and the internal TADS
+Unicode character set.  If this argument is missing, the File object
+will use the plain ASCII character set by default.
+
+<p><span class="code">File.openDataFile(<i>filename</i>, <i>access</i>)</span> opens a file in "data"
+format.  Any access mode may be used with this method.
+
+<p><span class="code">File.openRawFile(<i>filename</i>, <i>access</i>)</span> opens a file in "raw" format.
+Any access mode may be used with this method.
+
+<p>All of the "open" methods check the file safety level settings to
+ensure that the file access is allowed.  If the file safety level is
+too restrictive for a requested operation, the method throws a
+<span class="code">FileSafetyException</span>.  The file safety level is a setting that the
+user specifies in a manner that varies by interpreter; it allows the
+user to restrict the operations that a program running under the
+interpreter can perform, to protect the user's computer against
+malicious programs.
+
+<p>On success, these methods return a new File object that can be
+used for subsequent input/output operations on the file.  On failure,
+these methods will throw a <span class="code">FileException</span> subclass indicating
+which type of error occurred:
+
+<ul>
+
+<li><span class="code">FileNotFoundException</span> - indicates that the requested file doesn't
+exist.  This is thrown when the access mode requires an existing
+file but the named file does not exist.
+
+<li><span class="code">FileCreationException</span> - indicates that the requested file could not
+be created.  This is thrown when the access mode requires creating
+a new file but the named file cannot be created.
+
+<li><span class="code">FileOpenException</span> - indicates that the requested file could not be
+opened.  This is thrown when the access mode allows either an
+existing file to be opened or a new file to be created, but neither
+could be accomplished.
+
+<li><span class="code">FileSafetyException</span> - the requested access mode is not allowed for
+the given file due to the current file safety level set by the
+user.  Users can set the file safety level (through command-line
+switches or other preference mechanisms which vary by interpreter)
+to restrict the types of file operations that applications are
+allowed to perform, in order to protect their systems from
+malicious programs.  This exception indicates that the user has set
+a safety level that is too restrictive for the requested operation.
+
+</ul>
+
+</div>
+
+<p>
+<span class="code">openTextResource(<i>resName</i>, <i>charset</i>?)</span><br>
+<span class="code">openRawResource(<i>resName</i>)</span>
+
+<div class=fdef>
+
+The <i>resName</i> argument gives the name of the resource to be
+opened.  This is given as a URL-style relative path name: the "/"
+character is used as the path separator, but the path cannot start
+with a "/", as it must be relative to the working directory (which is
+generally the directory containing the image file).  Note that the URL
+notation is universal: you must always use the same "/" path separator
+notation, regardless of the operating system.  The File object
+automatically converts the URL-style path to the correct local
+conventions.  This means that when you're opening a resource file, you
+don't have to be concerned with the local file system naming rules;
+simply use the standard URL format, and the File object will
+automatically adapt to the platform at run-time.
+
+<p>The <i>charset</i> argument has the same meaning as it does for
+<span class="code">openTextFile()</span>.
+
+<p>Note that the open-resource methods don't take an access-mode
+argument, as the open-file methods do, because resource files can only
+be opened for reading.  <span class="code">FileAccessRead</span> is the only possible access
+mode for a resource, so the methods don't need a separate argument for
+the mode.
+
+<p>The open-resource methods are not sensitive to the file safety
+level.  Since resources can only be read, never written, and are
+constrained to the image file's directory and its subdirectories
+(since their paths are always relative to the image file's home
+directory), it's not possible for a T3 program to do any damage to the
+system using resources, and highly unlikely that a program could use
+them to gain access to any sensitive system information.  Resources
+are thus inherently "sandboxed" to a degree that no extra file safety
+protection is required.
+
+<p>On success, these methods return a new File object that can be
+used subsequently to read from the resource.  On failure, they throw
+the same types of exceptions as the <span class="code">openFileXxx()</span> methods.
+
+</div>
+
+<h2>Special Files</h2>
+
+<p>In most cases, you open a file by referring to a particular
+filename and location (such as a directory path) in the local file
+system.  In addition, there are certain "special" files that you can
+access.  You don't refer to these files by name, but rather by
+purpose; you tell the interpreter which special file you want, and the
+interpreter figures out where the file is and what it's called. The
+purpose of this layer of indirection is that it allows the interpreter
+to choose the right name for the file, given its purpose, based on
+local conventions.
+
+<p>To open a special file, you simply pass in the special file
+identifier (defined in file.h) in place of the <i>filename</i>
+argument to one of the <span class="code">openFileXxx()</span> methods.  Here are the
+special files currently defined:
+
+<ul>
+
+<li><span class="code">LibraryDefaultsFile</span> - this file's purpose is to store global
+defaults for preference settings.  A run-time library can use this
+file as a repository of default configuration data.  This file might
+be global to the entire machine, or each user might have their own
+copy.  In any case, the configuration file is global to all T3
+programs, so it will usually reside in some central directory (such as
+the user's home directory, or the T3 install directory).
+
+</ul>
+
+<p>Special files are <b>not</b> subject to file safety restrictions.
+These files are limited to the specific names and locations designated
+by the interpreter, so it's not possible for a T3 program to use a
+special file to access arbitrary file system data.  Special files are
+thus inherently sandboxed, even without safety level restrictions.
+Each special file represents some functionality that might be
+impossible for T3 programs to implement with normal files under high
+file safety settings; special files allow the interpreter to provide
+the functionality without the risks of lowering the safety settings. 
+
+<h2>File methods</h2>
+
+<p><span class="code">closeFile()</span>
+<div class=fdef>
+
+Close the file.  This flushes internal buffers to the external storage
+device and releases all operating system resources associated with the
+open file.  On many operating systems, when a program is working with
+a file, other programs are not allowed to access the same file, to
+prevent any data corruption that would occur if multiple programs were
+accessing the same data simultaneously without coordinating their
+activities; closing a file tells the operating system that your
+program is finished with the file, and that it is therefore safe to
+allow other programs to access the file.  You are not strictly
+required to call this method when finished with a file, because TADS
+will automatically close the file when the garbage collector
+determines that the File object is no longer usable; however, this
+could result in consuming system resources for much longer than
+necessary, so it is always good programming practice to close files
+explicitly as soon as you know you're done with them.
+
+<p>After closing a file, no further operations can be performed on the
+file.  Any attempts to perform operations on the file will result in a
+<span class="code">FileClosedException</span> being thrown.
+
+</div>
+
+<p><span class="code">getCharacterSet()</span>
+<div class=fdef>
+
+Returns the CharacterSet object that the file is using for its
+character translations.  This is useful only with files in text
+format.
+
+</div>
+
+<p><span class="code">getFileSize()</span>
+<div class=fdef>
+
+Returns the size in bytes of the file.  This is the size of the file
+as it appears on disk, so this might not be the same as the apparent
+size of the file's data stream as the program sees it; for example, if
+the file is being read as a text file, character set translations and
+newline format conversions will usually make the in-memory
+representation differ somewhat from the binary representation on disk.
+
+</div>
+
+<p><span class="code">getPos()</span>
+<div class=fdef>
+
+Returns an integer giving the current read/write position in the file;
+this is simply the byte offset in the file of the next read or write
+operation.  When a file is first opened, this will return zero,
+because the first read or write operation will occur at the first byte
+of the file, which is at offset zero.
+
+</div>
+
+<p><span class="code">readBytes(<i>byteArr</i>, <i>start</i>?, <i>cnt</i>?)</span>
+<div class=fdef>
+
+This function, which is used only for raw files, reads bytes from the
+file into <i>byteArr</i>, which must be an object of intrinsic class
+ByteArray.  If <i>start</i> and <i>cnt</i> are given, they give the
+starting index in the byte array at which the bytes are to be stored
+and the number of bytes to be read; if these are omitted, the function
+reads as many bytes from the file as there are bytes in the byte
+array, and stores them in the byte array starting at its first element
+(index 1).
+
+<p>This function returns the number of bytes actually read from the
+file.  If the end of the file is encountered before the request is
+fulfilled, the return value will be smaller than the number of bytes
+requested.  If the function returns zero, it simply means that there
+are no more bytes available in the file.
+
+<p>Note that if the file is open for write-only access, a
+FileModeException will be thrown.
+
+</div>
+
+<p><span class="code">readFile()</span>
+<div class=fdef>
+
+Reads data from the file and returns the value.  This function reads
+data according to the file's format:
+
+<ul>
+
+<li>Text format: the next line of text is read from the file and
+returned as a string.  The line ends at the next "newline" character
+or character sequence; TADS recognizes newlines according to local
+platform conventions.  Regardless of the local newline conventions,
+the string returned always ends in a single '\n' character, unless the
+line is the last line in the file, and the file ends without a final
+newline sequence.  The characters read from the file are translated
+through the currently active character set, so a valid string in the
+internal Unicode character set is always returned, regardless of the
+character set of the external file.
+
+<li>Data format: the next data item is read from the file and
+returned.  The return value will be of the same type as the value that
+was originally written to the file.
+
+<li>Raw format: this function is not allowed for raw files (a
+FileModeException is thrown if this is attempted on a raw file).
+
+
+</ul>
+
+<p>In any case, when the end of the file is reached, the function
+returns <span class="code">nil</span>.  If any error occurs reading the file, the method throws
+a <span class="code">FileIOException</span>.
+
+<p>Note that if the file is open for write-only access, a
+<span class="code">FileModeException</span> will be thrown.
+
+</div>
+
+<p><span class="code">setPos(<i>pos</i>)</span>
+<div class=fdef>
+
+Set the read/write position in the file to <i>pos</i>, which is an
+integer giving a byte offset in the file.  The first byte in the file
+is at offset zero.
+
+<p>For text and data format files, this function should be used with
+caution.  In particular, you should only use this function to set a
+file position that was previously returned from a call to <span class="code">getPos()</span>.
+Text and data format files have data structures that span multiple
+bytes in the file, so setting the file to an arbitrary byte position
+could cause the next read or write to occur in the middle of one of
+these multi-byte structures, which could corrupt the file or cause
+data read to be misinterpreted.
+
+<p>For raw files, since your program is responsible for the exact byte
+layout of the file, you can set the read/write position wherever you
+want without any danger of confusing the File object.  However, if you
+are defining your own multi-byte structures, you must naturally take
+care to move the file position only to the proper boundaries within
+your own structures.
+
+</div>
+
+<p><span class="code">setPosEnd()</span>
+<div class=fdef>
+
+Sets the read/write position in the file to the end of the file.  Any
+subsequent writing to the file will place new bytes after the last
+existing byte in the file.  This function is useful if you want to add
+new data after all of the existing data in a file, and is also useful
+to determine the size of a file (which you can do by seeking to the
+end of the file and then using <span class="code">getPos()</span> to determine the new position
+in the file). 
+
+<p>Note that the warnings mentioned in <span class="code">setPos()</span> regarding valid
+positions generally don't apply to <span class="code">setPosEnd()</span>.  It is usually
+safe to go to the end of a file, because whatever multi-byte data
+structures occur in the file should be complete units, hence moving to
+the end of the file should set the position to the end of the last
+structure.
+
+</div>
+
+<p><span class="code">writeBytes(<i>byteArr</i>, <i>start</i>?, <i>cnt</i>?)</span>
+<div class=fdef>
+
+This function, which is used only for raw files, writes bytes from
+<i>byteArr</i>, which must be an object of intrinsic class ByteArray,
+to the file.  If <i>start</i> and <i>cnt</i> are given, they give the
+starting index in the byte array and the number of bytes to be
+written; if these are omitted, all of the bytes in the byte array are
+written.  The bytes are written to the file without translation.
+
+<p>This function has no return value; if any error occurs writing the
+bytes, a <span class="code">FileIOException</span> is thrown.
+
+<p>Note that if the file is open for read-only access, a
+<span class="code">FileModeException</span> will be thrown.
+
+</div>
+
+<p><span class="code">writeFile(<i>val</i>)</span>
+<div class=fdef>
+
+Writes the value <i>val</i> to the file.  The value is written
+according to the file's format:
+
+<ul>
+
+<li>Text format: val is converted into a string using the default
+conversion for its type if it's not already a string; if the value is
+not convertible to a string, the function throws a runtime exception.
+The string is written to the file by translating its characters to the
+local character set through the currently active character set object
+for the file.
+
+<li>Data format: the value can be an integer, string, enum, BigNumber,
+ByteArray, or <span class="code">true</span> value.  The value is written in the private TADS
+data-file format so that it can be read back later with the readFile()
+method.
+
+<li>Raw format: this function is not allowed for raw files (a
+FileModeException is thrown if this is attempted on a raw file).
+
+</ul>
+
+<p>Writing an enumerator value to a data format file ties the file to
+the particular version of your program that wrote the file.  When you
+compile your program, the compiler assigns an arbitrary internal
+identifier value to each enumerator, and it is this arbitrary internal
+value that the <span class="code">writeFile()</span> function stores in the file.  When you
+use <span class="code">readFile()</span> to read an enumerator value, the system uses the
+current internal enumerator value assignments made by the compiler.
+Because these values are arbitrary, they can vary from one compilation
+to the next, so it is not guaranteed that a file containing
+enumerators can be correctly read after you have recompiled your
+program.  For this reason, you should never write enumerators to a
+file unless you are certain that the file will only be used by the
+identical version of your program (so it's safe, for example, to use
+enumerators in a temporary file that will be read back in during the
+same run of the program).  If you must store enumerators in a file
+that might be read by a future version of your program, you should use
+some mechanism (such as reflection) to translate enumerator values
+into integers, strings, or other values that you define and can
+therefore keep stable as you modify your program.
+
+<p>If any error occurs writing the data, such as running out of disk
+space, the method throws a <span class="code">FileIOException</span>.  If the file is open for
+read-only access, a <span class="code">FileModeException</span> is thrown.
+
+</div>
+
+<p><span class="code">setCharacterSet(<i>charset</i>)</span>
+<div class=fdef>
+
+Sets the CharacterSet object that the file uses for its character
+translations.  The <i>charset</i> value must be an object of intrinsic
+class CharacterSet.  Subsequent read or write operations will use the
+given character set for character translations.
+
+</div>
+
+<h2>Interaction with save/restore, undo, and restart</h2>
+
+<p>File objects are inherently transient; all instances returned from
+the creation methods (<span class="code">openTextFile()</span>, etc.) are transient and thus not
+affected by save, restore, restart, or undo.
+
+<p>If a File instance is part of the program when pre-initialization
+completes, and is thus saved to the final image file, the instance
+will be "unsynchronized" when the program is loaded.  This means that
+the File object no longer refers to an open operating system file -
+once the object has been saved with the image file and then reloaded,
+there is obviously no longer an active association with the system
+file.  When a File object becomes unsynchronized, it will no longer
+allow any operation that could be affected by the inconsistency.  In
+particular, the file cannot be read or written once it is
+unsynchronized.  To enforce this, the File object throws a
+<span class="code">FileSyncException</span> if any of these operations are attempted on an
+unsynchronized file.
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+File
+<br><span class="navnp"><a class="nav" href="dict.htm"><i>Prev:</i> Dictionary</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="gramprod.htm"><i>Next:</i> GrammarProd</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

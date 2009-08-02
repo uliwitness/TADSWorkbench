@@ -1,0 +1,60 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>GrammarProd</title></head><body>
+<table class=ban><tr><td align=left><span class=title>GrammarProd</span><span class=type>class</span><td align=right><a href="../file/gramprod.h.html">gramprod.h</a>[<a href="../source/gramprod.h.html#26">26</a>]</table><p>
+<table class=nav><tr>
+<td><a href="#_SuperClassTree_">Superclass<br>Tree</a>
+<td><a href="#_SubClassTree_">Subclass<br>Tree</a>
+<td><a href="#_ObjectSummary_">Global<br>Objects</a>
+<td><a href="#_PropSummary_">Property<br>Summary</a>
+<td><a href="#_MethodSummary_">Method<br>Summary</a>
+<td><a href="#_Properties_">Property<br>Details</a>
+<td><a href="#_Methods_">Method<br>Details</a>
+</table><div class=fdesc>
+   The GrammarProd intrinsic class is a specialized type that's used to   create parsers.  An object of this type is created automatically by the   TADS 3 compiler for each 'grammar' statement.  This class encapsulates   the prototype token list and mapping information defined in a 'grammar'   statement, and provides a method to match its prototype to an actual   input token string. 
+<p>
+<code>intrinsic class 
+<b>GrammarProd</b> :  &nbsp; <a href="../object/Object.html">Object</a></code>
+</div>
+<a name="_SuperClassTree_"></a><p><div class=mjhd><span class=hdln>Superclass Tree</span> &nbsp; (in declaration order)</div><p>
+<code><b>GrammarProd</b></code><br>
+<code> &nbsp; &nbsp; &nbsp; &nbsp; <a href="../object/Object.html">Object</a></code><br>
+<a name="_SubClassTree_"></a><p><div class=mjhd><span class=hdln>Subclass Tree</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_ObjectSummary_"></a><p><div class=mjhd><span class=hdln>Global Objects</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_PropSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Properties</span> &nbsp; </div><p>
+<code>
+</code><p>
+<code>
+</code><p>
+<i>(none)</i>
+<a name="_MethodSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Methods</span> &nbsp; </div><p>
+<code>
+<a href="#getGrammarInfo">getGrammarInfo</a>&nbsp; 
+<a href="#parseTokens">parseTokens</a>&nbsp; 
+</code><p>
+<p>Inherited from <code>Object</code> :<br>
+<code>
+<a href="../object/Object.html#getPropList">getPropList</a>&nbsp; 
+<a href="../object/Object.html#getPropParams">getPropParams</a>&nbsp; 
+<a href="../object/Object.html#getSuperclassList">getSuperclassList</a>&nbsp; 
+<a href="../object/Object.html#isClass">isClass</a>&nbsp; 
+<a href="../object/Object.html#isTransient">isTransient</a>&nbsp; 
+<a href="../object/Object.html#ofKind">ofKind</a>&nbsp; 
+<a href="../object/Object.html#propDefined">propDefined</a>&nbsp; 
+<a href="../object/Object.html#propInherited">propInherited</a>&nbsp; 
+<a href="../object/Object.html#propType">propType</a>&nbsp; 
+<a href="../object/Object.html#valToSymbol">valToSymbol</a>&nbsp; 
+</code><p>
+<a name="_Properties_"></a><p><div class=mjhd><span class=hdln>Properties</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Methods_"></a><p><div class=mjhd><span class=hdln>Methods</span> &nbsp; </div><p>
+<a name="getGrammarInfo"></a>
+<table class=decl><tr><td><code>getGrammarInfo ( )</code><td align=right><code><a href="../file/gramprod.h.html">gramprod.h</a>[<a href="../source/gramprod.h.html#40">40</a>]</table><div class=desc>   Retrieve a detailed description of the production.  This returns a   list of GrammarAltInfo objects that describe the rule alternatives   that make up this production. <p>
+</div>
+<a name="parseTokens"></a>
+<table class=decl><tr><td><code>parseTokens (tokenList, dict)</code><td align=right><code><a href="../file/gramprod.h.html">gramprod.h</a>[<a href="../source/gramprod.h.html#33">33</a>]</table><div class=desc>   Parse the token list, starting at this production, using the given   dictionary to look up tokens.  Returns a list of match objects.  If   there are no matches to the grammar, simply returns an empty list. <p>
+</div>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

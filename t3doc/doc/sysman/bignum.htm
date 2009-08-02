@@ -1,0 +1,891 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>BigNumber</title>
+
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+BigNumber
+<br><span class="navnp"><a class="nav" href="scripts.htm"><i>Prev:</i> Input Scripts</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="bytearr.htm"><i>Next:</i> ByteArray</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>BigNumber</h1>
+
+<p>The T3 VM's basic numeric type is the integer type.  While this is
+largely adequate for writing interactive fiction, it's sometimes useful
+to have access to floating-point and high-precision integer arithmetic.
+The BigNumber type provides this functionality.
+
+<p>BigNumber can represent values with enormous precision, storing up
+to 65,000 decimal digits in a value; and can represent a huge range of
+values, with absolute values up to 10<sup>32767</sup> and down to
+10<sup>-32767</sup>.  These limits are so extreme that real-world
+calculations should practically never bump up against them.
+Furthermore, the BigNumber type can store values with whatever
+precision is actually required for each particular value, up to the
+limits; a program can use this flexibility to strike the balance it
+requires between numerical precision and performance.
+
+<p>For reasons that are probably obvious, the more precision a
+BigNumber value stores, the more memory it uses and the more time it
+takes to perform calculations with the number.  BigNumber lets the
+programmer determine how much precision to use, so that the programmer
+can balance the degree of numerical precision against the cost in
+performance.
+
+<p>Note that the BigNumber type is not the "double" or IEEE floating
+point type that readers might have encountered in other programming
+languages.  The BigNumber type is actually a custom type implemented
+entirely in the T3 VM.  This has several advantages over "doubles":
+
+<ul>
+
+<li>BigNumber is portable to any computer, and behaves exactly the
+same way on every computer.  Doubles tend to have subtle but sometimes
+vexing variations from one computer to another.
+
+<li>BigNumber uses a decimal rather than binary encoding, which means
+that any value that can be written in a decimal format can be
+represented exactly without rounding error.  In contrast, some values
+that can be represented exactly in decimal <i>can't</i> be represented
+exactly in a binary encoding.  For example, 1/5 is an endlessly
+repeating bit pattern in binary, much as 1/3 is an endless sequence in
+decimal (0.333333...); this surprises many people, because 1/5 is such
+a nice, round value - 0.2 - in decimal.  This mismatch between what
+can be represented exactly in the two numbering systems can lead to
+the accumulation of unexpected rounding errors - unexpected because
+the intermediate values all look nice and exact when written in
+decimal.  Using a decimal encoding, as BigNumber does, eliminates this
+potential confusion.
+
+<li>BigNumber allows for effectively unlimited precision.  Doubles
+have a fixed - and relatively small - precision.  The nearly unlimited
+precision of BigNumber allows calculations involving very large
+integers, for example, or precise calculations where very large and
+very small values are combined.
+
+</ul>
+
+<p>(We shouldn't make it sound like BigNumber is better in every
+respect; doubles do have some advantages of their own, the foremost
+being better performance.  This is partly because the algorithms for
+doing arithmetic are simpler for a fixed-precision type than for a
+varying-precision type, but the bigger reason is that doubles are
+implemented in hardware on many platforms.  The performance trade-offs
+we have to make for BigNumber seem reasonable, though, given the type
+of application TADS is designed for.  And it's rather neat to be able
+to calculate <i>pi</i> to a thousand digits with a couple of lines of
+code.)
+
+<h2>Working with BigNumber values</h2>
+
+<p>You must <span class="code">#include &lt;bignum.h&gt;</span> in your source files to use the
+BigNumber class.  This file defines the BigNumber class interface.
+
+<p>You can write a BigNumber value as a floating-point constant.
+This is a numeric constant that contains a decimal point or
+an exponent, or both.  Syntactically, that means one of these formats:
+
+<p><div class="syntax"><pre>
+<span class=synPar>digit</span> <span class=synMark>...</span> <span class=synMark>(</span> <span class=synLit>E</span> <span class=synMark>|</span> <span class=synLit>e</span> <span class=synMark>)</span>  <span class=synMark>[</span> <span class=synLit>+</span> <span class=synMark>|</span> <span class=synLit>-</span> <span class=synMark>]</span>  <span class=synPar>digit</span> <span class=synMark>...</span>
+<span class=synMark>[</span> <span class=synPar>digit</span> <span class=synMark>...</span> <span class=synMark>]</span>  <span class=synLit>.</span> <span class=synMark>(</span> <span class=synPar>digit</span> <span class=synMark>...</span> <span class=synMark>)</span>  <span class=synMark>[</span> <span class=synMark>(</span> <span class=synLit>E</span> <span class=synMark>|</span> <span class=synLit>e</span> <span class=synMark>)</span>  <span class=synMark>[</span> <span class=synLit>+</span> <span class=synMark>|</span> <span class=synLit>-</span> <span class=synMark>]</span>  <span class=synPar>digit</span> <span class=synMark>...</span>
+<span class=synPar>digit</span> <span class=synMark>...</span> <span class=synLit>.</span> <span class=synMark>[</span> <span class=synMark>(</span> <span class=synLit>E</span> <span class=synMark>|</span> <span class=synLit>e</span> <span class=synMark>)</span>  <span class=synMark>[</span> <span class=synLit>+</span> <span class=synMark>|</span> <span class=synLit>-</span> <span class=synMark>]</span>  <span class=synPar>digit</span> <span class=synMark>...</span> <span class=synMark>]</span> 
+</pre></div>
+
+<p>For example:
+
+<p><div class="code"><pre>
+x = 3.14159265;
+</pre></div>
+
+<p>This syntax actually creates a BigNumber object that represents
+the given number.  The compiler assigns the BigNumber's precision
+based on the number of significant digits in the constant value:
+this is the number of digits, ignoring leading zeros.  For
+example, <span class="code">0.00001</span> has only one digit of precision, since the
+leading zeroes are ignored, whereas <span class="code">0.00001000</span> has a precision
+of four digits, since trailing zeroes are significant.  The
+one exception to the leading-zero rule is that if the value is
+actually zero, <i>all</i> of the zeroes in the constant are
+significant: so <span class="code">0.0000000</span> has a precision of 8 digits.
+
+<p>You can also use the <span class="code">new</span> operator to create a BigNumber.  Pass
+the value for the number either as an integer or as a character
+string.  You can optionally specify the precision to use for the
+value; if you don't specify a precision, the system infers a precision
+from the value.  If the source value is a string, the implied
+precision is the number of significant digits, the same as for a
+constant BigNumber value; if the source is an integer, the default
+precision is 32 digits.
+
+<p><div class="code"><pre>
+x = new BigNumber(100);
+x = new BigNumber(100, 10); // set precision to 10 digits
+y = new BigNumber('3.14159265');
+z = new BigNumber('1.06e-30');
+z = new BigNumber('1.06e-30', 8); // precision is 8 digits
+</pre></div>
+
+<p>If you specify a string value, you can use a decimal point, and you
+can also use an 'E' to specify a base-ten exponent.  So, the fourth
+value above should be read as 1.06&times;10<sup>-30</sup>.
+
+<p>Using the <span class="code">new</span> operator has the advantage that you can
+explicitly specify the precision you want for the new value.  If you
+do, it overrides the default precision that would otherwise be
+inferred from the source value.
+
+<p>You can perform addition, subtraction, multiplication, division,
+and negation on BigNumber values using the standard operators.  You
+can also use integer values with BigNumber values in calculations,
+although the BigNumber value must always be the first operand in an
+expression involving both a BigNumber and an integer.
+
+<p><div class="code"><pre>
+x = y + z;
+x = (y + z) * (y - z) / 2;
+</pre></div>
+
+<p>Similarly, you can compare BigNumber values using the normal
+comparison operators:
+
+<p><div class="code"><pre>
+if (x &gt; y)
+  // ... 
+</pre></div>
+
+<p>You can convert a BigNumber to a string using the <span class="code">toString()</span>
+function in the tads-gen intrinsic function set.  <span class="code">toString()</span> uses
+a default formatting, though, so if you want control over the
+format, you should use the <span class="code">formatString()</span> method of the BigNumber
+object itself.
+
+<p>You can convert a BigNumber to a regular integer value using the
+<span class="code">toInteger()</span> function from the tads-gen function set.  Note that
+<span class="code">toInteger()</span> throws an error if passed a <span class="code">BigNumber</span> value that's
+too large to represent as a 32-bit integer.  The integer type can only
+store values from -2,147,483,648 to +2,147,483,647.  <span class="code">toInteger()</span>
+rounds numbers with fractional parts to the nearest integer.
+
+<p>You can't use operators other than those listed above with
+BigNumber values.  You can't use a BigNumber as an operand for any of
+the bitwise operators (<span class="code">&amp;</span>, <span class="code">|</span>, <span class="code">~</span>).  You also can't use a
+BigNumber with the integer modulo operator (<span class="code">%</span>), but you can obtain
+similar functionality from the <span class="code">divideBy()</span> method.
+
+<p>You can't use BigNumber values in function and method calls that
+require integer arguments.  You must explicitly convert a BigNumber
+value to an integer with the <span class="code">toInteger()</span> function if you want to pass
+it to a method or function that takes an integer value; the compiler
+does not perform these conversions for you automatically.
+
+<p>Because BigNumber values are, for most purposes, simply object
+references, you can use them where you can use other objects; you can,
+for example, store a BigNumber in a list, or assign it to an object
+property.
+
+<p>Note that the compiler doesn't perform constant folding on
+expressions involving BigNumbers values.  This means that an
+expression like the following will result in a run-time calculation
+being performed every time it's evaluated:
+
+<p><div class="code"><pre>
+#define PI 3.14159265
+x = PI/4;
+</pre></div>
+
+<h2>Calling methods on BigNumber values</h2>
+
+<p>The BigNumber class provides a number of methods for manipulating
+values.  Note that all of the methods that perform calculations return
+new BigNumber values.  A BigNumber object's value is immutable once
+the object is created, so all calculations performed on these objects
+return new objects representing the result values.
+
+<p>These functions are all methods called on a BigNumber object.  For
+example, to calculate the absolute value of a BigNumber value <span class="code">x</span>, we
+would code this:
+
+<p><div class="code"><pre>
+y = x.getAbs();
+</pre></div>
+
+<p>Some of the methods take an argument giving a value to be combined
+with the target number.  For example, to get the remainder of dividing
+10 by 3, we'd write this:
+
+<p><div class="code"><pre>
+x = new BigNumber('10.0000');
+y = new BigNumber('3.00000');
+rem = x.divideBy(y)[2];  // second list item is remainder
+</pre></div>
+
+<h2>BigNumber methods</h2>
+
+<p><span class="code">arccosine()</span>
+<div class=fdef>
+
+Returns the arccosine (the number whose cosine is this value), as a
+value in radians, of the number.  This function is mathematically
+meaningful only for input values from -1 to +1; this function throws a
+run-time exception if the input value is outside of this range.
+
+</div>
+
+<p><span class="code">arcsine()</span>
+<div class=fdef>
+
+Returns the arcsine (the number whose sine is this value), as a value
+in radians, of the number.  This function is mathematically meaningful
+only for input values from -1 to +1; this function throws a run-time
+exception if the input value is outside of this range.
+
+</div>
+
+<p><span class="code">arctangent()</span>
+<div class=fdef>
+
+Returns the arctangent (the number whose tangent is this value), as a
+value in radians, of the number.
+
+</div>
+
+<p><span class="code">copySignFrom(<i>x</i>)</span>
+<div class=fdef>
+
+Returns a number containing the same absolute value as this number,
+but with the sign of x replacing the original value's sign.
+
+</div>
+
+<p><span class="code">cosh()</span>
+<div class=fdef>
+
+Computes the hyperbolic cosine of the number and returns the result.
+
+</div>
+
+<p><span class="code">cosine()</span>
+<div class=fdef>
+
+Computes the trigonometric cosine of the number (interpreted as a
+radian value) and returns the result.  Refer to the description of
+sine() for notes on how the input precision affects the calculation.
+
+</div>
+
+<p><span class="code">degreesToRadians()</span>
+<div class=fdef>
+
+Converts the value from radians to degrees and returns the number of
+degrees.  This simply multiplies the value by (<i>pi</i>/180).
+ 
+</div>
+
+<p><span class="code">divideBy(<i>x</i>)</span>
+<div class=fdef>
+
+Computes the integer quotient of dividing this number by x, and
+returns a list with two elements.  The first element is a BigNumber
+value giving the integer quotient, and the second element is a
+BigNumber value giving the remainder of the division, which is a
+number <i>remainder</i> satisfying the relationship <i>dividend</i>
+<span class="code">=</span> <i>quotient</i><span class="code">*</span><i>divisor</i> <span class="code">+</span> <i>remainder</i>.
+
+<p>Note that the quotient returned from <span class="code">divideBy()</span> is not
+necessarily equal to the whole part of the result of the division
+(<span class="code">/</span>) operator applied to the same values.  If the precision of the
+result (which is, as with all calculations, equal to the larger of the
+precisions of the operands) is insufficient to represent exactly the
+integer quotient result, the quotient returned from this function will
+be rounded differently from the quotient returned by the division
+operator.  The division operator always rounds its result to the
+nearest integer; in contrast, <span class="code">divideBy</span> does <b>not</b> round the
+quotient, but instead truncates any trailing digits beyond the
+result's precision.  The reason for this difference is that the
+truncation ensures that the relationship (dividend = quotient*divisor
++ remainder) always holds for <span class="code">divideBy</span> results, which would not
+always be the case if the quotient were rounded.
+
+<p>Also, the remainder will not necessarily be less than the divisor.
+If the quotient can't be represented exactly (this occurs if the
+precision of the quotient is smaller than its scale), the remainder
+will be the correct value so that the relationship (dividend =
+quotient*divisor + remainder) holds, rather than the unique remainder
+that's smaller than the divisor.  In all cases where the result
+precision is sufficient to represent the exact integer quotient, the
+remainder will satisfy this relationship <b>and</b> will be the unique
+remainder with absolute values less than the divisor.
+
+</div>
+
+<p><span class="code">equalRound(<i>num</i>)</span>
+<div class=fdef>
+
+Determine if this value is equal to num after rounding.  This is
+equivalent to the <span class="code">==</span> operator if the numbers have the same
+precision, but if one number is more precise than the other, this
+rounds the more precise of the two values to the precision of the less
+precise value, then compares the values.  The <span class="code">==</span> operator makes an
+exact comparison, effectively extending the precision of the less
+precise value by adding imaginary zeroes to the end of the number.
+
+</div>
+
+<p><span class="code">expE()</span>
+<div class=fdef>
+
+Returns the result of raising <i>e</i>, the base of the natural
+logarithm, to the power of this number.
+
+</div>
+
+<p><span class="code">formatString(<i>maxDigits</i>, <i>flags</i>?, <i>wholePlaces</i>?, <i>fracDigits</i>?, <i>expDigits</i>?, <i>leadFiller</i>?)</span>
+<div class=fdef>
+
+Formats the number, returning a string with the result.  All of the
+arguments after <i>maxDigits</i> are optional.
+
+<p><i>maxDigits</i> specifies the maximum number of digits to display in the
+formatted number; this is an upper bound only, and doesn't force a
+minimum number of digits.  If necessary, the function uses scientific
+notation to make the number fit in the requested number of digits.
+
+<p><i>wholePlaces</i> specifies the minimum number of places to show
+before the decimal point; if the number doesn't fill all of the
+requested places, the function inserts leading spaces (before the sign
+character, if any).  
+
+<p><i>fracDigits</i> specifies the number of digits to display after
+the decimal point.  This specifies the maximum to display, and also
+the minimum; if the number doesn't have enough digits to display, the
+method adds trailing zeroes, and if there are more digits than
+<i>fracDigits</i> allows, the method rounds the value for display.  
+
+<p><i>expDigits</i> is the number of digits to display in the exponent;
+leading zeroes are inserted if necessary to fill the requested number
+of places.
+
+<p>Each of <i>wholePlaces</i>, <i>fracDigits</i>, and <i>expDigits</i>
+can be specified as -1, which tells the method to use the default
+value, which is simply the number of digits actually needed for the
+respective parts.
+ 
+<p><i>leadFiller</i>, if specified, gives a string that is used
+instead of spaces to fill the beginning of the string, if required to
+satisfy the <i>wholePlaces</i> argument.  This argument is ignored if
+its value is <span class="code">nil</span>.  If a string value is provided for this
+argument, the characters of the string are inserted, one at a time, to
+fill out the <i>wholePlaces</i> requirement; if the end of the string
+is reached before the full set of padding characters is inserted, the
+function starts over again at the beginning of the string.  For
+example, to insert alternating asterisks and pound signs, you would
+specify <span class="code">'*#'</span> for this argument.
+
+<p><i>flags</i> is a combination of the following bit-flag values
+(combined with the bit-wise OR operator, <span class="code">|</span>):
+
+<ul>
+
+<li><span class="code">BignumSign</span> - always show a sign character.  Normally, if the
+number is positive, the function omits the sign character.  If this
+flag is specified, a <span class="code">+</span> sign is shown for a positive number.
+
+<li><span class="code">BignumPosSpace</span> - if the number is positive and this flag is set,
+the function inserts a leading space.  (If <span class="code">BignumSign</span> is specified,
+this flag is ignored.)  This function can be used to ensure that
+positive and negative numbers fill the same number of character
+positions, even when you don't want to use a <span class="code">+</span> sign with positive
+numbers.
+
+<li><span class="code">BignumExp</span> - always show the number in exponential format
+(scientific notation).  If this is not included, the function shows
+the number without an exponent if it will fit in <i>maxDigits</i> digits.
+
+<li><span class="code">BignumExpSign</span> - always show a sign in the exponent.  If this is
+included, a positive exponent will be shown with a <span class="code">+</span> sign.  This
+flag is ignored unless an exponent is displayed (so specifying this
+flag doesn't force an exponent to be displayed).
+
+<li><span class="code">BignumLeadingZero</span> - always show a zero before the decimal point.
+This is only important when the number's absolute value is between 0
+and 1, and an exponent isn't displayed; without this flag, no digits
+will precede the decimal point for such values (so 0.25 would be
+formatted as simply <span class="code">'.25'</span>).
+
+<li><span class="code">BignumPoint</span> - always show a decimal point.  If the number has no
+fractional digits to display, and this flag is included, a trailing
+decimal point is displayed.  Without this flag, no decimal point is
+displayed if no digits are displayed after the decimal point.
+
+<li><span class="code">BignumCommas</span> - show commas to set off thousands, millions,
+billions, and so on.  This flag has no effect if the number is shown
+in scientific notation.  Commas don't count against the
+<i>maxDigits</i> or <i>wholePlaces</i> limits.  However, commas do
+count for leading filler, which ensures that a column of numbers
+formatted with filler and commas will line up properly.
+
+<li><span class="code">BignumEuroStyle</span> - use European-style formatting: use periods
+instead of commas to set off thousands, millions, etc., and use a
+comma instead of a period to indicate the decimal point.
+
+</ul>
+
+</div>
+
+<p><span class="code">getAbs()</span>
+<div class=fdef>
+
+Returns a number containing the absolute value of this number.  (This
+function could be easily coded from a comparison and negation, but the
+method implementation is more efficient.)
+
+</div>
+
+<p><span class="code">getCeil()</span>
+<div class=fdef>
+
+"Ceiling": returns a number containing the least integer greater than
+this number.  For example, the ceiling of 2.2 is 3.  Note that for
+negative numbers, the least integer above a number has a smaller
+absolute value, so the ceiling of -1.6 is -1.
+
+</div>
+
+<p><span class="code">getE(<i>digits</i>)</span>
+<div class=fdef>
+
+Returns the value of <i>e</i> (the base of the natural logarithm,
+approximately 2.781828183) to the given number of digits of precision.
+This is a static method, so you can call this method directly on the
+BigNumber class itself:
+
+<p><div class="code"><pre>
+x = BigNumber.getE(10);
+</pre></div>
+
+<p>The BigNumber class internally caches the value of <i>e</i> to the
+highest precision calculated so far during the program's execution, so
+this routine only needs to compute the value when it is called with a
+higher precision than that of the previously cached value.
+
+</div>
+
+<p><span class="code">getFloor()</span>
+<div class=fdef>
+
+"Floor": returns a number containing the greatest integer less than
+this number.
+
+</div>
+
+<p><span class="code">getFraction()</span>
+<div class=fdef>
+
+Returns a number containing only the fractional part of this number
+(the digits after the decimal point). 
+
+</div>
+
+<p><span class="code">getPi(<i>digits</i>)</span>
+<div class=fdef>
+
+Returns the value of <i>pi</i> (<i>pi</i>, the mathematical constant
+defined as the ratio of a circle's circumfrence to its diameter,
+approximately 3.14159265) to the given number of digits of precision.
+This is a static method, so you can call this method directly on the
+BigNumber class itself:
+
+<p><div class="code"><pre>
+x = BigNumber.getPi(10);
+</pre></div>
+
+<p>The BigNumber class internally caches the value of <i>pi</i> to the
+highest precision calculated so far during the program's execution, so
+this routine only needs to compute the value when it is called with a
+higher precision than that of the cached value.
+
+</div>
+
+<p><span class="code">getPrecision()</span>
+<div class=fdef>
+
+Returns the number of digits of precision that this number stores.
+The return value is of type integer.
+
+</div>
+
+<p><span class="code">getScale()</span>
+<div class=fdef>
+
+Returns a value of type integer giving the base-10 scale of this
+number.  If the return value is positive, it indicates the number of
+digits before the decimal point in the decimal representation of the
+number.  If the return value is zero, it indicates that the number has
+no whole part, and that the first digit after the decimal point is
+non-zero (so the number is greater than or equal to 0.1, and less than
+1.0).  If the return value is negative, it indicates that the number
+has no whole part, and gives the number of digits of zeroes that
+immediately follow the decimal point before the first non-zero digit.
+If the value of the number is exactly zero, the return value is 1.
+
+</div>
+
+<p><span class="code">getWhole()</span>
+<div class=fdef>
+
+Returns a number containing only the whole part of this number (the
+digits before the decimal point).
+
+</div>
+
+<p><span class="code">isNegative()</span>
+<div class=fdef>
+
+Returns true if the number is less than zero, nil if the number is
+greater than or equal to zero.
+
+</div>
+
+<p><span class="code">log10()</span>
+<div class=fdef>
+
+Returns the base-10 logarithm of the number.
+
+</div>
+
+<p><span class="code">logE()</span>
+<div class=fdef>
+
+Returns the natural logarithm of the number.  The logarithm of a
+non-positive number is not a real number, so this function throws a
+run-time exception if the number is less than or equal to zero.
+
+</div>
+
+<p><span class="code">negate()</span>
+<div class=fdef>
+
+Returns a number containing the arithmetic negative of this number.
+
+</div>
+
+<p><span class="code">radiansToDegrees()</span>
+<div class=fdef>
+
+Converts the value from degrees to radians and returns the number of
+radians.  This simply multiplies the value by (180/<i>pi</i>).
+
+</div>
+
+<p><span class="code">raiseToPower(<i>y</i>)</span>
+<div class=fdef>
+
+Computes the value of this number raised to the power <i>y</i> and
+returns the result.  If the value of the target number is negative,
+then <i>y</i> must be an integer: if <i>x</i> &lt; 0, we can rewrite
+<i>x</i><sup><i>y</i></sup> as
+(-1)<sup><i>y</i></sup>(-<i>x</i>)<sup><i>y</i></sup>, and we know
+that <span class="code">-</span><i>x</i> &gt; 0 because <i>x</i> &lt; 0.  The result of
+raising -1 to a non-integer exponent cannot be represented as a real
+number, hence this function throws an error if the target number is
+negative.  Note also that raising zero to any positive exponent yields
+0, and raising any value to the power 0 yields 1.  Raising 0 to an
+exponent of 0 is undefined; 0 raised to any negative exponent is
+equivalent to the inverse of 0 to the absolute value of the exponent,
+which is the same as 1/0, which throws a divide-by-zero exception.
+
+</div>
+
+<p><span class="code">roundToDecimal(<i>places</i>)</span>
+<div class=fdef>
+
+Returns a number rounded to the given number of digits after the
+decimal point.  The new number has the same precision as this number,
+but all of the digits after the given number of places after the
+decimal point will be set to zero, and the last surviving digit will
+be rounded.  If <i>places</i> is zero, this simply rounds the number
+to an integer.  If <i>places</i> is less than zero, this rounds the
+number to a power of ten: <span class="code">roundToDecimal(-1)</span> rounds to the nearest
+multiple of ten, <span class="code">roundToDecimal(-2)</span> rounds to the nearest multiple
+of 100, and so on.  Note that the precision of the result is the same
+as the precision of the original value; rounding merely affects the
+value, not the stored precision.
+
+</div>
+
+<p><span class="code">scaleTen(<i>x</i>)</span>
+<div class=fdef>
+
+Returns a new number containing the value of this number scaled by
+10<sup><i>x</i></sup>.  If <i>x</i> is positive, this multiplies this
+number's value by ten <i>x</i> times (so if <i>x</i> = 3, the result
+is this number's value times 1000).  If <i>x</i> is negative, this
+divides this number's value by ten <i>x</i> times.  (This is more
+efficient than explicitly multiplying by ten, because it simply
+adjusts the number's internal scale factor.)
+
+</div>
+
+<p><span class="code">setPrecision(<i>digits</i>)</span>
+<div class=fdef>
+
+Returns a new number with the same value as this number but with the
+specified number of digits of precision.  If <i>digits</i> is higher
+than this number's precision, the new value is simply extended with
+zeroes in the added trailing digits.  If <i>digits</i> is lower than
+this number's precision, the value is rounded to the given number of
+digits of precision.
+
+</div>
+
+<p><span class="code">sine()</span>
+<div class=fdef>
+
+Computes the trigonometric sine of the number (interpreted as a radian
+value) and returns the result.
+
+<p>Note that the input value must be expressed in radians.  If you are
+working in degrees, you can convert to radians by multiplying your
+degree values by (<i>pi</i>/180), since 180 degress equals <i>pi</i> radians.
+For convenience, you can use the <span class="code">degreesToRadians()</span> function to
+perform this conversion.
+
+<p>Note also that this remainder calculation's precision is limited by
+the precision of the original number itself, so a very large number
+with insufficient precision to represent at least a few digits after
+the decimal point (1.234e27, for example) will encounter a possibly
+significant amount of rounding error, which will affect the accuracy
+of the result.  This should almost never be a problem in practice,
+because there is usually little reason to compute angle values outside
+of plus or minus a few times pi, but users should keep this in mind if
+they are using very large numbers and the trigonometric functions
+yield unexpected or inaccurate results.
+
+</div>
+
+<p><span class="code">sinh()</span>
+<div class=fdef>
+
+Computes the hyperbolic sine of the number and returns the result.
+
+</div>
+
+<p><span class="code">sqrt()</span>
+<div class=fdef>
+
+Returns the square root of the number.  If the number is negative,
+this function throws a run-time exception.
+
+</div>
+
+<p><span class="code">tangent()</span>
+<div class=fdef>
+
+Computes the trigonometric tangent of the number (interpreted as a
+radian value) and returns the result.  Refer to the description of
+sine() for notes on how the input precision affects the calculation.
+
+<p>Note that the tangent of (2<i>n</i>+1)*<i>pi</i>/2, where <i>n</i> is
+any integer, (i.e., any odd multiple of <i>pi</i>/2) is undefined, and that
+the limit approaching these values is plus or minus infinity.  The
+BigNumber class internally calculates the tangent as the sine divided
+by the cosine, and as a result it is possible to generate a
+divide-by-zero exception by evaluating the tangent at one of these
+values.  However, in most cases, because the input value cannot be
+exactly an odd multiple of <i>pi</i>/2 (because it isn't even theoretically
+possible to represent <i>pi</i> exactly with a finite number of decimal
+digits), the tangent will return a number with a very large absolute
+value.
+
+</div>
+
+<p><span class="code">tanh()</span>
+<div class=fdef>
+
+Computes the hyperbolic tangent of the number and returns the result.
+
+</div>
+
+<h2>Precision and Scale</h2>
+
+<p>Each floating-point value that BigNumber represents has two
+important attributes apart from its value: precision and scale.  For
+the most part, these are internal attributes that you can ignore;
+however, in certain cases, it's useful to know how BigNumber uses
+these internally.
+
+<p>The scale of a BigNumber value is a multiplier that determines how
+large the number really is.  A BigNumber value stores a scale so that
+a very large or very small number can be represented compactly,
+without storing all of the digits that would be necessary to write out
+the number in decimal format.  This is the same idea as writing a
+number in scientific notation, which represents a number as a value
+between 1 and 10 multiplied by ten raised to a power; for example, we
+could write four hundred fifty billion as 450,000,000,000, or more
+compactly in scientific notation as 4.5e11 (the "e" means "times ten
+to the power of the number that follows", so this means "4.5 times
+10<sup>11</sup>"; note that 10<sup>11</sup> is one hundred billion).
+When we write a number in scientific notation, we need only write the
+significant digits, and can elide the trailing zeroes of a very large
+number.  We can also use scientific notation to write numbers with
+very small absolute values, by using a negative exponent: 9.7e-9 is
+9.7 times 10<sup>-9</sup>; 10<sup>-9 </sup> is 1/10<sup>9</sup>, or one
+one-billionth.
+
+<p>The precision of a BigNumber value is simply the number of decimal
+digits that the value actually stores.  A number's precision
+determines how many distinct values it can have; the higher the
+precision, the more values it can store, and hence the finer the
+distinctions it can make between adjacent representable values.  The
+precision is independent of the scale; if you create a BigNumber value
+with only one digit of precision, it's not limited to representing the
+values -9 through +9, because the scale can allow it take on larger or
+smaller values.  So, you can represent arbitrarily large values
+regardless of a number's precision; however, the precision limits the
+number of distinct values the number can represent, so, for example,
+with one digit of precision, the next representable value after 8000
+is 9000.
+ 
+<p>When you create a BigNumber value, you can explicitly assign it a
+precision by passing a precision specifier to the constructor.  If you
+don't specify a precision, BigNumber will use a default precision.  If
+you create a BigNumber value from an integer, the default precision is
+32 digits.  If you create a BigNumber value from a string, the
+precision is exactly enough to store the value's significant digits.
+A significant digit is a non-zero digit, or a zero that follows a
+non-zero digit.  Here are some examples:
+
+<ul>
+
+<li><span class="code">'0012'</span> has two significant digits (the leading zeroes are
+ignored).
+
+<li><span class="code">'1.2000'</span> has five significant digits (the trailing zeroes are
+significant because they follow non-zero digits).
+
+<li><span class="code">'.00012'</span> has two significant digits (the leading zeroes are
+ignored, even though they follow the decimal point).
+
+<li><span class="code">'000.00012'</span> has two significant digits (leading zeroes are
+ignored, whether they appear before or after the decimal point).
+
+<li><span class="code">'1.00012'</span> has six significant digits (the zeroes after the decimal
+point are significant because they follow a non-zero digit).
+
+<li><span class="code">'3.20e06'</span> has three significant digits (the digits of the
+exponent, if specified, are not relevant to the number's precision).
+
+</ul>
+
+
+<p>When you use BigNumber values in calculations, the result is almost
+every case has the same precision as the value operated upon; in the
+case of calculations involving two or more operands, the result has
+precision equal to the greatest of the precisions of the operands.
+For example, if you add a number with three digits of precision to a
+number with eight digits of precision, the result will have eight
+digits of precision.  This has the desirable effect of preserving the
+precision of your values in arithmetic, so that the precision you
+choose for your input data values is carried forward throughout your
+calculations.  For example, consider this calculation:
+
+<p><div class="code"><pre>
+x = new BigNumber('3.1415');
+y = new BigNumber('0.000111');
+z = x + y;
+</pre></div>
+
+<p>The exact arithmetic value of this calculation would be 3.1416111,
+but this is not the value that ends up in z, because the precision of
+the operands limits the precision of the result.  The precision of x
+is 5, because it is created from a string with five significant
+digits.  The precision of y is 3.  The result of the addition will
+have a precision of 5, because that is the larger of the two input
+precisions.  So, the result value stored in z will be 3.1416 - the
+additional two digits of y are dropped, because they cannot be
+represented in the result value's 5 digits of precision.
+
+<p>Precision limitations are fairly intuitive when the precision lost
+is after the decimal point, but note that digits can also be dropped
+before a decimal point.  Consider this calculation:
+
+<p><div class="code"><pre>
+x = new BigNumber('7.25e3');
+y = new BigNumber('122');
+z = x + y;
+</pre></div>
+
+<p>The value of x is 7.25e3, or 7250; this value has three digits of
+precision.  The value of y also has three digits of precision.  The
+exact result of the calculation is 7372, but the value stored in z
+will be 7370: the last digit of y is dropped because the result
+doesn't have enough precision to represent it.
+
+<p>Note that calculations will in most cases round their result values
+when they must drop precision from operand values.  For example:
+
+<p><div class="code"><pre>
+x = new BigNumber('7.25e3');
+y = new BigNumber('127');
+z = x + y;
+</pre></div>
+
+<p>The exact result would be 7377, but the value stored in z will be
+7380: the last digit of y is dropped, but the system rounds up the
+last digit retained because the dropped digit is 5 or higher (in this
+case, 7).
+
+<h2>Sample application: exorcising parasitic users</h2>
+
+<p>Apart from the obvious numerical applications, the BigNumber
+package can be useful if your computer is taken over by a hostile,
+parasitic, pure-energy life form capable of transferring itself
+between human and computer hosts.  A quick survey of the literature
+will reveal that the best tactic against this type of infection is to
+command the computer to calculate a transcendental number (<i>pi</i>, for
+example) to the last digit.  Computers are unable to comprehend the
+concept of irrational numbers, since they are so very rational, so
+such a calculation so preoccupies the computer that the unwanted life
+form is unable to get any CPU time and eventually flees the computer
+in frustration.
+
+<p>While BigNumber doesn't provide a dedicated syntax for computing
+transcendental numbers "to the last digit," you can still consume
+copious amounts of CPU time by asking it to compute a value to a large
+finite number of digits, such as
+
+<p><div class="code"><pre>
+x = BigNumber.getPi(512);
+</pre></div>
+
+<p>This will consume about twenty minutes on a Pentium III at 400 MHz.
+(It only takes about 90 seconds on a Pentium D at 3.2 GHz, though, so
+you might have to increase the number of digits on a fast machine.)
+If the parasitic entity is especially tenacious, or tries to shut down
+life support, it might be necessary to go out to a thousand or so
+digits.
+
+<p>Note that this technique isn't effective against conventional
+computer viruses, so users might want to try one of the popular
+anti-virus software packages before attempting this solution.
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+BigNumber
+<br><span class="navnp"><a class="nav" href="scripts.htm"><i>Prev:</i> Input Scripts</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="bytearr.htm"><i>Next:</i> ByteArray</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

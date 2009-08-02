@@ -1,5 +1,5 @@
 tell application "Terminal"
 	activate
 	do script with command "%@ %@"
-	set custom title of window 0 to "Tads Debugger"
+	set custom title of window 0 to "TADS Debugger"
 end tell

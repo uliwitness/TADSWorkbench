@@ -1,0 +1,66 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>bignum.h</title></head><body>
+<table class=ban><tr><td align=left><span class=title>bignum.h</span><span class=type>file</span><td align=right><a href="../source/bignum.h.html">source file</a></table><p>
+<table class=nav><tr>
+<td><b>Classes</b><br><a href="#_ClassSummary_">Summary</a><br>&nbsp;<td><b>Functions</b><br><a href="#_FunctionSummary_">Summary</a><br><a href="#_Functions_">Details</a><td><b>Macros</b><br><a href="#_MacroSummary_">Summary</a><br><a href="#_Macros_">Details</a><td><b>Enums</b><br><a href="#_EnumSummary_">Summary</a><br><a href="#_Enums_">Details</a><td><b>Templates</b><br><a href="#_TemplateSummary_">Summary</a><br><a href="#_Templates_">Details</a></table><div class=fdesc>
+ <p> <p>   This header defines the BigNumber intrinsic class. 
+</div>
+<a name="_ClassSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Classes</span> &nbsp; </div><p>
+<code>
+<a href="../object/BigNumber.html">BigNumber</a>&nbsp; 
+</code>
+<a name="FunctionSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Global Functions</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_MacroSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Macros</span> &nbsp; </div><p>
+<code>
+<a href="#_BIGNUM_H_">_BIGNUM_H_</a>&nbsp; 
+<a href="#BignumCommas">BignumCommas</a>&nbsp; 
+<a href="#BignumEuroStyle">BignumEuroStyle</a>&nbsp; 
+<a href="#BignumExp">BignumExp</a>&nbsp; 
+<a href="#BignumExpSign">BignumExpSign</a>&nbsp; 
+<a href="#BignumLeadingZero">BignumLeadingZero</a>&nbsp; 
+<a href="#BignumPoint">BignumPoint</a>&nbsp; 
+<a href="#BignumPosSpace">BignumPosSpace</a>&nbsp; 
+<a href="#BignumSign">BignumSign</a>&nbsp; 
+</code><p>
+<a name="_EnumSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Enums</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_TemplateSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Templates</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Functions_"></a><p><div class=mjhd><span class=hdln>Global Functions</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Macros_"></a><p><div class=mjhd><span class=hdln>Macros</span> &nbsp; </div><p>
+<a name="_BIGNUM_H_"></a>
+<table class=decl><tr><td><code>_BIGNUM_H_</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#12">12</a>]</table><div class=desc><code></code><br><i>no description available</i><p>
+</div>
+<a name="BignumCommas"></a>
+<table class=decl><tr><td><code>BignumCommas</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#248">248</a>]</table><div class=desc><code>0x0020</code><br>insert commas to denote thousands, millions, etc<p>
+</div>
+<a name="BignumEuroStyle"></a>
+<table class=decl><tr><td><code>BignumEuroStyle</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#258">258</a>]</table><div class=desc><code>0x0080</code><br>   use European-style formatting: use a comma instead of a period for   the decimal point, and use periods instead of commas to set off   thousands, millions, etc <p>
+</div>
+<a name="BignumExp"></a>
+<table class=decl><tr><td><code>BignumExp</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#233">233</a>]</table><div class=desc><code>0x0002</code><br>always show in exponential format<p>
+</div>
+<a name="BignumExpSign"></a>
+<table class=decl><tr><td><code>BignumExpSign</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#236">236</a>]</table><div class=desc><code>0x0004</code><br>always show a sign in the exponent, even if positive<p>
+</div>
+<a name="BignumLeadingZero"></a>
+<table class=decl><tr><td><code>BignumLeadingZero</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#242">242</a>]</table><div class=desc><code>0x0008</code><br>   show a zero before the decimal point - this is only relevant in   non-exponential format when the number is between -1 and +1 <p>
+</div>
+<a name="BignumPoint"></a>
+<table class=decl><tr><td><code>BignumPoint</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#245">245</a>]</table><div class=desc><code>0x0010</code><br>always show a decimal point<p>
+</div>
+<a name="BignumPosSpace"></a>
+<table class=decl><tr><td><code>BignumPosSpace</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#251">251</a>]</table><div class=desc><code>0x0040</code><br>show a leading space if the number is positive<p>
+</div>
+<a name="BignumSign"></a>
+<table class=decl><tr><td><code>BignumSign</code><td align=right><code><a href="../file/bignum.h.html">bignum.h</a>[<a href="../source/bignum.h.html#230">230</a>]</table><div class=desc><code>0x0001</code><br>always show a sign, even if positive<p>
+</div>
+<a name="_Enums_"></a><p><div class=mjhd><span class=hdln>Enums</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Templates_"></a><p><div class=mjhd><span class=hdln>Templates</span> &nbsp; </div><p>
+<i>(none)</i>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

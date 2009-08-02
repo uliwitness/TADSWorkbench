@@ -1,0 +1,1522 @@
+<html><head><link rel=stylesheet type="text/css" href="../libref.css"><title>menusys.t</title></head><body>
+<table class=ban><tr><td><h1>menusys.t</h1><td align=right><a href="../file/menusys.t.html">documentation</a></table><pre>
+<a name="1"></a>#charset "us-ascii"
+<a name="2"></a>
+<a name="3"></a>/*
+<a name="4"></a> *   TADS 3 Library - Menu System
+<a name="5"></a> *   
+<a name="6"></a> *   Copyright 2003 by Stephen Granade
+<a name="7"></a> *.  Modifications copyright 2003, 2006 Michael J. Roberts
+<a name="8"></a> *   
+<a name="9"></a> *   This module is designed to make it easy to add on-screen menus to a
+<a name="10"></a> *   game.  Stephen Granade adapted this module from his TADS 2 menu
+<a name="11"></a> *   system, and Mike Roberts made some minor cosmetic changes to integrate
+<a name="12"></a> *   it with the main TADS 3 library.
+<a name="13"></a> *   
+<a name="14"></a> *   N.B. in plain-text mode (for interpreters without banner
+<a name="15"></a> *   capabilities), a menu won't be fully usable if it exceeds 9 subitems:
+<a name="16"></a> *   each item in a menu is numbered, and the user selects an item by
+<a name="17"></a> *   entering its number; but we only accept a single digit as input, so
+<a name="18"></a> *   only items 1 through 9 can be selected on any given menu.  Good
+<a name="19"></a> *   usability design usually dictates that menus shouldn't be so large
+<a name="20"></a> *   anyway, so most menus will naturally avoid this problem, but this is
+<a name="21"></a> *   something to keep in mind.  
+<a name="22"></a> */
+<a name="23"></a>
+<a name="24"></a>#include "adv3.h"
+<a name="25"></a>
+<a name="26"></a>
+<a name="27"></a>/* 
+<a name="28"></a> *   General instructions:
+<a name="29"></a> *   
+<a name="30"></a> *   Menus consist of MenuItems, MenuTopicItems, and MenuLongTopicItems.
+<a name="31"></a> *   
+<a name="32"></a> *   * MenuItems are the menu (and sub-menu) items that the player will
+<a name="33"></a> *   select.  Their "title" attribute is what will be shown in the menu,
+<a name="34"></a> *   and the "heading" attribute is shown as the heading while the menu
+<a name="35"></a> *   itself is active; by default, the heading simply uses the title.
+<a name="36"></a> *   
+<a name="37"></a> *   * MenuTopicItems are for lists of topic strings that the player will
+<a name="38"></a> *   be shown, like hints. "title" is what will be shown in the menu;
+<a name="39"></a> *   "menuContents" is a list of either strings to be displayed, one at a
+<a name="40"></a> *   time, or objects which must return a string via a "menuContents"
+<a name="41"></a> *   method
+<a name="42"></a> *   
+<a name="43"></a> *   * MenuLongTopicItems are for longer discources. "title" is what will
+<a name="44"></a> *   be shown in the menu; "menuContents" is either a string to be printed
+<a name="45"></a> *   or a routine to be called.
+<a name="46"></a> *   
+<a name="47"></a> *   adv3.h contains templates for MenuItems, for your convenience.
+<a name="48"></a> *   
+<a name="49"></a> *   A simple example menu:
+<a name="50"></a> *   
+<a name="51"></a> *   FirstMenu: MenuItem 'Test menu';
+<a name="52"></a> *.  + MenuItem 'Pets';
+<a name="53"></a> *.  ++ MenuItem 'Chinchillas';
+<a name="54"></a> *.  +++ MenuTopicItem 'About them'
+<a name="55"></a> *.    menuContents = ['Furry', 'South American', 'Curious',
+<a name="56"></a> *   'Note: Not a coat'];
+<a name="57"></a> *.  +++ MenuTopicItem 'Benefits'
+<a name="58"></a> *.    menuContents = ['Non-allergenic', 'Cute', 'Require little space'];
+<a name="59"></a> *.  +++ MenuTopicItem 'Downsides'
+<a name="60"></a> *.     menuContents = ['Require dust baths', 'Startle easily'];
+<a name="61"></a> *.  ++ MenuItem 'Cats';
+<a name="62"></a> *.  +++ MenuLongTopicItem 'Pure evil'
+<a name="63"></a> *.     menuContents = 'Cats are, quite simply, pure evil. I would provide
+<a name="64"></a> *.                     ample evidence were there room for it in this
+<a name="65"></a> *.                     simple example.';
+<a name="66"></a> *.  +++ MenuTopicItem 'Benefits'
+<a name="67"></a> *.    menuContents = ['They, uh, well...', 'Okay, I can\'t think of any.'];
+<a name="68"></a> */
+<a name="69"></a>
+<a name="70"></a>
+<a name="71"></a>/* 
+<a name="72"></a> *   The very top banner of the menu, which holds its title and
+<a name="73"></a> *   instructions.
+<a name="74"></a> */
+<a name="75"></a>topMenuBanner: BannerWindow
+<a name="76"></a>;
+<a name="77"></a>
+<a name="78"></a>/* 
+<a name="79"></a> *   The actual menu contents banner window.  This displays the list of
+<a name="80"></a> *   menu items to choose from.  
+<a name="81"></a> */
+<a name="82"></a>contentsMenuBanner: BannerWindow
+<a name="83"></a>;
+<a name="84"></a>
+<a name="85"></a>/*
+<a name="86"></a> *   The long topic banner.  This takes over the screen when we're
+<a name="87"></a> *   displaying a long topic item.  
+<a name="88"></a> */
+<a name="89"></a>longTopicBanner: BannerWindow
+<a name="90"></a>;
+<a name="91"></a>
+<a name="92"></a>/* ------------------------------------------------------------------------ */
+<a name="93"></a>/*
+<a name="94"></a> *   A basic menu object.  This is an abstract base class that
+<a name="95"></a> *   encapsulates some behavior common to different menu classes, and
+<a name="96"></a> *   allows the use of the + syntax (like "+ MenuItem") to define
+<a name="97"></a> *   containment.
+<a name="98"></a> */
+<a name="99"></a>class MenuObject: object
+<a name="100"></a>    /* our contents list */
+<a name="101"></a>    contents = []
+<a name="102"></a>
+<a name="103"></a>    /* 
+<a name="104"></a>     *   Since we're inheriting from object, but need to use the "+"
+<a name="105"></a>     *   syntax, we need to set up the contents appropriately
+<a name="106"></a>     */
+<a name="107"></a>    initializeLocation()
+<a name="108"></a>    {
+<a name="109"></a>        if (location != nil)
+<a name="110"></a>            location.addToContents(self);
+<a name="111"></a>    }
+<a name="112"></a>
+<a name="113"></a>    /* add a menu item */
+<a name="114"></a>    addToContents(obj)
+<a name="115"></a>    {
+<a name="116"></a>        /* 
+<a name="117"></a>         *   If the menu has a nil menuOrder, and it inherits menuOrder
+<a name="118"></a>         *   from us, then it must be a dynamically-created object that
+<a name="119"></a>         *   doesn't provide a custom menuOrder.  Provide a suitable
+<a name="120"></a>         *   default of a value one higher than the highest menuOrder
+<a name="121"></a>         *   currently in our list, to ensure that the item always sorts
+<a name="122"></a>         *   after any items currently in the list. 
+<a name="123"></a>         */
+<a name="124"></a>        if (obj.menuOrder == nil &amp;&amp; !overrides(obj, MenuObject, &amp;menuOrder))
+<a name="125"></a>        {
+<a name="126"></a>            local maxVal;
+<a name="127"></a>            
+<a name="128"></a>            /* find the maximum current menuOrder value */
+<a name="129"></a>            maxVal = nil;
+<a name="130"></a>            foreach (local cur in contents)
+<a name="131"></a>            {
+<a name="132"></a>                /* 
+<a name="133"></a>                 *   if this one has a value, and it's the highest so far
+<a name="134"></a>                 *   (or the only one with a value we've found so far),
+<a name="135"></a>                 *   take it as the maximum so far 
+<a name="136"></a>                 */
+<a name="137"></a>                if (cur.menuOrder != nil
+<a name="138"></a>                    &amp;&amp; (maxVal == nil || cur.menuOrder &gt; maxVal))
+<a name="139"></a>                    maxVal = cur.menuOrder;
+<a name="140"></a>            }
+<a name="141"></a>
+<a name="142"></a>            /* if we didn't find any values, use 0 as the arbitrary default */
+<a name="143"></a>            if (maxVal == nil)
+<a name="144"></a>                maxVal = 0;
+<a name="145"></a>
+<a name="146"></a>            /* go one higher than the maximum of the existing items */
+<a name="147"></a>            obj.menuOrder = maxVal;
+<a name="148"></a>        }
+<a name="149"></a>
+<a name="150"></a>        /* add the item to our contents list */
+<a name="151"></a>        contents += obj;
+<a name="152"></a>    }
+<a name="153"></a>
+<a name="154"></a>    /*
+<a name="155"></a>     *   The menu order.  When we're about to show a list of menu items,
+<a name="156"></a>     *   we'll sort the list in ascending order of this property, then in
+<a name="157"></a>     *   ascending order of title.  By default, we set this order value to
+<a name="158"></a>     *   be equal to the menu item's sourceTextOrder. This makes the menu
+<a name="159"></a>     *   order default to the order of objects as defined in the source. If
+<a name="160"></a>     *   some other basis is desired, override topicOrder.  
+<a name="161"></a>     */
+<a name="162"></a>    menuOrder = (sourceTextOrder)
+<a name="163"></a>
+<a name="164"></a>    /*
+<a name="165"></a>     *   Compare this menu object to another, for the purposes of sorting a
+<a name="166"></a>     *   list of menu items. Returns a positive number if this menu item
+<a name="167"></a>     *   sorts after the other one, a negative number if this menu item
+<a name="168"></a>     *   sorts before the other one, 0 if the relative order is arbitrary.
+<a name="169"></a>     *   
+<a name="170"></a>     *   By default, we'll sort by menuOrder if the menuOrder values are
+<a name="171"></a>     *   different, otherwise arbitrarily.  
+<a name="172"></a>     */
+<a name="173"></a>    compareForMenuSort(other)
+<a name="174"></a>    {
+<a name="175"></a>        /* 
+<a name="176"></a>         *   if one menuOrder value is nil, sort it earlier than the other;
+<a name="177"></a>         *   if they're both nil, they sort as equivalent 
+<a name="178"></a>         */
+<a name="179"></a>        if (menuOrder == nil &amp;&amp; other.menuOrder == nil)
+<a name="180"></a>            return 0;
+<a name="181"></a>        else if (menuOrder == nil)
+<a name="182"></a>            return -1;
+<a name="183"></a>        else if (other.menuOrder == nil)
+<a name="184"></a>            return 1;
+<a name="185"></a>
+<a name="186"></a>        /* return the difference of the sort order values */
+<a name="187"></a>        return menuOrder - other.menuOrder;
+<a name="188"></a>    }
+<a name="189"></a>
+<a name="190"></a>    /* 
+<a name="191"></a>     *   Finish initializing our contents list.  This will be called on
+<a name="192"></a>     *   each MenuObject *after* we've called initializeLocation() on every
+<a name="193"></a>     *   object.  In other words, every menu will already have been added
+<a name="194"></a>     *   to its parent's contents; this can do anything else that's needed
+<a name="195"></a>     *   to initialize the contents list.  For example, some subclasses
+<a name="196"></a>     *   might want to sort their contents here, so that they list their
+<a name="197"></a>     *   menus in a defined order.  By default, we sort the menu items by
+<a name="198"></a>     *   menuOrder; subclasses can override this as needed.  
+<a name="199"></a>     */
+<a name="200"></a>    initializeContents()
+<a name="201"></a>    {
+<a name="202"></a>        /* sort our contents list in the object-defined sorting order */
+<a name="203"></a>        contents = contents.sort(
+<a name="204"></a>            SortAsc, {a, b: a.compareForMenuSort(b)});
+<a name="205"></a>    }
+<a name="206"></a>;
+<a name="207"></a>
+<a name="208"></a>/* 
+<a name="209"></a> *   This preinit object makes sure the MenuObjects all have their
+<a name="210"></a> *   contents initialized properly.
+<a name="211"></a> */
+<a name="212"></a>PreinitObject
+<a name="213"></a>    execute()
+<a name="214"></a>    {
+<a name="215"></a>        /* initialize each menu's location */
+<a name="216"></a>        forEachInstance(MenuObject, { menu: menu.initializeLocation() });
+<a name="217"></a>
+<a name="218"></a>        /* do any extra work to initialize each menu's contents list */
+<a name="219"></a>        forEachInstance(MenuObject, { menu: menu.initializeContents() });
+<a name="220"></a>    }
+<a name="221"></a>;
+<a name="222"></a>
+<a name="223"></a>/* 
+<a name="224"></a> *   A MenuItem is a given item in the menu tree.  In general all you need
+<a name="225"></a> *   to do to use menus is create a tree of MenuItems with titles.
+<a name="226"></a> */
+<a name="227"></a>class MenuItem: MenuObject
+<a name="228"></a>    /* the name of the menu; this is listed in the parent menu */
+<a name="229"></a>    title = ''
+<a name="230"></a>
+<a name="231"></a>    /* 
+<a name="232"></a>     *   the heading - this is shown when this menu is active; by default,
+<a name="233"></a>     *   we simply use the title 
+<a name="234"></a>     */
+<a name="235"></a>    heading = (title)
+<a name="236"></a>
+<a name="237"></a>    /*
+<a name="238"></a>     *   Display properties.  These properties control the way the menu
+<a name="239"></a>     *   appears on the screen.  By default, a menu looks to its parent
+<a name="240"></a>     *   menu for display properties; this makes it easy to customize an
+<a name="241"></a>     *   entire menu tree, since changes in the top-level menu will cascade
+<a name="242"></a>     *   to all children that don't override these settings.  However, each
+<a name="243"></a>     *   menu can customize its own appearance by overriding these
+<a name="244"></a>     *   properties itself.
+<a name="245"></a>     *   
+<a name="246"></a>     *   'fgcolor' and 'bgcolor' are the foreground (text) and background
+<a name="247"></a>     *   colors, expressed as HTML color names (so '#nnnnnn' values can be
+<a name="248"></a>     *   used to specify RGB colors).
+<a name="249"></a>     *   
+<a name="250"></a>     *   'indent' is the number of pixels to indent the menu's contents
+<a name="251"></a>     *   from the left margin.  This is used only in HTML mode.
+<a name="252"></a>     *   
+<a name="253"></a>     *   'fullScreenMode' indicates whether the menu should take over the
+<a name="254"></a>     *   entire screen, or limit itself to the space it actually requires.
+<a name="255"></a>     *   Full screen mode makes the menu block out any game window text.
+<a name="256"></a>     *   Limited mode leaves the game window partially uncovered, but can
+<a name="257"></a>     *   be a bit jumpy, since the window changes size as the user
+<a name="258"></a>     *   navigates through different menus.  
+<a name="259"></a>     */
+<a name="260"></a>
+<a name="261"></a>    /* foreground (text) and background colors, as HTML color names */
+<a name="262"></a>    fgcolor = (location != nil ? location.fgcolor : 'text')
+<a name="263"></a>    bgcolor = (location != nil ? location.bgcolor : 'bgcolor')
+<a name="264"></a>
+<a name="265"></a>    /* 
+<a name="266"></a>     *   Foreground and background colors for the top instructions bar.
+<a name="267"></a>     *   By default, we use the color scheme of the parent menu, or the
+<a name="268"></a>     *   inverse of our main menu color scheme if we're the top menu. 
+<a name="269"></a>     */
+<a name="270"></a>    topbarfg = (location != nil ? location.topbarfg : 'statustext')
+<a name="271"></a>    topbarbg = (location != nil ? location.topbarbg : 'statusbg')
+<a name="272"></a>
+<a name="273"></a>    /* number of spaces to indent the menu's contents */
+<a name="274"></a>    indent = (location != nil ? location.indent : '10')
+<a name="275"></a>    
+<a name="276"></a>    /* 
+<a name="277"></a>     *   full-screen mode: make our menu take up the whole screen (apart
+<a name="278"></a>     *   from the instructions bar, of course) 
+<a name="279"></a>     */
+<a name="280"></a>    fullScreenMode = (location != nil ? location.fullScreenMode : true)
+<a name="281"></a>    
+<a name="282"></a>    /* 
+<a name="283"></a>     *   The keys used to navigate the menus, in order:
+<a name="284"></a>     *   
+<a name="285"></a>     *   [quit, previous, up, down, select.]
+<a name="286"></a>     *   
+<a name="287"></a>     *   Since multiple keys can be used for the same navigation, the list
+<a name="288"></a>     *   is implemented as a List of Lists.  Keys must be given as
+<a name="289"></a>     *   lower-case in order to match input, since we convert all input
+<a name="290"></a>     *   keys to lower-case before matching them.
+<a name="291"></a>     *   
+<a name="292"></a>     *   In the sublist for each key, we use the first element as the key
+<a name="293"></a>     *   name we show in the instruction bar at the top of the screen.
+<a name="294"></a>     *   
+<a name="295"></a>     *   By default, we use our parent menu's key list, if we have a
+<a name="296"></a>     *   parent; if we have no parent, we use the standard keys from the
+<a name="297"></a>     *   library messages.  
+<a name="298"></a>     */
+<a name="299"></a>    keyList = (location != nil ? location.keyList : gLibMessages.menuKeyList)
+<a name="300"></a>
+<a name="301"></a>    /* 
+<a name="302"></a>     *   the current key list - we'll set this on entry to the start of
+<a name="303"></a>     *   each showMenuXxx method, so that we keep track of the actual key
+<a name="304"></a>     *   list in use, as inherited from the top-level menu 
+<a name="305"></a>     */
+<a name="306"></a>    curKeyList = nil
+<a name="307"></a>
+<a name="308"></a>    /*
+<a name="309"></a>     *   Title for the link to the previous menu, if any.  If the menu has
+<a name="310"></a>     *   a parent menu, we'll display this link next to the menu title in
+<a name="311"></a>     *   the top instructions/title bar.  If this is nil, we won't display
+<a name="312"></a>     *   a link at all.  Note that this can contain an HTML fragment; for
+<a name="313"></a>     *   example, you could use an &lt;IMG&gt; tag to display an icon here.  
+<a name="314"></a>     */
+<a name="315"></a>    prevMenuLink = (location != nil ? gLibMessages.prevMenuLink : nil)
+<a name="316"></a>
+<a name="317"></a>    /* 
+<a name="318"></a>     *   Update our contents.  By default, we'll do nothing; subclasses
+<a name="319"></a>     *   can override this to manage dynamic menus if desired.  This is
+<a name="320"></a>     *   called just before the menu is displayed, each time it's
+<a name="321"></a>     *   displayed. 
+<a name="322"></a>     */
+<a name="323"></a>    updateContents() { }
+<a name="324"></a>
+<a name="325"></a>    /* 
+<a name="326"></a>     *   Call menu.display when you're ready to show the menu.  This
+<a name="327"></a>     *   should be called on the top-level menu; we run the entire menu
+<a name="328"></a>     *   display process, and return when the user exits from the menu
+<a name="329"></a>     *   tree.  
+<a name="330"></a>     */
+<a name="331"></a>    display()
+<a name="332"></a>    {
+<a name="333"></a>        local oldStr;
+<a name="334"></a>        local flags;
+<a name="335"></a>
+<a name="336"></a>        /* make sure the main window is flushed before we get going */
+<a name="337"></a>        flushOutput();
+<a name="338"></a>
+<a name="339"></a>        /* set up with the top menu banner in place of the status line */
+<a name="340"></a>        removeStatusLine();
+<a name="341"></a>        showTopMenuBanner(self);
+<a name="342"></a>
+<a name="343"></a>        /* 
+<a name="344"></a>         *   display the menu using the same mode that the statusline
+<a name="345"></a>         *   has decided to use 
+<a name="346"></a>         */
+<a name="347"></a>        switch (statusLine.statusDispMode)
+<a name="348"></a>        {
+<a name="349"></a>        case StatusModeApi:
+<a name="350"></a>            /* use a border, unless we're taking over the whole screen */
+<a name="351"></a>            flags = (fullScreenMode ? 0 : BannerStyleBorder);
+<a name="352"></a>
+<a name="353"></a>            /* 
+<a name="354"></a>             *   use a scrollbar if possible; keep the text scrolled into
+<a name="355"></a>             *   view as we show it 
+<a name="356"></a>             */
+<a name="357"></a>            flags |= BannerStyleVScroll | BannerStyleAutoVScroll;
+<a name="358"></a>
+<a name="359"></a>            /* banner API mode - show our banner window */
+<a name="360"></a>            contentsMenuBanner.showBanner(nil, BannerLast, nil,
+<a name="361"></a>                                          BannerTypeText, BannerAlignTop,
+<a name="362"></a>                                          nil, nil, flags);
+<a name="363"></a>
+<a name="364"></a>            /* make the banner window the default output stream */
+<a name="365"></a>            oldStr = contentsMenuBanner.setOutputStream();
+<a name="366"></a>
+<a name="367"></a>            /* make sure we restore the default output stream when done */
+<a name="368"></a>            try
+<a name="369"></a>            {
+<a name="370"></a>                /* display and run our menu in HTML mode */
+<a name="371"></a>                showMenuHtml(self);
+<a name="372"></a>            }
+<a name="373"></a>            finally
+<a name="374"></a>            {
+<a name="375"></a>                /* restore the original default output stream */
+<a name="376"></a>                outputManager.setOutputStream(oldStr);
+<a name="377"></a>
+<a name="378"></a>                /* remove the menu banner */
+<a name="379"></a>                contentsMenuBanner.removeBanner();
+<a name="380"></a>            }
+<a name="381"></a>            break;
+<a name="382"></a>            
+<a name="383"></a>        case StatusModeTag:
+<a name="384"></a>            /* HTML &lt;banner&gt; tag mode - just show our HTML contents */
+<a name="385"></a>            showMenuHtml(self);
+<a name="386"></a>
+<a name="387"></a>            /* remove the banner for the menu display */
+<a name="388"></a>            "&lt;banner remove id=MenuTitle&gt;";
+<a name="389"></a>            break;
+<a name="390"></a>            
+<a name="391"></a>        case StatusModeText:
+<a name="392"></a>            /* display and run our menu in text mode */
+<a name="393"></a>            showMenuText(self);
+<a name="394"></a>            break;
+<a name="395"></a>        }
+<a name="396"></a>
+<a name="397"></a>        /* we're done, so remove the top menu banner */
+<a name="398"></a>        removeTopMenuBanner();
+<a name="399"></a>    }
+<a name="400"></a>    
+<a name="401"></a>    /*
+<a name="402"></a>     *   Display the menu in plain text mode.  This is used when the
+<a name="403"></a>     *   interpreter only supports the old tads2-style text-mode
+<a name="404"></a>     *   single-line status area.
+<a name="405"></a>     *   
+<a name="406"></a>     *   Returns true if we should return to the parent menu, nil if the
+<a name="407"></a>     *   user selected QUIT to exit the menu system entirely.  
+<a name="408"></a>     */
+<a name="409"></a>    showMenuText(topMenu)
+<a name="410"></a>    {
+<a name="411"></a>        local i, selection, len, key = '', loc;
+<a name="412"></a>
+<a name="413"></a>        /* remember the key list */
+<a name="414"></a>        curKeyList = topMenu.keyList;
+<a name="415"></a>
+<a name="416"></a>        /* bring our contents up to date, as needed */
+<a name="417"></a>        updateContents();
+<a name="418"></a>
+<a name="419"></a>        /* keep going until the player exits this menu level */
+<a name="420"></a>        do
+<a name="421"></a>        {
+<a name="422"></a>            /* 
+<a name="423"></a>             *   For text mode, print the title, then show the menu
+<a name="424"></a>             *   options as a numbered list, then ask the player to make a
+<a name="425"></a>             *   selection.  
+<a name="426"></a>             */
+<a name="427"></a>            
+<a name="428"></a>            /* get the number of items in the menu */
+<a name="429"></a>            len = contents.length();              
+<a name="430"></a>
+<a name="431"></a>            /* show the menu heading */
+<a name="432"></a>            "\n&lt;b&gt;&lt;&lt;heading&gt;&gt;&lt;/b&gt;\b";
+<a name="433"></a>
+<a name="434"></a>            /* show the contents as a numbered list */
+<a name="435"></a>            for (i = 1; i &lt;= len; i++)
+<a name="436"></a>            {
+<a name="437"></a>                /* leave room for two-digit numeric labels if needed */
+<a name="438"></a>                if (len &gt; 9 &amp;&amp; i &lt;= 10) "\ ";
+<a name="439"></a>
+<a name="440"></a>                /* show the item's number and title */
+<a name="441"></a>                "&lt;&lt;i&gt;&gt;.\ &lt;&lt;contents[i].title&gt;&gt;\n";
+<a name="442"></a>            }
+<a name="443"></a>
+<a name="444"></a>            /* show the main prompt */
+<a name="445"></a>            gLibMessages.textMenuMainPrompt(topMenu.keyList);
+<a name="446"></a>
+<a name="447"></a>            /* main input loop */
+<a name="448"></a>            do
+<a name="449"></a>            {
+<a name="450"></a>                /* 
+<a name="451"></a>                 *   Get a key, and convert any alphabetics to lower-case.
+<a name="452"></a>                 *   Do not allow real-time interruptions, as menus are
+<a name="453"></a>                 *   meta-game interactions. 
+<a name="454"></a>                 */
+<a name="455"></a>                key = inputManager.getKey(nil, nil).toLower();
+<a name="456"></a>
+<a name="457"></a>                /* check for a command key */
+<a name="458"></a>                loc = topMenu.keyList.indexWhich({x: x.indexOf(key) != nil});
+<a name="459"></a>
+<a name="460"></a>                /* also check for a numeric selection */
+<a name="461"></a>                selection = toInteger(key);
+<a name="462"></a>            } while ((selection &lt; 1 || selection &gt; len)
+<a name="463"></a>                     &amp;&amp; loc != M_QUIT &amp;&amp; loc != M_PREV);
+<a name="464"></a>
+<a name="465"></a>            /* 
+<a name="466"></a>             *   show the selection if it's an ordinary key (an ordinary
+<a name="467"></a>             *   key is represented by a single character; if we have more
+<a name="468"></a>             *   than one character, it's one of the '[xxx]' special key
+<a name="469"></a>             *   representations) 
+<a name="470"></a>             */
+<a name="471"></a>            if (key.length() == 1)
+<a name="472"></a>                "&lt;&lt;key&gt;&gt;";
+<a name="473"></a>
+<a name="474"></a>            /* add a blank line */
+<a name="475"></a>            "\b";
+<a name="476"></a>            
+<a name="477"></a>            /* 
+<a name="478"></a>             *   If the selection is a number, then the player selected
+<a name="479"></a>             *   that menu option.  Call that submenu or topic's display
+<a name="480"></a>             *   routine.  If the routine returns nil, the player selected
+<a name="481"></a>             *   QUIT, so we should quit as well. 
+<a name="482"></a>             */
+<a name="483"></a>            while (selection != 0 &amp;&amp; selection &lt;= contents.length())
+<a name="484"></a>            {
+<a name="485"></a>                /* invoke the child menu */
+<a name="486"></a>                loc = contents[selection].showMenuText(topMenu);
+<a name="487"></a>
+<a name="488"></a>                /*   
+<a name="489"></a>                 *   Check the result.  If it's nil, it means QUIT; if it's
+<a name="490"></a>                 *   'next', it means we're to proceed directly to our next
+<a name="491"></a>                 *   sub-menu.  If the user didn't select QUIT, then
+<a name="492"></a>                 *   refresh our menu contents, as we'll be displaying our
+<a name="493"></a>                 *   menu again and its contents could have been affected
+<a name="494"></a>                 *   by the sub-menu invocation.  
+<a name="495"></a>                 */
+<a name="496"></a>                switch(loc)
+<a name="497"></a>                {
+<a name="498"></a>                case M_QUIT:
+<a name="499"></a>                    /* they want to quit - leave the submenu loop */
+<a name="500"></a>                    selection = 0;
+<a name="501"></a>                    break;
+<a name="502"></a>
+<a name="503"></a>                case M_UP:
+<a name="504"></a>                    /* they want to go to the previous menu directly */
+<a name="505"></a>                    --selection;
+<a name="506"></a>                    break;
+<a name="507"></a>
+<a name="508"></a>                case M_DOWN:
+<a name="509"></a>                    /* they want to go to the next menu directly */
+<a name="510"></a>                    ++selection;
+<a name="511"></a>                    break;
+<a name="512"></a>
+<a name="513"></a>                case M_PREV:
+<a name="514"></a>                    /* 
+<a name="515"></a>                     *   they want to show this menu again - update our
+<a name="516"></a>                     *   contents so that we account for any changes made
+<a name="517"></a>                     *   while running the submenu, then leave the submenu
+<a name="518"></a>                     *   loop 
+<a name="519"></a>                     */
+<a name="520"></a>                    updateContents();
+<a name="521"></a>                    selection = 0;
+<a name="522"></a>
+<a name="523"></a>                    /* 
+<a name="524"></a>                     *   forget the 'prev' command - we don't want to back
+<a name="525"></a>                     *   up any further just yet, since the submenu just
+<a name="526"></a>                     *   wanted to get back to this point 
+<a name="527"></a>                     */
+<a name="528"></a>                    loc = nil;
+<a name="529"></a>                    break;
+<a name="530"></a>                }
+<a name="531"></a>            }
+<a name="532"></a>        } while (loc != M_QUIT &amp;&amp; loc != M_PREV);
+<a name="533"></a>
+<a name="534"></a>        /* return the desired next action */
+<a name="535"></a>        return loc;
+<a name="536"></a>    }
+<a name="537"></a>
+<a name="538"></a>    /*
+<a name="539"></a>     *   Show the menu using HTML.  Return nil when the user selects QUIT
+<a name="540"></a>     *   to exit the menu entirely.  
+<a name="541"></a>     */
+<a name="542"></a>    showMenuHtml(topMenu)
+<a name="543"></a>    {
+<a name="544"></a>        local len, selection = 1, loc;
+<a name="545"></a>        local refreshTitle = true;
+<a name="546"></a>        
+<a name="547"></a>        /* remember the key list */
+<a name="548"></a>        curKeyList = topMenu.keyList;
+<a name="549"></a>
+<a name="550"></a>        /* update the menu contents, as needed */
+<a name="551"></a>        updateContents();
+<a name="552"></a>
+<a name="553"></a>        /* keep going until the user exits this menu level */
+<a name="554"></a>        do
+<a name="555"></a>        {
+<a name="556"></a>            /* refresh our title in the instructions area if necessary */
+<a name="557"></a>            if (refreshTitle)
+<a name="558"></a>            {
+<a name="559"></a>                refreshTopMenuBanner(topMenu);
+<a name="560"></a>                refreshTitle = nil;
+<a name="561"></a>            }
+<a name="562"></a>
+<a name="563"></a>            /* get the number of items in the menu */
+<a name="564"></a>            len = contents.length();
+<a name="565"></a>              
+<a name="566"></a>            /* check whether we're in banner API or &lt;banner&gt; tag mode */
+<a name="567"></a>            if (statusLine.statusDispMode == StatusModeApi)
+<a name="568"></a>            {
+<a name="569"></a>                /* banner API mode - clear our window */
+<a name="570"></a>                contentsMenuBanner.clearWindow();
+<a name="571"></a>
+<a name="572"></a>                /* advise the interpreter of our best guess for our size */
+<a name="573"></a>                if (fullScreenMode)
+<a name="574"></a>                    contentsMenuBanner.setSize(100, BannerSizePercent, nil);
+<a name="575"></a>                else
+<a name="576"></a>                    contentsMenuBanner.setSize(len + 1, BannerSizeAbsolute,
+<a name="577"></a>                                               true);
+<a name="578"></a>
+<a name="579"></a>                /* set up our desired color scheme */
+<a name="580"></a>                "&lt;body bgcolor=&lt;&lt;bgcolor&gt;&gt; text=&lt;&lt;fgcolor&gt;&gt; &gt;";
+<a name="581"></a>            }
+<a name="582"></a>            else
+<a name="583"></a>            {
+<a name="584"></a>                /* 
+<a name="585"></a>                 *   &lt;banner&gt; tag mode - set up our tag.  In full-screen
+<a name="586"></a>                 *   mode, set our height to 100% immediately; otherwise,
+<a name="587"></a>                 *   leave the height unspecified so that we'll use the
+<a name="588"></a>                 *   size of our contents.  Use a border only if we're not
+<a name="589"></a>                 *   taking up the full screen. 
+<a name="590"></a>                 */
+<a name="591"></a>                "&lt;banner id=MenuBody align=top
+<a name="592"></a>                &lt;&lt;fullScreenMode ? 'height=100%' : 'border'&gt;&gt;
+<a name="593"></a>                &gt;&lt;body bgcolor=&lt;&lt;bgcolor&gt;&gt; text=&lt;&lt;fgcolor&gt;&gt; &gt;";
+<a name="594"></a>            }
+<a name="595"></a>
+<a name="596"></a>            /* display our contents as a table */
+<a name="597"></a>            "&lt;table&gt;&lt;tr&gt;&lt;td width=&lt;&lt;indent&gt;&gt; &gt; &lt;/td&gt;&lt;td&gt;";
+<a name="598"></a>            for (local i = 1; i &lt;= len; i++)
+<a name="599"></a>            {
+<a name="600"></a>                /* 
+<a name="601"></a>                 *   To get the alignment right, we have to print '&gt;' on
+<a name="602"></a>                 *   each and every line. However, we print it in the
+<a name="603"></a>                 *   background color to make it invisible everywhere but
+<a name="604"></a>                 *   in front of the current selection.
+<a name="605"></a>                 */
+<a name="606"></a>                if (selection != i)
+<a name="607"></a>                    "&lt;font color=&lt;&lt;bgcolor&gt;&gt; &gt;&amp;gt;&lt;/font&gt;";
+<a name="608"></a>                else
+<a name="609"></a>                    "&amp;gt;";
+<a name="610"></a>                
+<a name="611"></a>                /* make each selection a plain (i.e. unhilighted) HREF */
+<a name="612"></a>                "&lt;a plain href=&lt;&lt;i&gt;&gt; &gt;&lt;&lt;contents[i].title&gt;&gt;&lt;/a&gt;&lt;br&gt;";
+<a name="613"></a>            }
+<a name="614"></a>
+<a name="615"></a>            /* end the table */
+<a name="616"></a>            "&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;";
+<a name="617"></a>
+<a name="618"></a>            /* finish our display as appropriate */
+<a name="619"></a>            if (statusLine.statusDispMode == StatusModeApi)
+<a name="620"></a>            {
+<a name="621"></a>                /* banner API - size the window to its contents */
+<a name="622"></a>                if (!fullScreenMode)
+<a name="623"></a>                    contentsMenuBanner.sizeToContents();
+<a name="624"></a>            }
+<a name="625"></a>            else
+<a name="626"></a>            {
+<a name="627"></a>                /* &lt;banner&gt; tag - just close the tag */
+<a name="628"></a>                "&lt;/banner&gt;";
+<a name="629"></a>            }
+<a name="630"></a>
+<a name="631"></a>            /* main input loop */
+<a name="632"></a>            do
+<a name="633"></a>            {
+<a name="634"></a>                local key, events;
+<a name="635"></a>
+<a name="636"></a>                /* 
+<a name="637"></a>                 *   Read an event - don't allow real-time interruptions,
+<a name="638"></a>                 *   since menus are meta-game interactions.  Read an
+<a name="639"></a>                 *   event rather than just a keystroke, because we want
+<a name="640"></a>                 *   to let the user click on a menu item's HREF.  
+<a name="641"></a>                 */
+<a name="642"></a>                events = inputManager.getEvent(nil, nil);
+<a name="643"></a>
+<a name="644"></a>                /* check the event type */
+<a name="645"></a>                switch (events[1])
+<a name="646"></a>                {
+<a name="647"></a>                case InEvtHref:
+<a name="648"></a>                    /* 
+<a name="649"></a>                     *   the HREF's value is the selection number, or a
+<a name="650"></a>                     *   'previous' command 
+<a name="651"></a>                     */
+<a name="652"></a>                    if (events[2] == 'previous')
+<a name="653"></a>                        loc = M_PREV;
+<a name="654"></a>                    else
+<a name="655"></a>                    {
+<a name="656"></a>                        selection = toInteger(events[2]);
+<a name="657"></a>                        loc = M_SEL;
+<a name="658"></a>                    }
+<a name="659"></a>                    break;
+<a name="660"></a>
+<a name="661"></a>                case InEvtKey:
+<a name="662"></a>                    /* keystroke - convert any alphabetic to lower case */
+<a name="663"></a>                    key = events[2].toLower();
+<a name="664"></a>
+<a name="665"></a>                    /* scan for a valid command key */
+<a name="666"></a>                    loc = topMenu.keyList.indexWhich(
+<a name="667"></a>                        {x: x.indexOf(key) != nil});
+<a name="668"></a>                    break;
+<a name="669"></a>                }
+<a name="670"></a>
+<a name="671"></a>                /* handle arrow keys */
+<a name="672"></a>                if (loc == M_UP)
+<a name="673"></a>                {
+<a name="674"></a>                    selection--;
+<a name="675"></a>                    if (selection &lt; 1)
+<a name="676"></a>                        selection = len;
+<a name="677"></a>                }
+<a name="678"></a>                else if (loc == M_DOWN)
+<a name="679"></a>                {
+<a name="680"></a>                    selection++;
+<a name="681"></a>                    if (selection &gt; len)
+<a name="682"></a>                        selection = 1;
+<a name="683"></a>                }
+<a name="684"></a>            } while (loc == nil);
+<a name="685"></a>
+<a name="686"></a>            /* if the player selected a sub-menu, invoke the selection */
+<a name="687"></a>            while (loc == M_SEL
+<a name="688"></a>                   &amp;&amp; selection != 0
+<a name="689"></a>                   &amp;&amp; selection &lt;= contents.length())
+<a name="690"></a>            {
+<a name="691"></a>                /* 
+<a name="692"></a>                 *   Invoke the sub-menu, checking for a QUIT result.  If
+<a name="693"></a>                 *   the user isn't quitting, we'll display our own menu
+<a name="694"></a>                 *   again; in this case, update it now, in case something
+<a name="695"></a>                 *   in the sub-menu changed our own contents. 
+<a name="696"></a>                 */
+<a name="697"></a>                loc = contents[selection].showMenuHtml(topMenu);
+<a name="698"></a>                
+<a name="699"></a>                /* see what we have */
+<a name="700"></a>                switch (loc)
+<a name="701"></a>                {
+<a name="702"></a>                case M_UP:
+<a name="703"></a>                    /* they want to go directly to the previous menu */
+<a name="704"></a>                    loc = M_SEL;
+<a name="705"></a>                    --selection;
+<a name="706"></a>                    break;
+<a name="707"></a>
+<a name="708"></a>                case M_DOWN:
+<a name="709"></a>                    /* they want to go directly to the next menu */
+<a name="710"></a>                    loc = M_SEL;
+<a name="711"></a>                    ++selection;
+<a name="712"></a>                    break;
+<a name="713"></a>
+<a name="714"></a>                case M_PREV:
+<a name="715"></a>                    /* they want to return to this menu level */
+<a name="716"></a>                    loc = nil;
+<a name="717"></a>
+<a name="718"></a>                    /* update our contents */
+<a name="719"></a>                    updateContents();
+<a name="720"></a>
+<a name="721"></a>                    /* make sure we refresh the title area */
+<a name="722"></a>                    refreshTitle = true;
+<a name="723"></a>                    break;
+<a name="724"></a>                }
+<a name="725"></a>            }
+<a name="726"></a>        } while (loc != M_QUIT &amp;&amp; loc != M_PREV);
+<a name="727"></a>
+<a name="728"></a>        /* return the next status */
+<a name="729"></a>        return loc;
+<a name="730"></a>    }
+<a name="731"></a>
+<a name="732"></a>    /* 
+<a name="733"></a>     *   showTopMenuBanner creates the banner for the menu using the
+<a name="734"></a>     *   banner API.  The banner contains the title of the menu on the
+<a name="735"></a>     *   left and the navigation keys on the right. 
+<a name="736"></a>     */
+<a name="737"></a>    showTopMenuBanner(topMenu)
+<a name="738"></a>    {
+<a name="739"></a>        /* do not show the top banner if we're in text mode */
+<a name="740"></a>        if (statusLine.statusDispMode == StatusModeText)
+<a name="741"></a>            return;
+<a name="742"></a>
+<a name="743"></a>        /* 
+<a name="744"></a>         *   Since the status line has already figured out the terp's
+<a name="745"></a>         *   capabilities, piggyback off of what it learned.  If we're
+<a name="746"></a>         *   using banner API mode, show our banner window.  
+<a name="747"></a>         */
+<a name="748"></a>        if (statusLine.statusDispMode == StatusModeApi)
+<a name="749"></a>        {
+<a name="750"></a>            /* banner API mode - show our banner window */
+<a name="751"></a>            topMenuBanner.showBanner(nil, BannerFirst, nil, BannerTypeText,
+<a name="752"></a>                                     BannerAlignTop, nil, nil,
+<a name="753"></a>                                     BannerStyleBorder | BannerStyleTabAlign);
+<a name="754"></a>            
+<a name="755"></a>            /* advise the terp that we need two lines */
+<a name="756"></a>            topMenuBanner.setSize(2, BannerSizeAbsolute, true);
+<a name="757"></a>        }
+<a name="758"></a>
+<a name="759"></a>        /* show our contents */
+<a name="760"></a>        refreshTopMenuBanner(topMenu);
+<a name="761"></a>    }
+<a name="762"></a>
+<a name="763"></a>    /*
+<a name="764"></a>     *   Refresh the contents of the top bar with the instructions 
+<a name="765"></a>     */
+<a name="766"></a>    refreshTopMenuBanner(topMenu)
+<a name="767"></a>    {
+<a name="768"></a>        local oldStr;
+<a name="769"></a>
+<a name="770"></a>        /* clear our old contents using the appropriate mode */
+<a name="771"></a>        switch (statusLine.statusDispMode)
+<a name="772"></a>        {
+<a name="773"></a>        case StatusModeApi:
+<a name="774"></a>            /* clear the window */
+<a name="775"></a>            topMenuBanner.clearWindow();
+<a name="776"></a>
+<a name="777"></a>            /* set the default output stream to our menu window */
+<a name="778"></a>            oldStr = topMenuBanner.setOutputStream();
+<a name="779"></a>
+<a name="780"></a>            /* set our color scheme */
+<a name="781"></a>            "&lt;body bgcolor=&lt;&lt;topbarbg&gt;&gt; text=&lt;&lt;topbarfg&gt;&gt; &gt;";
+<a name="782"></a>            break;
+<a name="783"></a>            
+<a name="784"></a>        case StatusModeTag:
+<a name="785"></a>            /* start a new &lt;banner&gt; tag */
+<a name="786"></a>            "&lt;banner id=MenuTitle align=top&gt;&lt;body bgcolor=&lt;&lt;topbarbg&gt;&gt;
+<a name="787"></a>            text=&lt;&lt;topbarfg&gt;&gt; &gt;";
+<a name="788"></a>            break;
+<a name="789"></a>        }
+<a name="790"></a>
+<a name="791"></a>        /* show our heading */
+<a name="792"></a>        say(heading);
+<a name="793"></a>
+<a name="794"></a>        /* show our keyboard assignments */
+<a name="795"></a>        gLibMessages.menuInstructions(topMenu.keyList, prevMenuLink);
+<a name="796"></a>        
+<a name="797"></a>        /* finish up according to our mode */
+<a name="798"></a>        switch (statusLine.statusDispMode)
+<a name="799"></a>        {
+<a name="800"></a>        case StatusModeApi:
+<a name="801"></a>            /* banner API mode - restore the old output stream */
+<a name="802"></a>            outputManager.setOutputStream(oldStr);
+<a name="803"></a>            
+<a name="804"></a>            /* size the window to the actual content size */
+<a name="805"></a>            topMenuBanner.sizeToContents();
+<a name="806"></a>            break;
+<a name="807"></a>            
+<a name="808"></a>        case StatusModeTag:
+<a name="809"></a>            /* close the &lt;banner&gt; tag */
+<a name="810"></a>            "&lt;/banner&gt;";
+<a name="811"></a>            break;
+<a name="812"></a>        }
+<a name="813"></a>    }
+<a name="814"></a>
+<a name="815"></a>    /*
+<a name="816"></a>     *   Remove the top banner window
+<a name="817"></a>     */
+<a name="818"></a>    removeTopMenuBanner()
+<a name="819"></a>    {
+<a name="820"></a>        /* remove the window according to the banner mode */
+<a name="821"></a>        switch (statusLine.statusDispMode)
+<a name="822"></a>        {
+<a name="823"></a>        case StatusModeApi:
+<a name="824"></a>            /* banner API mode - remove the banner window */
+<a name="825"></a>            topMenuBanner.removeBanner();
+<a name="826"></a>            break;
+<a name="827"></a>
+<a name="828"></a>        case StatusModeTag:
+<a name="829"></a>            /* banner tag mode - remove our banner tag */
+<a name="830"></a>            "&lt;banner remove id=MenuTitle&gt;";
+<a name="831"></a>        }
+<a name="832"></a>    }
+<a name="833"></a>    
+<a name="834"></a>    /*
+<a name="835"></a>     *   Remove the status line banner prior to displaying the menu
+<a name="836"></a>     */
+<a name="837"></a>    removeStatusLine()
+<a name="838"></a>    {
+<a name="839"></a>        local oldStr;
+<a name="840"></a>
+<a name="841"></a>        /* remove the banner according to our banner display mode */
+<a name="842"></a>        switch (statusLine.statusDispMode)
+<a name="843"></a>        {
+<a name="844"></a>        case StatusModeApi:
+<a name="845"></a>            /* 
+<a name="846"></a>             *   banner API mode - simply set the banner window to zero
+<a name="847"></a>             *   size, which will effectively make it invisible 
+<a name="848"></a>             */
+<a name="849"></a>            statuslineBanner.setSize(0, BannerSizeAbsolute, nil);
+<a name="850"></a>            break;
+<a name="851"></a>
+<a name="852"></a>        case StatusModeTag:
+<a name="853"></a>            /* &lt;banner&gt; tag mode - remove the statusline banner */
+<a name="854"></a>            oldStr = outputManager.setOutputStream(statusTagOutputStream);
+<a name="855"></a>            "&lt;banner remove id=StatusLine&gt;";
+<a name="856"></a>            outputManager.setOutputStream(oldStr);
+<a name="857"></a>            break;
+<a name="858"></a>
+<a name="859"></a>        case StatusModeText:
+<a name="860"></a>            /* tads2-style statusline - there's no way to remove it */
+<a name="861"></a>            break;
+<a name="862"></a>        }
+<a name="863"></a>    }
+<a name="864"></a>
+<a name="865"></a>    /*
+<a name="866"></a>     *   Get the next menu in our list following the given menu.  Returns
+<a name="867"></a>     *   nil if we don't find the given menu, or the given menu is the last
+<a name="868"></a>     *   menu. 
+<a name="869"></a>     */
+<a name="870"></a>    getNextMenu(menu)
+<a name="871"></a>    {
+<a name="872"></a>        /* find the menu in our contents list */
+<a name="873"></a>        local idx = contents.indexOf(menu);
+<a name="874"></a>
+<a name="875"></a>        /* 
+<a name="876"></a>         *   if we found it, and it's not the last, return the menu at the
+<a name="877"></a>         *   next index; otherwise return nil 
+<a name="878"></a>         */
+<a name="879"></a>        return (idx != nil &amp;&amp; idx &lt; contents.length()
+<a name="880"></a>                ? contents[idx + 1] : nil);
+<a name="881"></a>    }
+<a name="882"></a>
+<a name="883"></a>    /*
+<a name="884"></a>     *   Get the menu previous tot he given menu.  Returns nil if we don't
+<a name="885"></a>     *   find the given menu or the given menu is the first one. 
+<a name="886"></a>     */
+<a name="887"></a>    getPrevMenu(menu)
+<a name="888"></a>    {
+<a name="889"></a>        /* find the menu in our contents list */
+<a name="890"></a>        local idx = contents.indexOf(menu);
+<a name="891"></a>
+<a name="892"></a>        /* 
+<a name="893"></a>         *   if we found it, and it's not the first, return the menu at the
+<a name="894"></a>         *   prior index; otherwise return nil 
+<a name="895"></a>         */
+<a name="896"></a>        return (idx != nil &amp;&amp; idx &gt; 1 ? contents[idx - 1] : nil);
+<a name="897"></a>    }
+<a name="898"></a>;
+<a name="899"></a>
+<a name="900"></a>/*
+<a name="901"></a> *   MenuTopicItem displays a series of entries successively.  This is
+<a name="902"></a> *   intended to be used for displaying something like a list of hints for
+<a name="903"></a> *   a topic.  Set menuContents to be a list of strings to be displayed.  
+<a name="904"></a> */
+<a name="905"></a>class MenuTopicItem: MenuItem
+<a name="906"></a>    /* the name of this topic, as it appears in our parent menu */
+<a name="907"></a>    title = ''
+<a name="908"></a>
+<a name="909"></a>    /* heading, displayed while we're showing this topic list */
+<a name="910"></a>    heading = (title)
+<a name="911"></a>
+<a name="912"></a>    /* hyperlink text for showing the next menu */
+<a name="913"></a>    nextMenuTopicLink = (gLibMessages.nextMenuTopicLink)
+<a name="914"></a>
+<a name="915"></a>    /* 
+<a name="916"></a>     *   A list of strings and/or MenuTopicSubItem items.  Each one of
+<a name="917"></a>     *   these is meant to be something like a single hint on our topic.
+<a name="918"></a>     *   We display these items one at a time when our menu item is
+<a name="919"></a>     *   selected.  
+<a name="920"></a>     */
+<a name="921"></a>    menuContents = []
+<a name="922"></a>
+<a name="923"></a>    /* the index of the last item we displayed from our menuContents list */
+<a name="924"></a>    lastDisplayed = 1
+<a name="925"></a>
+<a name="926"></a>    /* 
+<a name="927"></a>     *   The maximum number of our sub-items that we'll display at once.
+<a name="928"></a>     *   This is only used on interpreters with banner capabilities, and is
+<a name="929"></a>     *   ignored in full-screen mode.  
+<a name="930"></a>     */
+<a name="931"></a>    chunkSize = 6
+<a name="932"></a>
+<a name="933"></a>    /* we'll display this after we've shown all of our items */
+<a name="934"></a>    menuTopicListEnd = (gLibMessages.menuTopicListEnd)
+<a name="935"></a>
+<a name="936"></a>    /*
+<a name="937"></a>     *   Display and run our menu in text mode.
+<a name="938"></a>     */
+<a name="939"></a>    showMenuText(topMenu)
+<a name="940"></a>    {
+<a name="941"></a>        local i, len, loc;
+<a name="942"></a>        
+<a name="943"></a>        /* remember the key list */
+<a name="944"></a>        curKeyList = topMenu.keyList;
+<a name="945"></a>
+<a name="946"></a>        /* update our contents, as needed */
+<a name="947"></a>        updateContents();
+<a name="948"></a>
+<a name="949"></a>        /* get the number of items in our list */
+<a name="950"></a>        len = menuContents.length();
+<a name="951"></a>
+<a name="952"></a>        /* show our heading and instructions */
+<a name="953"></a>        "\n&lt;b&gt;&lt;&lt;heading&gt;&gt;&lt;/b&gt;";
+<a name="954"></a>        gLibMessages.textMenuTopicPrompt();
+<a name="955"></a>
+<a name="956"></a>        /* 
+<a name="957"></a>         *   Show all of the items up to and including the last one we
+<a name="958"></a>         *   displayed on any past invocation.  Append "[#/#]" to each
+<a name="959"></a>         *   item to show where we are in the overall list. 
+<a name="960"></a>         */
+<a name="961"></a>        for (i = 1 ; i &lt;= lastDisplayed ; ++i)
+<a name="962"></a>        {
+<a name="963"></a>            /* display this item */
+<a name="964"></a>            displaySubItem(i, i == lastDisplayed, '\b');
+<a name="965"></a>        }
+<a name="966"></a>
+<a name="967"></a>        /* main input loop */
+<a name="968"></a>        for (;;)
+<a name="969"></a>        {
+<a name="970"></a>            local key;
+<a name="971"></a>            
+<a name="972"></a>            /* read a keystroke */
+<a name="973"></a>            key = inputManager.getKey(nil, nil).toLower();
+<a name="974"></a>
+<a name="975"></a>            /* look it up in the key list */
+<a name="976"></a>            loc = topMenu.keyList.indexWhich({x: x.indexOf(key) != nil});
+<a name="977"></a>
+<a name="978"></a>            /* check to see if they want to quit the menu system */
+<a name="979"></a>            if (loc == M_QUIT)
+<a name="980"></a>                return M_QUIT;
+<a name="981"></a>
+<a name="982"></a>            /* 
+<a name="983"></a>             *   check to see if they want to return to the previous menu;
+<a name="984"></a>             *   if we're out of items to show, return to the previous
+<a name="985"></a>             *   menu on any other keystrok as well 
+<a name="986"></a>             */
+<a name="987"></a>            if (loc == M_PREV || self.lastDisplayed == len)
+<a name="988"></a>                 return M_PREV;
+<a name="989"></a>
+<a name="990"></a>            /* for any other keystroke, just show the next item */
+<a name="991"></a>            lastDisplayed++;
+<a name="992"></a>            displaySubItem(lastDisplayed, lastDisplayed == len, '\b');
+<a name="993"></a>        }
+<a name="994"></a>    }
+<a name="995"></a>
+<a name="996"></a>    /*
+<a name="997"></a>     *   Display and run our menu in HTML mode.
+<a name="998"></a>     */
+<a name="999"></a>    showMenuHtml(topMenu)
+<a name="1000"></a>    {
+<a name="1001"></a>        local len;
+<a name="1002"></a>        local topIdx;
+<a name="1003"></a>        
+<a name="1004"></a>        /* remember the key list */
+<a name="1005"></a>        curKeyList = topMenu.keyList;
+<a name="1006"></a>
+<a name="1007"></a>        /* refresh the top instructions bar with our heading */
+<a name="1008"></a>        refreshTopMenuBanner(topMenu);
+<a name="1009"></a>
+<a name="1010"></a>        /* update our contents, as needed */
+<a name="1011"></a>        updateContents();
+<a name="1012"></a>
+<a name="1013"></a>        /* get the number of items in our list */
+<a name="1014"></a>        len = menuContents.length();
+<a name="1015"></a>
+<a name="1016"></a>        /* 
+<a name="1017"></a>         *   initially show the first item at the top of the window (we
+<a name="1018"></a>         *   might scroll the list later to show a later item at the top,
+<a name="1019"></a>         *   if we're limiting the number of items we can show at once) 
+<a name="1020"></a>         */
+<a name="1021"></a>        topIdx = 1;
+<a name="1022"></a>
+<a name="1023"></a>        /* main interaction loop */
+<a name="1024"></a>        for (;;)
+<a name="1025"></a>        {
+<a name="1026"></a>            local lastIdx;
+<a name="1027"></a>
+<a name="1028"></a>            /* redraw the window with the current top item */
+<a name="1029"></a>            lastIdx = redrawWinHtml(topIdx);
+<a name="1030"></a>
+<a name="1031"></a>            /* process input */
+<a name="1032"></a>            for (;;)
+<a name="1033"></a>            {
+<a name="1034"></a>                local events;
+<a name="1035"></a>                local loc;
+<a name="1036"></a>                local key;
+<a name="1037"></a>                
+<a name="1038"></a>                /* read an event */
+<a name="1039"></a>                events = inputManager.getEvent(nil, nil);
+<a name="1040"></a>                switch(events[1])
+<a name="1041"></a>                {
+<a name="1042"></a>                case InEvtHref:
+<a name="1043"></a>                    /* check for a 'next' or 'previous' command */
+<a name="1044"></a>                    switch(events[2])
+<a name="1045"></a>                    {
+<a name="1046"></a>                    case 'next':
+<a name="1047"></a>                        /* we want to go to the next item */
+<a name="1048"></a>                        loc = M_SEL;
+<a name="1049"></a>                        break;
+<a name="1050"></a>                        
+<a name="1051"></a>                    case 'previous':
+<a name="1052"></a>                        /* we want to go to the previous menu */
+<a name="1053"></a>                        loc = M_PREV;
+<a name="1054"></a>                        break;
+<a name="1055"></a>
+<a name="1056"></a>                    default:
+<a name="1057"></a>                        /* ignore other hyperlinks */
+<a name="1058"></a>                        loc = nil;
+<a name="1059"></a>                    }
+<a name="1060"></a>                    break;
+<a name="1061"></a>
+<a name="1062"></a>                case InEvtKey:
+<a name="1063"></a>                    /* get the key, converting alphabetic to lower case */
+<a name="1064"></a>                    key = events[2].toLower();
+<a name="1065"></a>
+<a name="1066"></a>                    /* look up the keystroke in our key mappings */
+<a name="1067"></a>                    loc = topMenu.keyList.indexWhich(
+<a name="1068"></a>                        {x: x.indexOf(key) != nil});
+<a name="1069"></a>                    break;
+<a name="1070"></a>                }
+<a name="1071"></a>
+<a name="1072"></a>                /* 
+<a name="1073"></a>                 *   if they're quitting or returning to the previous
+<a name="1074"></a>                 *   menu, we're done 
+<a name="1075"></a>                 */
+<a name="1076"></a>                if (loc == M_QUIT || loc == M_PREV)
+<a name="1077"></a>                    return loc;
+<a name="1078"></a>                
+<a name="1079"></a>                /* advance to the next item if desired */
+<a name="1080"></a>                if (loc == M_SEL)
+<a name="1081"></a>                {
+<a name="1082"></a>                    /* 
+<a name="1083"></a>                     *   if the last item we showed is the last item in
+<a name="1084"></a>                     *   our entire list, then the normal selection keys
+<a name="1085"></a>                     *   simply return to the previous menu 
+<a name="1086"></a>                     */
+<a name="1087"></a>                    if (lastIdx == len)
+<a name="1088"></a>                        return M_PREV;
+<a name="1089"></a>
+<a name="1090"></a>                    /* 
+<a name="1091"></a>                     *   If we haven't yet reached the last revealed item,
+<a name="1092"></a>                     *   it means we're limited by the chunk size, so show
+<a name="1093"></a>                     *   the next chunk.  Otherwise, reveal the next item.
+<a name="1094"></a>                     */
+<a name="1095"></a>                    if (lastIdx &lt; lastDisplayed)
+<a name="1096"></a>                    {
+<a name="1097"></a>                        /* advance to the next chunk */
+<a name="1098"></a>                        topIdx += chunkSize;
+<a name="1099"></a>                    }
+<a name="1100"></a>                    else
+<a name="1101"></a>                    {
+<a name="1102"></a>                        /* reveal the next item */
+<a name="1103"></a>                        ++lastDisplayed;
+<a name="1104"></a>
+<a name="1105"></a>                        /* 
+<a name="1106"></a>                         *   if we're not in full-screen mode, and we've
+<a name="1107"></a>                         *   already filled the window, scroll down a line
+<a name="1108"></a>                         *   by advancing the index of the item at the top
+<a name="1109"></a>                         *   of the window 
+<a name="1110"></a>                         */
+<a name="1111"></a>                        if (!fullScreenMode
+<a name="1112"></a>                            &amp;&amp; lastIdx == topIdx + chunkSize - 1)
+<a name="1113"></a>                            ++topIdx;
+<a name="1114"></a>                    }
+<a name="1115"></a>
+<a name="1116"></a>                    /* done processing input */
+<a name="1117"></a>                    break;
+<a name="1118"></a>                }
+<a name="1119"></a>            }
+<a name="1120"></a>        }
+<a name="1121"></a>    }
+<a name="1122"></a>
+<a name="1123"></a>    /*
+<a name="1124"></a>     *   redraw the window in HTML mode, starting with the given item at
+<a name="1125"></a>     *   the top of the window 
+<a name="1126"></a>     */
+<a name="1127"></a>    redrawWinHtml(topIdx)
+<a name="1128"></a>    {
+<a name="1129"></a>        local len;
+<a name="1130"></a>        local idx;
+<a name="1131"></a>        
+<a name="1132"></a>        /* get the number of items in our list */
+<a name="1133"></a>        len = menuContents.length();
+<a name="1134"></a>
+<a name="1135"></a>        /* check the banner mode (based on the statusline mode) */
+<a name="1136"></a>        if (statusLine.statusDispMode == StatusModeApi)
+<a name="1137"></a>        {
+<a name="1138"></a>            /* banner API mode - clear the window */
+<a name="1139"></a>            contentsMenuBanner.clearWindow();
+<a name="1140"></a>            
+<a name="1141"></a>            /* 
+<a name="1142"></a>             *   Advise the terp of our best guess at our size: assume one
+<a name="1143"></a>             *   line per item, and max out at either our actual number of
+<a name="1144"></a>             *   items or our maximum chunk size, whichever is lower.  If
+<a name="1145"></a>             *   we're in full-screen mode, though, simply size to 100% of
+<a name="1146"></a>             *   the available space.  
+<a name="1147"></a>             */
+<a name="1148"></a>            if (fullScreenMode)
+<a name="1149"></a>                contentsMenuBanner.setSize(100, BannerSizePercent, nil);
+<a name="1150"></a>            else
+<a name="1151"></a>                contentsMenuBanner.setSize(chunkSize &lt; len ? chunkSize : len,
+<a name="1152"></a>                                           BannerSizeAbsolute, true);
+<a name="1153"></a>
+<a name="1154"></a>            /* set up our color scheme */
+<a name="1155"></a>            "&lt;body bgcolor=&lt;&lt;bgcolor&gt;&gt; text=&lt;&lt;fgcolor&gt;&gt; &gt;";
+<a name="1156"></a>        }
+<a name="1157"></a>        else
+<a name="1158"></a>        {
+<a name="1159"></a>            /* &lt;banner&gt; tag mode - open our tag */
+<a name="1160"></a>            "&lt;banner id=MenuBody align=top
+<a name="1161"></a>            &lt;&lt;fullScreenMode ? 'height=100%' : 'border'&gt;&gt;
+<a name="1162"></a>            &gt;&lt;body bgcolor=&lt;&lt;bgcolor&gt;&gt; text=&lt;&lt;fgcolor&gt;&gt;  &gt;";
+<a name="1163"></a>        }
+<a name="1164"></a>
+<a name="1165"></a>        /* start a table to show the items */
+<a name="1166"></a>        "&lt;table&gt;&lt;tr&gt;&lt;td width=&lt;&lt;self.indent&gt;&gt; &gt; &lt;/td&gt;&lt;td&gt;";
+<a name="1167"></a>
+<a name="1168"></a>        /* show the items */
+<a name="1169"></a>        for (idx = topIdx ; ; ++idx)
+<a name="1170"></a>        {
+<a name="1171"></a>            local isLast;
+<a name="1172"></a>
+<a name="1173"></a>            /* 
+<a name="1174"></a>             *   Note if this is the last item we're going to show just
+<a name="1175"></a>             *   now.  It's the last item we're showing if it's the last
+<a name="1176"></a>             *   item in the list, or it's the 'lastDisplayed' item, or
+<a name="1177"></a>             *   we've filled out the chunk size.  
+<a name="1178"></a>             */
+<a name="1179"></a>            isLast = (idx == len
+<a name="1180"></a>                      || (!fullScreenMode &amp;&amp; idx == topIdx + chunkSize - 1)
+<a name="1181"></a>                      || idx == lastDisplayed);
+<a name="1182"></a>            
+<a name="1183"></a>            /* display the next item */
+<a name="1184"></a>            displaySubItem(idx, isLast, '&lt;br&gt;');
+<a name="1185"></a>
+<a name="1186"></a>            /* if that was the last item, we're done */
+<a name="1187"></a>            if (isLast)
+<a name="1188"></a>                break;
+<a name="1189"></a>        }
+<a name="1190"></a>
+<a name="1191"></a>        /* finish the table */
+<a name="1192"></a>        "&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;";
+<a name="1193"></a>
+<a name="1194"></a>        /* finish the window */
+<a name="1195"></a>        switch(statusLine.statusDispMode)
+<a name="1196"></a>        {
+<a name="1197"></a>        case StatusModeApi:
+<a name="1198"></a>            /* if we're not in full-screen mode, set the final size */
+<a name="1199"></a>            if (!fullScreenMode)
+<a name="1200"></a>                contentsMenuBanner.sizeToContents();
+<a name="1201"></a>            break;
+<a name="1202"></a>
+<a name="1203"></a>        case StatusModeTag:
+<a name="1204"></a>            /* end the banner tag */
+<a name="1205"></a>            "&lt;/banner&gt;";
+<a name="1206"></a>            break;
+<a name="1207"></a>        }
+<a name="1208"></a>
+<a name="1209"></a>        /* return the index of the last item displayed */
+<a name="1210"></a>        return idx;
+<a name="1211"></a>    }
+<a name="1212"></a>
+<a name="1213"></a>    /* 
+<a name="1214"></a>     *   Display an item from our list.  'idx' is the index in our list of
+<a name="1215"></a>     *   the item to display.  'lastBeforeInput' indicates whether or not
+<a name="1216"></a>     *   this is the last item we're going to show before pausing for user
+<a name="1217"></a>     *   input.  'eol' gives the newline sequence to display at the end of
+<a name="1218"></a>     *   the line.  
+<a name="1219"></a>     */
+<a name="1220"></a>    displaySubItem(idx, lastBeforeInput, eol)
+<a name="1221"></a>    {
+<a name="1222"></a>        local item;
+<a name="1223"></a>
+<a name="1224"></a>        /* get the item from our list */
+<a name="1225"></a>        item = menuContents[idx];
+<a name="1226"></a>
+<a name="1227"></a>        /* 
+<a name="1228"></a>         *   show the item: if it's a simple string, just display it;
+<a name="1229"></a>         *   otherwise, assume it's an object, and call its getItemText
+<a name="1230"></a>         *   method to get its text (and possibly trigger any needed
+<a name="1231"></a>         *   side-effects) 
+<a name="1232"></a>         */
+<a name="1233"></a>        say(dataType(item) == TypeSString ? item : item.getItemText());
+<a name="1234"></a>
+<a name="1235"></a>        /* add the [n/m] indicator */
+<a name="1236"></a>        gLibMessages.menuTopicProgress(idx, menuContents.length());
+<a name="1237"></a>
+<a name="1238"></a>        /* 
+<a name="1239"></a>         *   if this is the last item we're going to display before asking
+<a name="1240"></a>         *   for input, and it's not the last item in the list overall,
+<a name="1241"></a>         *   and we're in HTML mode, show a hyperlink for advancing to the
+<a name="1242"></a>         *   next item 
+<a name="1243"></a>         */
+<a name="1244"></a>        if (lastBeforeInput &amp;&amp; idx != menuContents.length())
+<a name="1245"></a>            "&amp;emsp;&lt;&lt;aHrefAlt('next', nextMenuTopicLink, '')&gt;&gt;";
+<a name="1246"></a>
+<a name="1247"></a>        /* show the desired line-ending separator */
+<a name="1248"></a>        say(eol);
+<a name="1249"></a>
+<a name="1250"></a>        /* if it's the last item, add the end-of-list marker */
+<a name="1251"></a>        if (idx == menuContents.length())
+<a name="1252"></a>            "&lt;&lt;menuTopicListEnd&gt;&gt;\n";
+<a name="1253"></a>    }
+<a name="1254"></a>;
+<a name="1255"></a>
+<a name="1256"></a>/*
+<a name="1257"></a> *   A menu topic sub-item can be used to represent an item in a
+<a name="1258"></a> *   MenuTopicItem's list of display items.  This can be useful when
+<a name="1259"></a> *   displaying a topic must trigger a side-effect.  
+<a name="1260"></a> */
+<a name="1261"></a>class MenuTopicSubItem: object
+<a name="1262"></a>    /*
+<a name="1263"></a>     *   Get the item's text.  By default, we just return an empty string.
+<a name="1264"></a>     *   This should be overridden to return the appropriate text, and can
+<a name="1265"></a>     *   also trigger any desired side-effects.  
+<a name="1266"></a>     */
+<a name="1267"></a>    getItemText() { return ''; }
+<a name="1268"></a>;
+<a name="1269"></a>
+<a name="1270"></a>/* 
+<a name="1271"></a> *   Long Topic Items are used to print out big long gobs of text on a
+<a name="1272"></a> *   subject.  Use it for printing long treatises on your design
+<a name="1273"></a> *   philosophy and the like.  
+<a name="1274"></a> */
+<a name="1275"></a>class MenuLongTopicItem: MenuItem
+<a name="1276"></a>    /* the title of the menu, shown in parent menus */
+<a name="1277"></a>    title = ''
+<a name="1278"></a>
+<a name="1279"></a>    /* the heading, shown while we're displaying our contents */
+<a name="1280"></a>    heading = (title)
+<a name="1281"></a>
+<a name="1282"></a>    /* either a string to be displayed, or a routine */
+<a name="1283"></a>    menuContents = ''
+<a name="1284"></a>
+<a name="1285"></a>    /* 
+<a name="1286"></a>     *   Flag - this is a "chapter" in a list of chapters.  If this is set
+<a name="1287"></a>     *   to true, then we'll offer the options to proceed directly to the
+<a name="1288"></a>     *   next and previous chapters.  If this is nil, we'll simply wait for
+<a name="1289"></a>     *   acknowledgment and return to the parent menu. 
+<a name="1290"></a>     */
+<a name="1291"></a>    isChapterMenu = nil
+<a name="1292"></a>
+<a name="1293"></a>    /* the message we display at the end of our text */
+<a name="1294"></a>    menuLongTopicEnd = (gLibMessages.menuLongTopicEnd)
+<a name="1295"></a>
+<a name="1296"></a>    /* display and run our menu in text mode */
+<a name="1297"></a>    showMenuText(topMenu)
+<a name="1298"></a>    {
+<a name="1299"></a>        local ret;
+<a name="1300"></a>        
+<a name="1301"></a>        /* remember the key list */
+<a name="1302"></a>        curKeyList = topMenu.keyList;
+<a name="1303"></a>
+<a name="1304"></a>        /* take over the entire screen */
+<a name="1305"></a>        cls();
+<a name="1306"></a>
+<a name="1307"></a>        /* use the common handling */
+<a name="1308"></a>        ret = showMenuCommon(topMenu);
+<a name="1309"></a>
+<a name="1310"></a>        /* we're done, so clear the screen again */
+<a name="1311"></a>        cls();
+<a name="1312"></a>
+<a name="1313"></a>        /* return the result from the common handler */
+<a name="1314"></a>        return ret;
+<a name="1315"></a>    }
+<a name="1316"></a>
+<a name="1317"></a>    /* display and run our menu in HTML mode */
+<a name="1318"></a>    showMenuHtml(topMenu)
+<a name="1319"></a>    {
+<a name="1320"></a>        local ret;
+<a name="1321"></a>        local oldStr;
+<a name="1322"></a>
+<a name="1323"></a>        /* remember the key list */
+<a name="1324"></a>        curKeyList = topMenu.keyList;
+<a name="1325"></a>
+<a name="1326"></a>        /* update our contents, as needed */
+<a name="1327"></a>        updateContents();
+<a name="1328"></a>
+<a name="1329"></a>        /* hide the two menu system banners */
+<a name="1330"></a>        if (statusLine.statusDispMode == StatusModeApi)
+<a name="1331"></a>        {
+<a name="1332"></a>            local flags;
+<a name="1333"></a>
+<a name="1334"></a>            /* 
+<a name="1335"></a>             *   Our banner window might already be showing, because we
+<a name="1336"></a>             *   could be coming here directly from a prior chapter.  If it
+<a name="1337"></a>             *   is, we don't need to show it again.  If it isn't showing,
+<a name="1338"></a>             *   show it now.  
+<a name="1339"></a>             */
+<a name="1340"></a>            if (longTopicBanner.handle_ != nil)
+<a name="1341"></a>            {
+<a name="1342"></a>                /* simply clear our existing window */
+<a name="1343"></a>                longTopicBanner.clearWindow();
+<a name="1344"></a>            }
+<a name="1345"></a>            else
+<a name="1346"></a>            {
+<a name="1347"></a>                /* hide the top menu banner */
+<a name="1348"></a>                topMenuBanner.setSize(0, BannerSizeAbsolute, nil);
+<a name="1349"></a>
+<a name="1350"></a>                /* figure our flags */
+<a name="1351"></a>                flags = (fullScreenMode ? 0 : BannerStyleBorder)
+<a name="1352"></a>                    | BannerStyleVScroll
+<a name="1353"></a>                    | BannerStyleMoreMode
+<a name="1354"></a>                    | BannerStyleAutoVScroll;
+<a name="1355"></a>            
+<a name="1356"></a>                /* banner API mode - show the long-topic banner */
+<a name="1357"></a>                longTopicBanner.showBanner(contentsMenuBanner, BannerLast,
+<a name="1358"></a>                                           nil, BannerTypeText,
+<a name="1359"></a>                                           BannerAlignTop,
+<a name="1360"></a>                                           100, BannerSizePercent, flags);
+<a name="1361"></a>            }
+<a name="1362"></a>
+<a name="1363"></a>            /* use its output stream */
+<a name="1364"></a>            oldStr = longTopicBanner.setOutputStream();
+<a name="1365"></a>                
+<a name="1366"></a>            /* set up our color scheme in the new banner */
+<a name="1367"></a>            "&lt;body bgcolor=&lt;&lt;bgcolor&gt;&gt; text=&lt;&lt;fgcolor&gt;&gt; &gt;";
+<a name="1368"></a>        }
+<a name="1369"></a>        else
+<a name="1370"></a>        {
+<a name="1371"></a>            /* 
+<a name="1372"></a>             *   use the main game window output stream for printing this
+<a name="1373"></a>             *   text (we need to switch back to it explicitly, because
+<a name="1374"></a>             *   HTML-mode menus normally run in the context of the menu's
+<a name="1375"></a>             *   banner output stream) 
+<a name="1376"></a>             */
+<a name="1377"></a>            oldStr = outputManager.setOutputStream(mainOutputStream);
+<a name="1378"></a>
+<a name="1379"></a>            /* we're using the main window, so clear out the game text */
+<a name="1380"></a>            cls();
+<a name="1381"></a>        }
+<a name="1382"></a>
+<a name="1383"></a>        try
+<a name="1384"></a>        {
+<a name="1385"></a>            /* show our contents using the normal text display */
+<a name="1386"></a>            ret = showMenuCommon(topMenu);
+<a name="1387"></a>        }
+<a name="1388"></a>        finally
+<a name="1389"></a>        {
+<a name="1390"></a>            local chapter;
+<a name="1391"></a>            
+<a name="1392"></a>            /* restore the original output stream */
+<a name="1393"></a>            outputManager.setOutputStream(oldStr);
+<a name="1394"></a>
+<a name="1395"></a>            /*
+<a name="1396"></a>             *   If we're going directly to the next or previous "chapter,"
+<a name="1397"></a>             *   and the next menu is itself a long-topic item, don't clean
+<a name="1398"></a>             *   up the screen: simply leave it in place for the next item.
+<a name="1399"></a>             *   First, check for a next/previous chapter return code, and
+<a name="1400"></a>             *   get the menu object for the next/previous chapter.  
+<a name="1401"></a>             */
+<a name="1402"></a>            if (ret == M_DOWN)
+<a name="1403"></a>                chapter = location.getNextMenu(self);
+<a name="1404"></a>            else if (ret == M_UP)
+<a name="1405"></a>                chapter = location.getPrevMenu(self);
+<a name="1406"></a>
+<a name="1407"></a>            /* 
+<a name="1408"></a>             *   if we have a next/previous chapter, and it's a long-topic
+<a name="1409"></a>             *   menu, we don't need cleanup; otherwise we do 
+<a name="1410"></a>             */
+<a name="1411"></a>            if (isChapterMenu
+<a name="1412"></a>                &amp;&amp; chapter != nil &amp;&amp; chapter.ofKind(MenuLongTopicItem))
+<a name="1413"></a>            {
+<a name="1414"></a>                /* we don't need any cleanup */
+<a name="1415"></a>            }
+<a name="1416"></a>            else
+<a name="1417"></a>            {
+<a name="1418"></a>                /* clean up the window */
+<a name="1419"></a>                if (statusLine.statusDispMode == StatusModeApi)
+<a name="1420"></a>                {
+<a name="1421"></a>                    /* API mode - remove our long-topic banner */
+<a name="1422"></a>                    longTopicBanner.removeBanner();
+<a name="1423"></a>                }
+<a name="1424"></a>                else
+<a name="1425"></a>                {
+<a name="1426"></a>                    /* tag mode - we used the main game window, so clear it */
+<a name="1427"></a>                    cls();
+<a name="1428"></a>                }
+<a name="1429"></a>
+<a name="1430"></a>                /* restore the top menu banner window */
+<a name="1431"></a>                topMenu.showTopMenuBanner(topMenu);
+<a name="1432"></a>            }
+<a name="1433"></a>        }
+<a name="1434"></a>
+<a name="1435"></a>        /* return the quit/continue indication */
+<a name="1436"></a>        return ret;
+<a name="1437"></a>    }
+<a name="1438"></a>
+<a name="1439"></a>    /* show our contents - common handler for text and HTML modes */
+<a name="1440"></a>    showMenuCommon(topMenu)
+<a name="1441"></a>    {
+<a name="1442"></a>        local evt, key, loc, nxt;
+<a name="1443"></a>
+<a name="1444"></a>        /* update our contents, as needed */
+<a name="1445"></a>        updateContents();
+<a name="1446"></a>
+<a name="1447"></a>        /* show our heading, centered */
+<a name="1448"></a>        "&lt;CENTER&gt;&lt;b&gt;&lt;&lt;heading&gt;&gt;&lt;/b&gt;&lt;/CENTER&gt;\b";
+<a name="1449"></a>
+<a name="1450"></a>        /* show our contents */
+<a name="1451"></a>        "&lt;&lt;menuContents&gt;&gt;\b";
+<a name="1452"></a>
+<a name="1453"></a>        /* check to see if we should offer chapter navigation */
+<a name="1454"></a>        nxt = (isChapterMenu ? location.getNextMenu(self) : nil);
+<a name="1455"></a>
+<a name="1456"></a>        /* if there's a next chapter, show how we can navigate to it */
+<a name="1457"></a>        if (nxt != nil)
+<a name="1458"></a>        {
+<a name="1459"></a>            /* show the navigation */
+<a name="1460"></a>            gLibMessages.menuNextChapter(topMenu.keyList, nxt.title,
+<a name="1461"></a>                                         'next', 'menu');
+<a name="1462"></a>        }
+<a name="1463"></a>        else
+<a name="1464"></a>        {
+<a name="1465"></a>            /* no chaptering - just print the ending message */
+<a name="1466"></a>            "&lt;&lt;menuLongTopicEnd&gt;&gt;";
+<a name="1467"></a>        }
+<a name="1468"></a>
+<a name="1469"></a>        /* wait for an event */
+<a name="1470"></a>        for (;;)
+<a name="1471"></a>        {
+<a name="1472"></a>            evt = inputManager.getEvent(nil, nil);
+<a name="1473"></a>            switch(evt[1])
+<a name="1474"></a>            {
+<a name="1475"></a>            case InEvtHref:
+<a name="1476"></a>                /* check for a 'next' or 'prev' command */
+<a name="1477"></a>                if (evt[2] == 'next')
+<a name="1478"></a>                    return M_DOWN;
+<a name="1479"></a>                else if (evt[2] == 'prev')
+<a name="1480"></a>                    return M_UP;
+<a name="1481"></a>                else if (evt[2] == 'menu')
+<a name="1482"></a>                    return M_PREV;
+<a name="1483"></a>                break;
+<a name="1484"></a>
+<a name="1485"></a>            case InEvtKey:
+<a name="1486"></a>                /* get the key */
+<a name="1487"></a>                key = evt[2].toLower();
+<a name="1488"></a>
+<a name="1489"></a>                /* 
+<a name="1490"></a>                 *   if we're in plain text mode, add a blank line after
+<a name="1491"></a>                 *   the key input 
+<a name="1492"></a>                 */
+<a name="1493"></a>                if (statusLine.statusDispMode == StatusModeText)
+<a name="1494"></a>                    "\b";
+<a name="1495"></a>
+<a name="1496"></a>                /* look up the command key */
+<a name="1497"></a>                loc = topMenu.keyList.indexWhich({x: x.indexOf(key) != nil});
+<a name="1498"></a>
+<a name="1499"></a>                /* 
+<a name="1500"></a>                 *   if it's 'next', either proceed to the next menu or
+<a name="1501"></a>                 *   return to the previous menu, depending on whether
+<a name="1502"></a>                 *   we're in chapter mode or not 
+<a name="1503"></a>                 */
+<a name="1504"></a>                if (loc == M_SEL)
+<a name="1505"></a>                    return (nxt == nil ? M_PREV : M_DOWN);
+<a name="1506"></a>
+<a name="1507"></a>                /* if it's 'prev', return to the previous menu */
+<a name="1508"></a>                if (loc == M_PREV || loc == M_QUIT)
+<a name="1509"></a>                    return loc;
+<a name="1510"></a>
+<a name="1511"></a>                /* ignore other keys */
+<a name="1512"></a>                break;
+<a name="1513"></a>            }
+<a name="1514"></a>        }
+<a name="1515"></a>    }
+<a name="1516"></a>;
+</pre>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>

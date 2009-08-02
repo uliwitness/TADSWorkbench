@@ -1,0 +1,303 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>ByteArray</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+ByteArray
+<br><span class="navnp"><a class="nav" href="bignum.htm"><i>Prev:</i> BigNumber</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="charset.htm"><i>Next:</i> CharacterSet</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>ByteArray</h1>
+
+<p>Most TADS programs work with the T3 VM's high-level types - integers,
+strings, lists, objects, and so on.  In some cases, though, it's
+necessary to manipulate the raw bytes that form the basic units of
+storage on modern computers.  The ByteArray class provides a
+structured way of working directly with bytes.
+
+<p>A ByteArray looks superficially similar to a Vector object, in that
+you can access the individual byte elements of a ByteArray using the
+square bracket indexing operator:
+
+<p><div class="code"><pre>
+local arr = new ByteArray(100);
+arr[5] = 12;
+</pre></div>
+
+<p>The difference is that the elements of a ByteArray can only store
+byte values, which are represented as integers in the range 0 to 255.
+
+<h2>Creating a ByteArray</h2>
+
+<p>You create a ByteArray object using the <span class="code">new</span> operator.  You must
+pass to the constructor the number of bytes you want to allocate for
+the new object; this can be any value from 1 to approximately 2
+billion.  For example, to create a byte array with 1,024 elements, you
+would write this:
+
+<p><div class="code"><pre>
+local arr = new ByteArray(1024);
+</pre></div>
+
+<p>The size of a ByteArray is fixed at creation; the size cannot
+change after the object is created.
+
+<p>You can also create a ByteArray as a copy of another byte array or
+a portion of another byte array:
+
+<p><div class="code"><pre>
+arr = new ByteArray(otherArray, startIndex, len);
+</pre></div>
+
+<p>The <i>startIndex</i> and <i>len</i> parameters are optional; if
+they're missing, the new byte array will simply be a complete copy of
+the existing byte array.  If <i>startIndex</i> and <i>len</i> are
+provided, the new array will be a copy of the region of the other byte
+array starting at index startIndex and continuing for len bytes.  If
+<i>startIndex</i> is specified but <i>len</i> is missing, the new
+array will consist of all of the bytes from the original starting with
+<i>startIndex</i> and continuing to the end of the original array.
+
+<h2>Reference Semantics</h2>
+
+<p>Like Vector objects, a ByteArray has reference semantics: when you
+change a value in a byte array, any other variables that refer to the
+same ByteArray will refer to the modified version of the array.
+
+<h2>Reading and Writing Raw Files</h2>
+
+<p>One of the tasks for which ByteArray objects are uniquely suited is
+working with files stored in a third-party data format.  Using
+ByteArray objects, you can work directly with the exact bytes stored
+in an external file, allowing you to process data in arbitrary binary
+formats.
+
+<p>To read or write a file using ByteArray objects, you must open the
+file in "raw" mode.  Once a file is opened in raw mode, you can use
+the <span class="code">fileRead()</span> and <span class="code">fileWrite()</span> methods of the File object to
+read bytes from the file into a ByteArray, and to write bytes from a
+ByteArray into the file.  Refer to the <a href='file.htm'>File
+class</a> for information on the file input/output.
+
+<h2>ByteArray methods</h2>
+
+<p><span class="code">copyFrom(<i>sourceArray</i>, <i>sourceStartIndex</i>, <i>destStartIndex</i>, <i>length</i>)</span>
+<div class=fdef>
+
+Copies bytes from <i>sourceArray</i>, which must be another ByteArray
+object.  Copies bytes starting with the byte in <i>sourceArray</i>
+indexed by <i>sourceStartIndex</i>, and continuing for <i>length</i>
+bytes; stores the bytes in this array starting at the byte indexed by
+<i>destStartIndex</i>.
+
+<p>This routine is safe to use even if <i>sourceArray</i> is the same
+as the target object, and even if the ranges overlap.  When copying bytes
+between overlapping regions of the same array, this routine is careful
+to move the bytes without overwriting any source bytes before they've
+been moved.
+
+</div>
+
+<p><span class="code">fillValue(<i>val</i>, <i>startIndex</i>?, <i>length</i>?)</span>
+<div class=fdef>
+
+Stores the value <i>val</i> in each element of the array, starting at
+index <i>startIndex</i> and filling the next <i>length</i> bytes.  If
+<i>startIndex</i> and <i>length</i> are missing, <i>val</i> is stored
+in every element of the array.  If <i>startIndex</i> is given but
+length is missing, <i>val</i> is stored in every element from
+<i>startIndex</i> to the end of the array.  The value <i>val</i> must
+be an integer in the range 0 to 255.
+
+</div>
+
+<p><span class="code">length()</span>
+<div class=fdef>
+
+Returns the number of bytes in the ByteArray.  This is the same as the
+size specified when the object was created.
+
+</div>
+
+<p><span class="code">mapToString(<i>charset</i>, <i>startIndex</i>?, <i>length</i>?)</span>
+<div class=fdef>
+
+Maps the bytes in the array to a Unicode string, interpreting the
+bytes as belonging to the character set given by <i>charset</i>, which
+must be an object of class CharacterSet.  Returns a string with the
+result of the character mapping.  Only the bytes starting at index
+<i>startIndex</i> and running for <i>length</i> bytes are included in
+the mapping.  If <i>startIndex</i> and <i>length</i> are missing, all
+of the bytes in the array are mapped.  If <i>startIndex</i> is given
+but <i>length</i> is missing, the bytes from <i>startIndex</i> to the
+end of the array are included in the mapping.
+
+<p>The character set given by <i>charset</i> must be known.  If the
+character set is not known, an UnknownCharSetException is thrown.  You
+can determine if the character set is known using the isMappingKnown()
+method of charset.
+
+</div>
+
+<p><span class="code">readInt(<i>startIndex</i>, <i>format</i>)</span>
+<div class=fdef>
+
+Translates bytes from the byte array into an integer value.  Reads
+from the byte array starting at the byte given by <i>startIndex</i>,
+and reads the number of bytes implied by the format code given by
+<i>format,</i> which also indicates how the bytes should be
+interpreted into an integer value.  The return value is the integer
+value read and translated from the byte array.
+
+<p>The format code given by format is a bit-wise combination of three
+parts: a size, a byte order, and a signedness:
+
+<ul>
+
+<li>The size gives the number of bits in the integer; this can be one
+of the values <span class="code">FmtSize8</span>, <span class="code">FmtSize16</span>, or <span class="code">FmtSize32</span>,
+indicating 8-bit, 16-bit, and 32-bit values, respectively.
+
+<li>The byte order can be <span class="code">FmtBigEndian</span> or <span class="code">FmtLittleEndian</span>.  A
+big-endian value is stored with its most significant byte first,
+followed by the second-most significant byte, and so on.  A
+little-endian value is stored in the opposite order, with its least
+significant byte first.  The <span class="code">readInt()</span> method makes it possible to
+specify the desired byte ordering because the native byte ordering of
+different hardware platforms varies, and as a result, the ordering of
+bytes in data fields in file formats specified by third-party
+applications can vary.  Note that the byte order is irrelevant in the
+case of 8-bit values, since an 8-bit value requires only one byte in
+the byte array.
+
+<li>The signedness indicates whether the integer is to be interpreted
+as signed or unsigned; this can be <span class="code">FmtSigned</span> or <span class="code">FmtUnsigned</span>.
+Note that the T3 VM doesn't have an unsigned 32-bit datatype, so
+<span class="code">FmtUnsigned</span> isn't meaningful with <span class="code">FmtSize32</span>.
+
+</ul>
+
+<p>So, to specify a signed 16-bit value in big-endian byte order,
+you'd use <span class="code">(FmtSize16 | FmtSigned | FmtBigEndian)</span>.
+
+<p>It's a lot of typing to specify all three parts of a data format,
+so the byte array system header file defines all of the useful
+combinations as individual macros:
+
+<ul>
+
+<li><span class="code">FmtInt8</span> (signed 8-bit integer)
+
+<li><span class="code">FmtUInt8</span> (unsigned 8-bit integer)
+
+<li><span class="code">FmtInt16LE</span> (signed 16-bit integer in little-endian byte order)
+
+<li><span class="code">FmtUInt16LE</span> (unsigned 16-bit integer in little-endian byte order)
+
+<li><span class="code">FmtInt16BE</span> (signed 16-bit integer in big-endian byte order)
+
+<li><span class="code">FmtUInt16BE</span> (unsigned 16-bit integer in big-endian byte order)
+
+<li><span class="code">FmtInt32LE</span> (signed 32-bit integer in little-endian byte order)
+
+<li><span class="code">FmtInt32BE</span> (signed 32-bit integer in big-endian byte order)
+
+</ul>
+
+<p>This function simply reads the bytes out of the byte array and
+translates them according to the <i>format</i> specification.  There
+is no information in the byte array itself that indicates how the
+bytes are to be interpreted into an integer, so it is up to your
+program to specify the correct format translation.  You'll get strange
+results if you attempt to read values in a format different from the
+format that was used to write them.
+
+</div>
+
+<p><span class="code">subarray(<i>startIndex</i>, <i>length</i>?)</span>
+<div class=fdef>
+
+Returns a new ByteArray consisting of the region of this array
+starting with the byte indexed by <i>startingIndex</i> of the number
+of bytes given by <i>length.</i> If <i>length</i> is not supplied, the
+new ByteArray consists of all of the bytes from <i>startingIndex</i>
+to the last byte of this array.
+
+</div>
+
+<p><span class="code">writeInt(<i>startIndex</i>, <i>format</i>, <i>val</i>)</span>
+<div class=fdef>
+
+Translates an integer value into a series of bytes, and writes the
+bytes into the array.  The bytes are written starting at the index
+given by <i>startIndex</i>. The number of bytes written is the byte
+size implied by the format code given by <i>format</i>. The <i>val</i>
+argument gives the integer value to be written.
+
+<p>The format code in <i>format</i> has the same meaning as the format
+code in <span class="code">readInt()</span>.
+
+<p>Note that this method doesn't perform any range checking on
+<i>val</i>. If <i>val</i> is outside of the limits that can be
+represented with the specified format code, this method will simply
+truncate the value stored to its low-order portion, discarding any
+high-order bits that won't fit the format.  For example, if you
+attempt to store 1000 in an unsigned 8-bit format, the value stored
+would be 232; we can see this more easily by noting that 1000 is 0x3E8
+in hexadecimal, so when we truncate this to 8 bits, we get E8 in hex,
+which is 232 in decimal.  Note also that if you later attempted to
+read this value back as a signed 8-bit value, the result would be even
+stranger: it would be -24.  This is because E8 is negative when
+interpreted as signed, so it would be interpreted as the integer
+0xFFFFFFE8, which is -24.  If you need range checking, your program
+must provide it.  Here are the limits of the different types:
+
+<ul>
+
+<li>Signed 8-bit: -128 to +127
+
+<li>Unsigned 8-bit: 0 to +255
+
+<li>Signed 16-bit: -32768 to +32767
+
+<li>Unsigned 16-bit: 0 to +65535
+
+<li>Signed 32-bit: -2147483648 to +2147483647
+
+</ul>
+
+<p>The capacity of a type doesn't depend on its byte order.  Note that
+there should be no need for range checking on a 32-bit value, since
+the T3 VM's internal integer type itself is a 32-bit signed value and
+thus can't exceed this range to begin with.
+
+<p>This method stores only the bytes of the translated integer value.
+It doesn't store any information on the format code used to generate
+the value; this means that if you later want to read the integer value
+back out of the byte array, it will be up to your program to specify
+the correct format code.
+
+</div>
+
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+ByteArray
+<br><span class="navnp"><a class="nav" href="bignum.htm"><i>Prev:</i> BigNumber</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="charset.htm"><i>Next:</i> CharacterSet</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

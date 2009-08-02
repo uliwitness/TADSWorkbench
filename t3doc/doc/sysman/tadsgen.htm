@@ -1,0 +1,540 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>tads-gen Function Set</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+tads-gen Function Set
+<br><span class="navnp"><a class="nav" href="t3vm.htm"><i>Prev:</i> t3vm Function Set</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="regex.htm"><i>Next:</i> Regular Expressions</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>tads-gen Function Set</h1>
+
+<p>The tads-gen function set provides general utility and data
+manipulation functions.  These functions have no user interface
+component.
+
+<p>To use the tads-gen function set in a program, you should
+<span class="code">#include</span> either <span class="code">&lt;tadsgen.h&gt;</span> or <span class="code">&lt;tads.h&gt;</span> (the latter
+includes both <span class="code">&lt;tadsio.h&gt;</span> and <span class="code">&lt;tadsgen.h&gt;</span>, for the full set of
+TADS intrinsics).  If you're using the adv3 library, you can simply
+<span class="code">#include &lt;adv3.h&gt;</span>, since that automatically incluedes the basic
+system headers.
+
+<h2>tads-gen functions</h2>
+
+<p><span class="code">dataType(<i>val</i>)</span>
+<div class=fdef>
+
+Returns the datatype of the given value.  The return value is one of
+the <span class="code">TypeXxx</span> values (see the section on <a
+href='reflect.htm'>reflection</a>).
+
+</div>
+
+<p><span class="code">firstObj(<i>cls</i>?, <i>flags</i>?)</span>
+<div class=fdef>
+
+Returns the first object of class <i>cls</i>, or the first object in
+the entire program if <i>cls</i> is not specified.  This is used to
+start iterating over the set of all instances of a given class; use
+<span class="code">nextObj()</span> to continue the iteration.  The order in which objects
+are enumerated by <span class="code">firstObj()</span> and <span class="code">nextObj()</span> is arbitrary, but
+each object will be returned exactly once.  Returns <span class="code">nil</span> if there
+are no objects of the given class.
+
+<p>If the <i>flags</i> argument is specified, it can a combination
+(with the <span class="code">|</span> operator) of the following bit flags:
+
+<ul>
+
+<li><span class="code">ObjInstances</span> - the function returns only instances, not
+"class" objects.  This is the default.
+
+<li><span class="code">ObjClasses</span> - the function returns only objects originally
+defined as "class" objects.
+
+<li><span class="code">ObjAll</span> - this is defined for convenience as
+<span class="code">(ObjInstances | ObjClasses)</span>.
+
+</ul>
+
+<p>If the <i>flags</i> argument is omitted, only instances are
+enumerated, as though <span class="code">ObjInstances</span> had been specified.
+
+</div>
+
+<p><span class="code">getArg(<i>idx</i>)</span>
+<div class=fdef>
+
+Retrieve the given argument to the current function.  The first
+argument is at index 1.  <i>idx</i> must be in the range 1 to
+<span class="code">argcount</span>, or the function throws a run-time error ("bad value for
+built-in function").
+
+</div>
+
+<p><span class="code">getFuncParams(<i>funcptr</i>)</span>
+<div class=fdef>
+
+Returns information on the parameters taken by the given function.
+The return value is a list with three elements:
+
+<ul>
+
+<li><span class="code">returnValue[1]</span> is the minimum number of arguments taken by the
+function;
+
+<li><span class="code">returnValue[2]</span> is the number of additional optional arguments
+taken by the function;
+
+<li><span class="code">returnValue[3]</span> is <span class="code">true</span> if the function accepts any number of
+additional arguments (i.e., it's a "varargs" function), <span class="code">nil</span> if not.
+
+</ul>
+
+<p>The second element gives the number of optional arguments; this
+element is always zero, because there's no way for an ordinary
+function (non-intrinsic) to specify optional arguments.  This element
+is included in the list specifically so that the list uses the same
+format as the <span class="code">Object.getPropParams()</span> method.
+
+<p>If the third element is <span class="code">true</span>, it indicates that the function was
+defined with the <span class="code">...</span> varying argument list notation.
+
+</div>
+
+
+<p><span class="code">getTime(<i>timeType</i>?)</span>
+<div class=fdef>
+
+Returns the current system time, according to <i>timeType</i>.  If
+<i>timeType</i> is not specified, <span class="code">GetTimeDateAndTime</span> is the
+default.  The valid <i>timeType</i> values are:
+
+<ul>
+
+<li><span class="code">GetTimeDateAndTime</span> - returns the current system date and time
+as a list with the following elements:
+<span class="code">[year, month, monthDay, weekDay, yearDay, hour, minute, second, timer]</span>.
+
+<ul>
+
+<li><span class="code">year</span> is the AD year number (the full four-digit number)
+<li><span class="code">month</span> is the month number (January = 1, February = 2, etc.)
+<li><span class="code">monthDay</span> is the day of the month (on March 13, this returns 13)
+<li><span class="code">weekDay</span> is the day of the week (Sunday = 1, Monday = 2, etc.)
+<li><span class="code">yearDay</span> is the day of the year (January 1 = 1, January 2 = 2, etc.)
+<li><span class="code">hour</span> is the hour of the day on a 24-hour clock (2:00 PM returns 14)
+<li><span class="code">minute</span> is the minute of the hour (2:35 PM returns 35)
+<li><span class="code">second</span> is the second of the minute (2:35:12 PM returns 12)
+<li><span class="code">timer</span> is the number of seconds since January 1, 1970.
+
+</ul>
+
+<li><span class="code">GetTimeTicks</span> - returns the number of milliseconds since some
+arbitrary zero point.  The precision of the timer varies by system, so
+the fact that the return value is represented with millisecond
+precision doesn't necessarily mean that the system is actually capable
+of measuring time differences that precisely.  The zero point is
+chosen as the time of the first call during a VM session, which
+reduces the likelihood that the program will ever encounter a timer
+rollover (i.e., the point at which the timer exceeds the 31-bit
+precision of the integer return value and thus resets back to zero),
+which occurs after about 23 days of continuous execution.
+
+</ul>
+
+ 
+</div>
+
+<p><span class="code">makeString(<i>val</i>, <i>repeatCount</i>?)</span>
+<div class=fdef>
+
+Construct a string by repeating the given value the given number of
+times.  The result of the function depends on the data type of
+<i>val</i>:
+
+<ul>
+
+<li>If <i>val</i> is a string, the return value is the given number of
+copies of the string appended one after the other.  For example,
+<span class="code">makeString('abc', 3)</span> yields <span class="code">'abcabcabc'</span>.
+
+<li>If <i>val</i> is a list, the list must contain integers.  Each
+integer in the list gives a Unicode character value.  The function
+constructs a string with the same number of characters as the list has
+elements, and with each character of the string having the Unicode
+code point of the corresponding integer in the list.  This string is
+then repeated the given number of times.  For example,
+<span class="code">makeString([65,66,67])</span> yields <span class="code">'ABC'</span>.
+
+<li>If <i>val</i> is an integer, the function returns a string
+consisting of the single Unicode character whose code point is given
+by the integer, repeated the specified number of times.  For
+example, <span class="code">makeString(65, 5)</span> yields <span class="code">'AAAAA'</span>.
+
+<li>Other types are invalid.
+
+</ul>
+
+<p>If <i>repeatCount</i> is not specified, the default is 1.
+
+</div>
+
+<p><span class="code">max(<i>val1</i>, ...)</span>
+<div class=fdef>
+
+Returns the least argument value.  The values must be of comparable
+types.
+ 
+</div>
+
+<p><span class="code">min(<i>val1</i>, ...)</span>
+<div class=fdef>
+
+Returns the greatest argument value.  The values must be of types that
+can be compared with one another, or the function throws an error.
+ 
+</div>
+
+<p><span class="code">nextObj(<i>obj</i>, <i>cls</i>?, <i>flags</i>?)</span>
+<div class=fdef>
+
+Get the next object after <i>obj</i> of class <i>cls</i>.  If
+<i>cls</i> is not specified, returns the next object of any type.
+Returns <span class="code">nil</span> if <i>obj</i> is the last object of class <i>cls</i>.
+This is used (with <span class="code">firstObj()</span>) to iterate over all objects of a
+given class, or over all objects.  The order in which these functions
+enumerate objects is arbitrary, but each object will be returned
+exactly once.  The <i>flags</i> argument has the same meaning as it
+does in <span class="code">firstObj()</span>.
+
+</div>
+
+<p><span class="code">rand(<i>x</i>, ...)</span>
+<div class=fdef>
+
+Returns a pseudo-random number, or randomly selects a value from a set
+of values.
+
+<ul>
+
+<li>With a single integer argument,
+<span class="code">rand()</span> generates a random integer from 0 to one less than the given
+value, inclusive, and returns the integer value; for example, <span class="code">rand(10)</span>
+returns a value from 0 to 9.
+
+<li>With a single list argument, <span class="code">rand()</span>
+randomly selects one of the list elements and returns it.
+
+<li>With two or more arguments, <span class="code">rand()</span> randomly selects one of the
+argument values and returns it; note, however, that all of the
+arguments are evaluated (and hence any side effects of those
+evaluations will occur).
+
+</ul>
+
+<p>In all cases, <span class="code">rand()</span> chooses numbers based on a "uniform
+distribution" over the range, which means that each value in the
+desired range has equal probability.
+
+</div>
+
+<p><span class="code">randomize()</span>
+<div class=fdef>
+
+Seeds the pseudo-random number generator with a value obtained in a
+system-dependent manner (in most cases, the seed value is based on the
+system clock).  If <span class="code">randomize()</span> is never called, the random number
+generator will return the same sequence of numbers every time a
+program is run; when testing a program, this is often useful, since it
+means that the program's results are repeatable.
+
+</div>
+
+<p><span class="code">restartGame()</span>
+<div class=fdef>
+
+Resets all objects (except transient objects) to their initial state,
+as they were when the program was just loaded.  This function doesn't
+affect transient objects.
+
+<span class="code">restoreGame(<i>filename</i>)</span> - restore the saved state from the file
+named by the <i>filename</i> string.  All objects, except transient
+objects, are restored to the state they had when the state was saved
+to the given file.
+
+<p>If an error occurs, the function throws a run-time error.  The
+errno_ property of the RuntimeError exception object gives a VM error
+code describing the problem; the possible errors are:
+
+<ul>
+
+<li>1201 - the file does not contain a saved state (it has some other
+type of data)
+
+<li>1202 - the state was saved by a different program, or by a
+different version of the same program
+
+<li>1207 - the file is corrupted
+
+</ul>
+
+</div>
+
+<p><span class="code">rexGroup(<i>groupNum</i>)</span>
+<div class=fdef>
+
+Returns information on the group match for the last regular expression
+search or match.  <i>groupNum</i> is the number of the parenthesized
+group for which to retrieve the information; the first parenthesized
+expression in the most recent search expression is number 1, and
+groups are numbered by the relative position of the <i>left</i>
+parenthesis in the regular expression.
+
+<p>Returns <span class="code">nil</span> if there is no such group, or if there's no match
+for the group.  If there's a match for the group, returns a
+three-element list: the character index of the group match within the
+original source string; the length in characters of the group match;
+and the matching string.
+
+</div>
+
+<p><a name='rexmatch'></a><span class="code">rexMatch(<i>pat</i>, <i>str</i>, <i>index</i>?)</span>
+<div class=fdef>
+
+Tests <i>str</i> to see if the substring starting at character index
+<i>index</i> matches the given regular expression <i>pat</i>.
+<i>pat</i> can be given as a string containing a valid regular
+expression, or as a <span class="code">RexPattern object</span>.
+
+<p>If the leading substring of <i>str</i> matches the regular
+expression, the function returns the number of characters of the
+matching substring; if there is no match, the function returns
+<span class="code">nil</span>.  This does not search for a match, but merely determines if
+<i>str</i> matches the expression in its leading substring.  Note that
+a regular expression can successfully match zero characters, so a
+return value of zero is distinct from a return value of <span class="code">nil</span>: zero
+indicates a successful match that's zero characters long, and <span class="code">nil</span>
+indicates no match.
+
+<p>If <i>index</i> is given, it indicates the starting index for the
+match; index 1 indicates the first character in the string, and is the
+default if index is omitted.  This can be used to match a substring of
+str to the pattern without actually creating a separate substring
+value.
+
+<p>Refer to the <a href='regex.htm'>regular expressions</a> section
+for details on how to construct a pattern string.
+
+</div>
+
+<p><span class="code">rexReplace(<i>pat</i>, <i>str</i>, <i>replacement</i>, <i>flags</i>, <i>index</i>?)</span>
+<div class=fdef>
+
+Replace one or more matches for the regular expression pattern
+<i>pat</i> within the source string <i>str</i>, starting at the
+character index given by <i>index</i>.  Each match is replaced with
+the string <i>replacement</i>.
+
+<p>The return value is the resulting string with the substitutions
+applied.
+
+<p>The pattern <i>pat</i> can be given as a string using regular
+expression syntax, or as a <span class="code">RexPattern</span> object.
+
+<p>The <i>flags</i> value specifies whether to replace multiple
+occurrences or not: <span class="code">ReplaceOnce</span> specifies that only the first
+match is to be replaced, and <span class="code">ReplaceAll</span> specifies that all matches
+are to be replaced.
+
+<p>If <i>index</i> is given, replacements start with the first
+instance of the pattern at or after the character index position.  The
+first character is at index 1.  If <i>index</i> is omitted, the search
+starts at the first character.
+
+<p>The <i>replacement</i> string is substituted for the original
+matching text of each match (or of the first match if <span class="code">ReplaceOnce</span>
+is specified).  The original substring that matches the regular
+expression <i>pat</i> is removed from the string, and
+<i>replacement</i> is inserted in its palce.  The replacement text can
+include the special sequences <span class="code">%1</span> through <span class="code">%9</span> to indicate that
+the text that matches the corresponding parenthesized group in the
+regular expression should be substituted at that point.  <span class="code">%1</span> is
+replaced by the original matching text of the first parenthesized
+group expression, <span class="code">%2</span> by the second group's matching text, and so
+on.  In addition, <span class="code">%*</span> is replaced by the match for the entire regular
+expression.  Because of the special meaning of the percent sign,
+you have to use the special code <span class="code">%%</span> if you want to include a
+literal percent sign in the replacement text.
+
+<p>Refer to the <a href='regex.htm'>regular expressions</a> section
+for details on how to construct a pattern string.
+
+</div>
+
+<p><span class="code">rexSearch(<i>pat</i>, <i>str</i>, <i>index</i>?)</span>
+<div class=fdef>
+
+Searches for the regular expression <i>pat</i> in the search string
+<i>str</i>, starting at the character position <i>index</i>.  The
+pattern <i>pat</i> can be given as a string containing a valid regular
+expression, or as a <span class="code">RexPattern</span> object.  
+
+<p>If <i>index</i> is given, it gives the starting character position
+in <i>str</i> for the search.  The first character is at index 1.  If
+<i>index</i> is omitted, the search starts with the first character.
+The <i>index</i> value can be used to search for repeated instances of
+the pattern, by telling the function to ignore matches before the
+given point in the string.
+
+<p>If the function finds a match, it returns a list with three
+elements: the character index within <i>str</i> of the first character
+of the matching substring (the first character in the string is at
+index 1); the length in characters of the matching substring; and a
+string giving the matching substring.  If there is no match, the
+function returns <span class="code">nil</span>.
+
+<p>Refer to the <a href='regex.htm'>regular expressions</a> section
+for details on how to construct a pattern string.
+
+</div>
+
+<p><span class="code">saveGame(<i>filename</i>)</span>
+<div class=fdef>
+
+Saves the state of all objects (except transient objects) to the file
+named by the <i>filename</i> string.  If an error occurs, the function
+throws a run-time error to indicate the problem.  The saved state can
+later be restored using <span class="code">restoreGame()</span>.
+
+</div>
+
+<p><span class="code">savepoint()</span>
+<div class=fdef>
+
+Establish an undo savepoint.  Multiple savepoints can be established,
+to mark multiple points in time.  For example, you could establish a
+savepoint just after reading a command line from the user, so that the
+user can subsequently undo the entire effect of the command if
+desired.  Similarly, if you wanted to perform an operation
+speculatively, to see what would happen if you carried out some series
+of actions, you could set an undo savepoint, then undo to the
+savepoint once you've finished the speculative operation.
+
+</div>
+
+<p><span class="code">toInteger(<i>val</i>, <i>radix</i>?)</span>
+<div class=fdef>
+
+Convert the value given by <i>val</i> to an integer.  If the
+<i>radix</i> value is specified, the conversion uses the given radix
+as the numeric base for the conversion; this value can be 2 (binary),
+8 (octal), 10 (decimal), or 16 (hexadecimal).  If <i>radix</i> isn't
+specified, the default is 10 (decimal).
+
+<ul>
+
+<li>If <i>val</i> is an integer, the return value is simply <i>val</i>.
+<i>radix</i> is ignored in this case.
+
+<li>If <i>val</i> is a BigNumber, the value is converted to an integer
+by rounding to the nearest whole number.  If the number is too large
+for the integer type to hold (that is, outside the valid integer
+range, -2147483648 to +2147483647), a run-time error occurs ("numeric
+overflow").
+
+<li>If <i>val</i> is the 'nil' or the string 'true', the return value
+is <span class="code">nil</span> or <span class="code">true</span>, respectively.
+
+<li>If <i>val</i> is any other string value, the function skips any
+leading spaces in the string, then tries to parse the text as an
+integer in the given radix.  If the radix is 10, and the string (after
+leading spaces) starts with a dash, the function skips the dash and
+treats the number as negative; if the radix is 10, and the string
+starts with a plus sign, the function skips the plus sign.  The
+function then scans all following consecutive numerals in the given
+radix and returns the resulting integer value.
+
+<li>If <i>val</i> is of any other type, an error is generated ("invalid
+type for built-in").
+
+</ul>
+
+</div>
+
+<p><span class="code">toString(<i>val</i>, <i>radix</i>?)</span>
+<div class=fdef>
+
+Convert the given value <i>val</i> to a string.
+
+<ul>
+
+<li>If <i>val</i> is an integer, the value is converted to a textual
+representation.  If <i>radix</i> is specified, the conversion is
+performed in that numeric base; <i>radix</i> can any integer value
+from 2 to 36, but the most common radix values are 2 (binary), 8
+(octal), 10 (decimal), and 16 (hexadecimal).  A decimal conversion is
+done using a signed interpretation of the number, so a negative value
+will be preceded by a dash in the result string; the number is treated
+as unsigned for any other radix.
+
+<li>If <i>val</i> is a BigNumber, the value is converted to a string
+using the default BigNumber formatting.  <i>radix</i> is ignored.
+
+<li>If <i>val</i> is <span class="code">true</span> or <span class="code">nil</span>, the result is the string
+<span class="code">'true'</span> or the string <span class="code">'nil'</span>, respectively.
+
+<li>If <i>val</i> is a string, the return value is simply <i>val</i>.
+
+<li>For any other type, an error occurs ("no string conversion").
+
+</ul>
+
+</div>
+
+<p><span class="code">undo()</span>
+<div class=fdef>
+
+Undoes all changes to object state back to the most recent undo
+savepoint, as established with the <span class="code">savepoint()</span> function.  Returns
+<span class="code">true</span> if successful, <span class="code">nil</span> if insufficient undo information is
+available.  This can be called repeatedly; each call undoes changes to
+the next most recent savepoint.  All changes affecting object state
+since the last savepoint are undone by this operation, except that
+transient objects are not affected.
+
+<p>When the function returns <span class="code">nil</span>, it will have made no changes to
+the system state.  The function never makes any changes unless it has
+a complete set of undo information back to a savepoint, so the
+function will never leave the system in an inconsistent state.  The VM
+has an internal limit on the total amount of undo information retained
+in memory at any given time, to keep memory consumption under control
+during a long-running session; as new undo information is added, the
+VM discards the oldest undo information as needed to keep within the
+memory limits.  This maintains a rolling window of the most recent
+undo information.
+
+</div>
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+tads-gen Function Set
+<br><span class="navnp"><a class="nav" href="t3vm.htm"><i>Prev:</i> t3vm Function Set</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="regex.htm"><i>Next:</i> Regular Expressions</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

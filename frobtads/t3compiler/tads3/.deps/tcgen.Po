@@ -1,0 +1,216 @@
+t3compiler/tads3/tcgen.o t3compiler/tads3/tcgen.o:  \
+ t3compiler/tads3/tcgen.cpp /usr/include/stdlib.h \
+  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
+  /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/sys/cdefs.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/sys/wait.h \
+  /usr/include/sys/signal.h /usr/include/sys/appleapiopts.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/sys/_structs.h \
+  /usr/include/machine/_structs.h /usr/include/mach/i386/_structs.h \
+  /usr/include/sys/resource.h /usr/include/machine/endian.h \
+  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
+  /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h /usr/include/string.h tads3/t3std.h \
+  /Developer/usr/bin/../lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  /Developer/usr/bin/../lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h \
+  /usr/include/ctype.h /usr/include/runetype.h tads2/os.h \
+  tads2/h_ix86_64.h config.h tads2/osifctyp.h src/osfrobtads.h \
+  src/common.h /usr/include/sys/types.h /usr/include/sys/time.h \
+  /usr/include/time.h /usr/include/_structs.h /usr/include/sys/_select.h \
+  /usr/include/stdio.h /usr/include/unistd.h /usr/include/sys/unistd.h \
+  /usr/include/sys/select.h tads2/osbigmem.h src/missing.h tads2/osifc.h \
+  tads2/appctx.h tads2/os.h t3compiler/tads3/tcglob.h \
+  t3compiler/tads3/tcgen.h t3compiler/tads3/tctargty.h \
+  t3compiler/tads3/tct3ty.h tads3/vmtype.h tads3/t3std.h tads3/vmerr.h \
+  /usr/include/setjmp.h /usr/include/machine/setjmp.h \
+  /usr/include/i386/setjmp.h tads3/vmerrnum.h tads3/vmglob.h \
+  tads3/vmpoolsl.h tads3/vmglobv.h tads3/vmerr.h \
+  t3compiler/tads3/tcerrnum.h t3compiler/tads3/tctok.h \
+  /usr/include/assert.h tads3/utf8.h tads3/vmhash.h \
+  t3compiler/tads3/tcerr.h t3compiler/tads3/tcprs.h tads3/tcprstyp.h \
+  t3compiler/tads3/tcmain.h tads3/vmfile.h t3compiler/tads3/tctarg.h \
+  t3compiler/tads3/tct3.h tads3/vmop.h tads3/vmrunsym.h tads3/vmtype.h \
+  t3compiler/tads3/tct3drv.h t3compiler/tads3/tct3int.h \
+  t3compiler/tads3/tct3base.h t3compiler/tads3/tcpnbase.h \
+  t3compiler/tads3/tcpnint.h t3compiler/tads3/tcpndrv.h
+
+/usr/include/stdlib.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/string.h:
+
+tads3/t3std.h:
+
+/Developer/usr/bin/../lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+/Developer/usr/bin/../lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+tads2/os.h:
+
+tads2/h_ix86_64.h:
+
+config.h:
+
+tads2/osifctyp.h:
+
+src/osfrobtads.h:
+
+src/common.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/time.h:
+
+/usr/include/time.h:
+
+/usr/include/_structs.h:
+
+/usr/include/sys/_select.h:
+
+/usr/include/stdio.h:
+
+/usr/include/unistd.h:
+
+/usr/include/sys/unistd.h:
+
+/usr/include/sys/select.h:
+
+tads2/osbigmem.h:
+
+src/missing.h:
+
+tads2/osifc.h:
+
+tads2/appctx.h:
+
+tads2/os.h:
+
+t3compiler/tads3/tcglob.h:
+
+t3compiler/tads3/tcgen.h:
+
+t3compiler/tads3/tctargty.h:
+
+t3compiler/tads3/tct3ty.h:
+
+tads3/vmtype.h:
+
+tads3/t3std.h:
+
+tads3/vmerr.h:
+
+/usr/include/setjmp.h:
+
+/usr/include/machine/setjmp.h:
+
+/usr/include/i386/setjmp.h:
+
+tads3/vmerrnum.h:
+
+tads3/vmglob.h:
+
+tads3/vmpoolsl.h:
+
+tads3/vmglobv.h:
+
+tads3/vmerr.h:
+
+t3compiler/tads3/tcerrnum.h:
+
+t3compiler/tads3/tctok.h:
+
+/usr/include/assert.h:
+
+tads3/utf8.h:
+
+tads3/vmhash.h:
+
+t3compiler/tads3/tcerr.h:
+
+t3compiler/tads3/tcprs.h:
+
+tads3/tcprstyp.h:
+
+t3compiler/tads3/tcmain.h:
+
+tads3/vmfile.h:
+
+t3compiler/tads3/tctarg.h:
+
+t3compiler/tads3/tct3.h:
+
+tads3/vmop.h:
+
+tads3/vmrunsym.h:
+
+tads3/vmtype.h:
+
+t3compiler/tads3/tct3drv.h:
+
+t3compiler/tads3/tct3int.h:
+
+t3compiler/tads3/tct3base.h:
+
+t3compiler/tads3/tcpnbase.h:
+
+t3compiler/tads3/tcpnint.h:
+
+t3compiler/tads3/tcpndrv.h:

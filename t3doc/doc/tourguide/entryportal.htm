@@ -1,0 +1,70 @@
+<html><head><meta name="generator" content="Help & Manual 2.7.0"><title>EntryPortal</title><meta name="keywords" content="EntryPortal,connector"></meta></head>
+<body bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="3" bgcolor="#C0C0C0"><tr><td align="left">
+<font face="Arial" size="3" color="#000000"><b>EntryPortal : <a href="enterable.htm">Enterable</a>
+<br>
+</b></font>
+
+</td><td align="right"><font face="Arial" size="2"><a href="hiddendoor.htm">[Previous]</a> <a href="generalintroduction.htm">[Main]</a> <a href="exitportal.htm">[Next]</a></font></td></tr></table><br>
+
+<font face="Arial" size="2" color="#000000">An EntryPortal is just like an <a href="enterable.htm">Enterable</a>, except that you can go through it as well as enter it. It can be used, for example, for an archway that is plainly the entrance to another destination:
+<br>
+
+<br>
+<font face="Courier New" size="2" color="#000000">mainCave:&nbsp;Room&nbsp;'Large&nbsp;Cave'
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"This&nbsp;is&nbsp;the&nbsp;main&nbsp;cave.&nbsp;A&nbsp;large&nbsp;rock&nbsp;rests&nbsp;against&nbsp;the&nbsp;north&nbsp;wall&nbsp;and
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;there&nbsp;is&nbsp;another&nbsp;cave&nbsp;to&nbsp;the&nbsp;south&nbsp;<b>and&nbsp;an&nbsp;archway&nbsp;to&nbsp;the&nbsp;east</b>,
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;boulder.moved&nbsp;?&nbsp;'and&nbsp;a&nbsp;passage&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has&nbsp;been&nbsp;opened&nbsp;up&nbsp;to&nbsp;the&nbsp;west'&nbsp;:&nbsp;'but&nbsp;the&nbsp;way&nbsp;west&nbsp;is&nbsp;blocked&nbsp;by
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;huge&nbsp;boulder'&gt;&gt;.&nbsp;A&nbsp;blazing&nbsp;torch&nbsp;is&nbsp;fixed&nbsp;to&nbsp;the&nbsp;wall,&nbsp;next&nbsp;to&nbsp;a&nbsp;sturdy&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;steel&nbsp;ladder&nbsp;leading&nbsp;upwards.&nbsp;"
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;north&nbsp;=&nbsp;rock
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;south&nbsp;=&nbsp;anotherCave
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;west&nbsp;:&nbsp;OneWayRoomConnector
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;roundCave
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canTravelerPass&nbsp;(traveler)&nbsp;{&nbsp;return&nbsp;boulder.moved;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;explainTravelBarrier&nbsp;(traveler)&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"The&nbsp;huge&nbsp;boulder&nbsp;is&nbsp;in&nbsp;the&nbsp;way.&nbsp;";&nbsp;}
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;east&nbsp;=&nbsp;squareCave
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;up&nbsp;=&nbsp;upLadder
+<br>
+;
+<br>
+
+<br>
+
+<br>
++&nbsp;EntryPortal&nbsp;-&gt;squareCave&nbsp;'arch/archway'&nbsp;'archway'
+<br>
+&nbsp;&nbsp;"It's&nbsp;a&nbsp;large&nbsp;archway,&nbsp;leading&nbsp;to&nbsp;another&nbsp;cave&nbsp;beyond.&nbsp;"
+<br>
+;
+<br>
+
+<br>
+</font><font face="Arial" size="2" color="#000000">The property pointed to by -&gt; in the template is actually the connector traversed, not the destination reached, when the EntryPortal is entered, although when, as here, the connector is a Room this has the same effect (see this discussion of the distinction in connection with the <a href="enterable.htm">Enterable</a> class, from which EntryPortal inherits). Entry portal inherits from Enterable and hence inherits the <a href="enterabletemplate.htm">Enterable template</a>.</font><font face="Courier New" size="2" color="#000000">
+<br>
+</font></font>
+
+</body></html>

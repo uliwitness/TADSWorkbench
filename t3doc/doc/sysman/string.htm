@@ -1,0 +1,268 @@
+<html>
+<!-- DERIVED FILE - DO NOT EDIT -->
+
+<head>
+<title>String</title>
+<link rel="stylesheet" href="sysman.css" type="text/css">
+</head>
+<body>
+<div class="topbar"><img src="topbar.jpg" border=0></div>
+<div class="nav">
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+String
+<br><span class="navnp"><a class="nav" href="rexpat.htm"><i>Prev:</i> RexPattern</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="strcomp.htm"><i>Next:</i> StringComparator</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+<div class="main">
+
+<h1>String</h1>
+
+<p>"String" is a native TADS 3 datatype, but it is also an intrinsic
+class.  The String class provides a number of useful methods for
+manipulating string values.
+
+<h2>Value semantics</h2>
+
+<p>Strings have "value semantics," which means that a given string
+object's text is constant; once you've created a string, the text
+within that string never changes.  All of the methods and operators
+that appear to change the value of a string actually create a new
+string with the modified value, leaving the original value intact.
+For example, consider this code:
+
+<p><div class="code"><pre>
+local x = 'foo';
+local y = x;
+x += 'bar';
+</pre></div>
+
+<p>Superficially, it appears that the last line changes the string in
+<span class="code">x</span>.  In fact, the original string is not changed - if we displayed the
+value of <span class="code">y</span>, we'd see that it still contains <span class="code">'foo'</span>.  When the
+interpreter executes the last line above, it creates a new string to
+hold the concatenated value, then assigns the result to <span class="code">x</span>.
+
+<p>Value semantics make it very easy to work with strings, because you
+don't have to worry about whether a function might modify a string you
+pass to it: this can never happen, because a given string's text is
+constant.
+
+<h2>String methods</h2>
+
+<p><span class="code">endsWith(<i>str</i>)</span>
+<div class=fdef>
+
+Returns <span class="code">true</span> if this string ends with <i>str</i>, <span class="code">nil</span> if not.
+This string ends with <i>str</i> if this string is at least as long as
+<i>str</i>, and the last <span class="code">str.length()</span> characters of this string
+are the same as the characters of <i>str</i>.
+
+</div>
+
+<p><span class="code">find(<i>str</i>, <i>index</i>?)</span>
+<div class=fdef>
+
+Finds the substring <i>str</i> within this string.  If the substring
+is contained within this string, the method returns the character
+index where the substring starts; the first character is at index 1.
+If the substring isn't contained within this string, the method
+returns <span class="code">nil</span>.
+
+<p>If <i>index</i> is given, it gives the starting index in <span class="code">self</span> for
+the search; a value of 1 indicates that the search starts at the first
+character.  If the index value is omitted, the default value is 1.
+The starting index value can be used to search for another occurrence
+of the same substring following a previous search, for example.
+
+<p>Examples:
+
+<p><div class="code"><pre>
+'abcdef'.find('cd') yields 3
+'abcdef'.find('g') yields nil
+'abcdef'.find('c', 3) yields 3
+'abcdef'.find('c', 4) yields nil
+'abcabcabc'.find('c', 4) yields 6
+'abcabcabc'.find('c', 7) yields 9
+</pre></div>
+
+</div>
+
+<p><span class="code">findReplace(<i>origStr</i>, <i>newStr</i>, <i>flags</i>, <i>index</i>?)</span>
+<div class=fdef>
+
+Finds instances of the substring <i>origStr</i> within the target
+string, and replaces them with the new substring <i>newStr</i>.  If
+the <i>flags</i> value is <span class="code">ReplaceAll</span>, then all occurrences of
+<i>origStr</i> are replaced; if the value is <span class="code">ReplaceOnce</span>, then only
+the first occurrence is replaced.
+
+<p>If <i>index</i> is specified, it gives the starting index in self
+for the search.  If <i>index</i> is 1, the search starts at the first
+character; this is the default if <i>index</i> is not given.  No
+instances of <i>origStr</i> before index will be replaced. 
+
+</div>
+
+<p><span class="code">htmlify(<i>flags</i>?)</span>
+<div class=fdef>
+
+Converts HTML markup-significant characters in the string to
+appropriate HTML sequences, and returns the resulting string.  If the
+flags argument is not included, the method acts as though flags has
+the value 0 (zero).  By default, this method scans the string for the
+characters <span class="code">&amp;</span> (ampersand) and <span class="code">&lt;</span> (less than), and converts these
+characters to the sequences <span class="code">&amp;amp;</span> and <span class="code">&amp;lt;</span> respectively.  This
+conversion ensures that, when the string is rendered in HTML mode, the
+display shows ampersands and less-than signs where they appeared in
+the original string's text.  In addition, you can specify a
+combination (using the bitwise OR operator, <span class="code">|</span>) of the following
+flags to perform additional conversions:
+
+<ul>
+
+<li><span class="code">HtmlifyTranslateSpaces</span>: converts each space after the first space
+in a run of multiple spaces to the sequence <span class="code">&amp;nbsp;</span> (the HTML
+non-breaking space).  This ensures that, when the string is rendered
+in HTML mode, the display shows the same number of spaces that
+appeared in the original string.  Note that the method never converts
+the first space in a run of whitespace to the <span class="code">&amp;nbsp;</span> sequence,
+because the first space in a run of whitespace is significant in HTML
+and thus requires no special handling.
+
+<li><span class="code">HtmlifyTranslateTabs</span>: converts each tab character (<span class="code">\t</span>) in the
+string to the sequence <span class="code">&lt;tab&gt;</span>.
+
+<li><span class="code">HtmlifyTranslateNewlines</span>: converts each newline character (<span class="code">\n</span>)
+in the string to the sequence <span class="code">&lt;br&gt;</span>.
+
+<li><span class="code">HtmlifyTranslateWhitespace</span>: this is simply a combination of
+<span class="code">HtmlifyTranslateSpaces</span>, <span class="code">HtmlifyTranslateTabs</span>, and
+<span class="code">HtmlifyTranslateNewlines</span>.
+
+</ul>
+
+
+<p>This method is useful if you obtain a string from an external
+source, such as from the user (via the <span class="code">inputLine()</span> function, for
+example) or from a text file, and you then want to display the string
+in HTML mode.  Without conversions, any markup-significant characters
+in the string might not be displayed properly, since the HTML parser
+would attempt to interpret the characters as HTML formatting codes.
+You can use this method to ensure that a string obtained externally is
+displayed verbatim in HTML mode.
+
+</div>
+
+<p><span class="code">length()</span>
+<div class=fdef>
+
+Returns the number of characters in the string.
+
+</div>
+
+<p><span class="code">mapToByteArray(<i>charset</i>)</span>
+<div class=fdef>
+
+Maps the string from its internal Unicode representation to the
+corresponding representation in the character set specified by
+<i>charset</i>, and returns a new ByteArray containing the bytes of
+the result.  The <i>charset</i> parameter must be an object of class
+CharacterSet.  If <i>charset</i> refers to an unknown character set,
+an <span class="code">UnknownCharSetException</span> will be thrown; you can determine if the
+character set is known using its <span class="code">isMappingKnown()</span> method.
+
+</div>
+
+<p><span class="code">substr(<i>start</i>, <i>length</i>?)</span>
+<div class=fdef>
+
+Returns a new string consisting of a substring of this string.  The
+substring starts at character index <i>start</i> (the first character
+in the string is at index 1).  If <i>length</i> is specified, the
+result string is at most <i>length</i> characters long; if
+<i>length</i> is not specified, the result runs to the end of the
+source string.
+
+<p>If the <i>start</i> parameter is negative, it indicates an offset
+from the end of the string: -1 indicates that the substring is to
+start at the last character, -2 at the second-to-last, and so on.
+
+<p>Examples:
+
+<p><div class="code"><pre>
+'abcdef'.substr(3) yields 'cdef'
+'abcdef'.substr(3, 2) yields 'cd'
+'abcdefghi'.substr(-3) yields 'ghi'
+'abcdefghi'.substr(-3, 2) yields 'gh'
+</pre></div>
+
+</div>
+
+<p><span class="code">toLower()</span>
+<div class=fdef>
+
+Returns a new string consisting of the characters of the original
+string converted to lower-case.  Only alphabetic characters are
+affected; other characters are copied to the new string unchanged.
+The conversion uses the case conversions specified in the Unicode
+character database, so accented and non-Roman alphabetic characters
+are properly converted.
+
+</div>
+
+<p><span class="code">startsWith(<i>str</i>)</span>
+<div class=fdef>
+
+Returns true if this string starts with <i>str</i>, <span class="code">nil</span> if not.
+This string starts with <i>str</i> if this string is at least as long
+as <i>str</i>, and the first <span class="code">str.length()</span> characters match the
+characters of <i>str</i>.
+
+</div>
+
+<p><span class="code">toUnicode(<i>idx</i>?)</span>
+<div class=fdef>
+
+Converts one or all of the characters of this string to Unicode
+character codes.  If <i>idx</i> is given, it specifies the character
+index within the string of the single character to convert (the first
+character is at index 1), and the method returns an integer containing
+the Unicode code point for the character at that index.  If <i>idx</i>
+is not specified, the function returns a list; each element in the
+list is an integer giving the Unicode code point value for the
+corresponding character in the source string.  The list will have one
+element per character in the source string.
+
+<p>This function can be used to decompose a string into its individual
+characters, which is sometimes an easier or more efficient method of
+manipulating the string.  You can convert a list of Unicode code point
+values back into a string using the <span class="code">makeString()</span> function in the
+<a href='tadsgen.htm'>tads-gen</a> function set.
+
+</div>
+
+<p><span class="code">toUpper()</span>
+<div class=fdef>
+
+Returns a new string consisting of the characters of the original
+string converted to upper-case.  Only alphabetic characters are
+affected; other characters are copied to the new string unchanged.
+The conversion uses the case conversions specified in the Unicode
+character database, so accented and non-Roman alphabetic characters
+are properly converted.
+
+</div>
+
+
+</div>
+<hr class="navb"><div class="navb">
+<i>TADS 3 System Manual</i><br>
+<a class="nav" href="toc.htm">Table of Contents</a> | 
+<a class="nav" href="builtins.htm">The Intrinsics</a> &gt; 
+String
+<br><span class="navnp"><a class="nav" href="rexpat.htm"><i>Prev:</i> RexPattern</a> &nbsp;&nbsp;&nbsp; <a class="nav" href="strcomp.htm"><i>Next:</i> StringComparator</a> &nbsp;&nbsp;&nbsp; </span>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html>
+<head><link rel=stylesheet type="text/css" href="../libref.css"><title>t3.h</title></head><body>
+<table class=ban><tr><td align=left><span class=title>t3.h</span><span class=type>file</span><td align=right><a href="../source/t3.h.html">source file</a></table><p>
+<table class=nav><tr>
+<td><b>Classes</b><br><a href="#_ClassSummary_">Summary</a><br>&nbsp;<td><b>Functions</b><br><a href="#_FunctionSummary_">Summary</a><br><a href="#_Functions_">Details</a><td><b>Macros</b><br><a href="#_MacroSummary_">Summary</a><br><a href="#_Macros_">Details</a><td><b>Enums</b><br><a href="#_EnumSummary_">Summary</a><br><a href="#_Enums_">Details</a><td><b>Templates</b><br><a href="#_TemplateSummary_">Summary</a><br><a href="#_Templates_">Details</a></table><div class=fdesc>
+ <p> <p>   This header defines the t3vm intrinsic function set.  These functions   provide access to basic features of the Virtual Machine. 
+</div>
+<a name="_ClassSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Classes</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="FunctionSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Global Functions</span> &nbsp; </div><p>
+<code>
+<a href="#t3AllocProp">t3AllocProp</a>&nbsp; 
+<a href="#t3DebugTrace">t3DebugTrace</a>&nbsp; 
+<a href="#t3GetGlobalSymbols">t3GetGlobalSymbols</a>&nbsp; 
+<a href="#t3GetStackTrace">t3GetStackTrace</a>&nbsp; 
+<a href="#t3GetVMBanner">t3GetVMBanner</a>&nbsp; 
+<a href="#t3GetVMID">t3GetVMID</a>&nbsp; 
+<a href="#t3GetVMPreinitMode">t3GetVMPreinitMode</a>&nbsp; 
+<a href="#t3GetVMVsn">t3GetVMVsn</a>&nbsp; 
+<a href="#t3RunGC">t3RunGC</a>&nbsp; 
+<a href="#t3SetSay">t3SetSay</a>&nbsp; 
+</code><p>
+<a name="_MacroSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Macros</span> &nbsp; </div><p>
+<code>
+<a href="#T3_H">T3_H</a>&nbsp; 
+<a href="#T3DebugBreak">T3DebugBreak</a>&nbsp; 
+<a href="#T3DebugCheck">T3DebugCheck</a>&nbsp; 
+<a href="#T3SetSayNoFunc">T3SetSayNoFunc</a>&nbsp; 
+<a href="#T3SetSayNoMethod">T3SetSayNoMethod</a>&nbsp; 
+</code><p>
+<a name="_EnumSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Enums</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_TemplateSummary_"></a><p><div class=mjhd><span class=hdln>Summary of Templates</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Functions_"></a><p><div class=mjhd><span class=hdln>Global Functions</span> &nbsp; </div><p>
+<a name="t3AllocProp"></a>
+<table class=decl><tr><td><code>t3AllocProp ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#129">129</a>]</table><div class=desc>   Allocate a new property.  Returns a new property not yet used   anywhere in the program.  Note that property ID's are a somewhat   limited resource - only approximately 65,000 total are available,   including all of the properties that the program defines   statically. <p>
+</div>
+<a name="t3DebugTrace"></a>
+<table class=decl><tr><td><code>t3DebugTrace (mode, ...)</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#97">97</a>]</table><div class=desc>   Debugger trace operations.  This provides access to the interactive   debugger subsystem, if the VM is running under a debugger.  The   'mode' argument determines what the function does and what the   additional arguments, if any, are for: <p>   T3DebugCheck - checks to see if an interactive debugger is present.   No additional arguments; returns true if a debugger is present, nil   if not. <p>   T3DebugBreak - breaks into the interactive debugger, pausing   execution at the current code location so that the user can inspect   the current machine state and determine how to proceed.  No   additional arguments; after the user proceeds with execution, the   function returns true to indicate that a debugger is present.  If no   debugger is present, the function simply returns nil, and has no   other effect. <p>
+</div>
+<a name="t3GetGlobalSymbols"></a>
+<table class=decl><tr><td><code>t3GetGlobalSymbols ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#120">120</a>]</table><div class=desc>   Get the global symbol table.  If a symbol table is available, this   returns a LookupTable object; otherwise, it returns nil. <p>   This call will return a valid object value when pre-initialization   is running during program building, or when the program has been   compiled for debugging.  When a program compiled for release (i.e.,   no debug information) is run under the interpreter, this will   return nil, because no symbol information is available. <p>   Note that programs can, if they wish, get a reference to this   object during pre-initialization, then keep the reference (by   storing it in an object property, for example) so that it is   available during normal execution under the interpreter.  If the   program is compiled for release, and it does not keep a reference   in this manner, the garbage collector will automatically delete the   object when pre-initialization is completed.  This allows programs   that wish to keep the symbol information around at run-time to do   so, while not burdening programs that don't need the information   with the extra memory the symbols consume. <p>
+</div>
+<a name="t3GetStackTrace"></a>
+<table class=decl><tr><td><code>t3GetStackTrace (level?)</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#143">143</a>]</table><div class=desc>   Get a stack trace.  This returns a list of T3StackInfo objects.   Each object represents a nesting level in the call stack.  The first   element in the list represents the currently active level (i.e., the   level that called this function), the second element represents the   caller of the first element, and so on. <p>   If 'level' is specified, we'll return a single T3StackInfo object   giving the context at the given stack level - 1 is the active level,   2 is its caller, and so on, so 'level' would simply be the index in   the returned list when this argument is omitted. <p>
+</div>
+<a name="t3GetVMBanner"></a>
+<table class=decl><tr><td><code>t3GetVMBanner ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#70">70</a>]</table><div class=desc>   Get the VM banner string.  This returns a string with the name of   the VM, the version number, and a copyright string, in a format   suitable for displaying to the user to identify the VM executable. <p>
+</div>
+<a name="t3GetVMID"></a>
+<table class=decl><tr><td><code>t3GetVMID ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#63">63</a>]</table><div class=desc>   Get the VM identifier string.  This returns the version number as a   string, as in '3.0.10'. <p>
+</div>
+<a name="t3GetVMPreinitMode"></a>
+<table class=decl><tr><td><code>t3GetVMPreinitMode ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#77">77</a>]</table><div class=desc>   Get the preinitialization mode flag.  This returns true if the VM is   running as part of the compiler's pre-initialization phase, nil if   it's running as a normal interpreter. <p>
+</div>
+<a name="t3GetVMVsn"></a>
+<table class=decl><tr><td><code>t3GetVMVsn ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#57">57</a>]</table><div class=desc>   Get the VM version number.  Returns the version number as an integer   value, with the major version in the high-order 16 bits, the minor   version number in the next 8 bits, and the patch number ("point   release" number) in the low-order 8 bits.  For example, version   3.0.10 is encoded as 0x0003000A. <p>
+</div>
+<a name="t3RunGC"></a>
+<table class=decl><tr><td><code>t3RunGC ( )</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#34">34</a>]</table><div class=desc>   Explicitly run garbage collection. <p>
+</div>
+<a name="t3SetSay"></a>
+<table class=decl><tr><td><code>t3SetSay (val)</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#48">48</a>]</table><div class=desc>   Set the default output function or method.  The return value is the   old function pointer or method, depending on which one is being set   with this call.  (If 'val' is a function pointer, the return value   will be the old function; if 'val' is a property ID, the return   value is the old method.) <p>   The special values T3SetSayNoFunc and T3SetSayNoMethod can be passed   to the function to remove any existing function or method,   respectively, and are returned when appropriate to indicate that   there was no previous setting. <p>
+</div>
+<a name="_Macros_"></a><p><div class=mjhd><span class=hdln>Macros</span> &nbsp; </div><p>
+<a name="T3_H"></a>
+<table class=decl><tr><td><code>T3_H</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#17">17</a>]</table><div class=desc><code></code><br>   T3 intrinsic function set definition <p>
+</div>
+<a name="T3DebugBreak"></a>
+<table class=decl><tr><td><code>T3DebugBreak</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#154">154</a>]</table><div class=desc><code>2</code><br>break into the debugger<p>
+</div>
+<a name="T3DebugCheck"></a>
+<table class=decl><tr><td><code>T3DebugCheck</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#151">151</a>]</table><div class=desc><code>1</code><br>check to see if the debugger is present<p>
+</div>
+<a name="T3SetSayNoFunc"></a>
+<table class=decl><tr><td><code>T3SetSayNoFunc</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#161">161</a>]</table><div class=desc><code>1</code><br>   t3SetSay() special values.  These can be passed in lieu of a function   pointer or property ID when the caller wants to remove any existing   function or method rather than install a new one. <p>
+</div>
+<a name="T3SetSayNoMethod"></a>
+<table class=decl><tr><td><code>T3SetSayNoMethod</code><td align=right><code><a href="../file/t3.h.html">t3.h</a>[<a href="../source/t3.h.html#162">162</a>]</table><div class=desc><code>2</code><br><i>no description available</i><p>
+</div>
+<a name="_Enums_"></a><p><div class=mjhd><span class=hdln>Enums</span> &nbsp; </div><p>
+<i>(none)</i>
+<a name="_Templates_"></a><p><div class=mjhd><span class=hdln>Templates</span> &nbsp; </div><p>
+<i>(none)</i>
+<div class=ftr>TADS 3 Library Manual<br>Generated on 5/6/2009 from TADS version 3.0.18.1</div>
+</body>
+</html>
