@@ -1,18 +1,10 @@
-This project and the files in it are (c) 2003-07 by M. Uli Kusterer, all rights
-reserved.
-Just because you are looking at the source code to Workbench for Macintosh and
-the application is distributed as freeware, doesn't mean it's in the Public
-Domain. If you want to sell this or use the sources in one of your projects,
-contact tadsworkbench(at)ulik_dot_at to work out a deal.
-
-
 COMPILING WORKBENCH
 -------------------
 
 Read the *complete* contents of this file to find out about getting Workbench to
-compile. Also, after checking out this project from the SVN repository, make
+compile. Also, after checking out this project from the Git repository, make
 sure you've done a "clean" on the project before the first build. This will
-ensure you don't get odd errors from xCode.
+ensure you don't get odd errors from Xcode.
 
 
 WHAT GOES WHERE?
@@ -98,4 +90,27 @@ distro, which would simply be a copy of the DARWIN target Matt Herberg is
 maintaining that doesn't use the DARWIN constant. Then all of the above would
 turn into a nice, small -DMACOSX or whatever.
 
+LICENSE
+-------
+
+	Copyright 2007-2014 by Uli Kusterer.
+	
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+	
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+	
+	   1. The origin of this software must not be misrepresented; you must not
+	   claim that you wrote the original software. If you use this software
+	   in a product, an acknowledgment in the product documentation would be
+	   appreciated but is not required.
+	
+	   2. Altered source versions must be plainly marked as such, and must not be
+	   misrepresented as being the original software.
+	
+	   3. This notice may not be removed or altered from any source
+	   distribution.
 
