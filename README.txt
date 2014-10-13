@@ -3,7 +3,7 @@ reserved.
 Just because you are looking at the source code to Workbench for Macintosh and
 the application is distributed as freeware, doesn't mean it's in the Public
 Domain. If you want to sell this or use the sources in one of your projects,
-contact witness_dot_of_dot_teachtext_at_zathras_dot_de to work out a deal.
+contact tadsworkbench(at)ulik_dot_at to work out a deal.
 
 
 COMPILING WORKBENCH
