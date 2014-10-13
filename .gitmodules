@@ -1,0 +1,6 @@
+[submodule "UliKit"]
+	path = UliKit
+	url = git@github.com:uliwitness/UliKit.git
+[submodule "UKSyntaxColoredTextDocument"]
+	path = UKSyntaxColoredTextDocument
+	url = git@github.com:uliwitness/UKSyntaxColoredTextDocument.git
